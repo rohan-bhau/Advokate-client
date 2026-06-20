@@ -23,7 +23,7 @@ export default function HeroContent() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.16, 1, 0.3, 1] as const, // Adding "as const" fixes the TypeScript tuple mismatch
+        ease: [0.16, 1, 0.3, 1] as const, 
       },
     },
   };
