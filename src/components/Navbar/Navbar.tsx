@@ -149,12 +149,12 @@ export default function Navbar() {
         <div className="md:hidden border-t border-default-100 bg-background px-4 py-4 space-y-4">
           <div className="relative w-full">
             <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
-              <Magnifier className="h-4 w-4 text-default-400" />
+              <Magnifier className="h-4 w-4 text-default-400 dark:text-black" />
             </div>
             <input
               type="text"
               placeholder="Search lawyers..."
-              className="w-full h-11 rounded-full border border-default-200 bg-[#F4F7FC] dark:bg-default-100 pl-11 pr-4 text-sm text-foreground focus:outline-none"
+              className="w-full h-11 rounded-full border border-default-200 bg-[#F4F7FC] dark:bg-default-100 pl-11 pr-4 text-sm text-foreground dark:text-black focus:outline-none"
             />
           </div>
 
