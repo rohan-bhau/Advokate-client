@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navbar from "@/components/Navbar/Navbar";
+import { Providers } from "./providers"; // 1. Import your providers file
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,8 +28,15 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning // 2. Add this to prevent browser hydration mismatches
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      {/* 3. Add global Hero UI utility classes to the body so background/text switch themes automatically */}
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Providers>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+        </Providers>
+      </body>
     </html>
   );
 }
