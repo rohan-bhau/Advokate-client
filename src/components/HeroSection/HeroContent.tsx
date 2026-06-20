@@ -2,10 +2,10 @@
 
 import React from "react";
 import { Button } from "@heroui/react";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 export default function HeroContent() {
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -16,12 +16,15 @@ export default function HeroContent() {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 25 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] }, 
+      transition: {
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1] as const, // Adding "as const" fixes the TypeScript tuple mismatch
+      },
     },
   };
 
@@ -57,9 +60,7 @@ export default function HeroContent() {
         variants={itemVariants}
         className="flex flex-wrap items-center gap-5 mt-8"
       >
-        <Button
-          className="font-semibold rounded-md bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors duration-200"
-        >
+        <Button className="font-semibold rounded-md bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors duration-200">
           Browse Lawyers
         </Button>
 
