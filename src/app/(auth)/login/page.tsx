@@ -12,27 +12,72 @@ import {
   Separator,
 } from "@heroui/react";
 import { motion } from "framer-motion";
-import { Envelope,  ArrowRight, Eye, EyeSlash } from "@gravity-ui/icons";
+import { Envelope, ArrowRight, Eye, EyeSlash } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import { LuLockKeyhole } from "react-icons/lu";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import toast from "react-hot-toast";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsLoading(true);
+ const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   e.preventDefault();
+   setIsLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const data: Record<string, string> = {};
-    formData.forEach((value, key) => {
-      data[key] = value.toString();
-    });
+   const formData = new FormData(e.currentTarget);
+   const data: Record<string, string> = {};
+   formData.forEach((value, key) => {
+     data[key] = value.toString();
+   });
 
-    console.log("Login execution payload:", data);
+   try {
+     const { data: session, error } = await authClient.signIn.email({
+       email: data.email,
+       password: data.password,
+     });
 
-    setTimeout(() => setIsLoading(false), 1500);
+     if (error) {
+       toast.error(
+         error.message || "Invalid credentials or authentication variance.",
+       );
+       setIsLoading(false); 
+       return;
+     }
+
+     console.log("Session verified successfully:", session);
+
+     const userRole = (session?.user as any)?.role;
+     const firstName = session?.user?.name?.split(" ")[0] || "User";
+
+     toast.success(`Welcome back, ${firstName}`);
+
+     if (userRole === "lawyer") {
+       router.push("/dashboard/lawyer");
+     } else {
+       router.push("/");
+     }
+   } catch (err) {
+     console.error("Login verification loop exception:", err);
+     toast.error("An unexpected system exception occurred.");
+   } finally {
+     setIsLoading(false);
+   }
+ };
+
+  const handleGoogleSignIn = async () => {
+    console.log("google button clicked")
+    // try {
+    //   await authClient.signIn.social({
+    //     provider: "google",
+    //     callbackURL: "/dashboard", 
+    //   });
+    // } catch (err) {
+    //   console.error("Google Auth execution failure:", err);
+    // }
   };
 
   return (
@@ -89,7 +134,6 @@ export default function LoginPage() {
               name="password"
               className="w-full"
               validate={(value) => {
-                // Ensure it's not purely empty spaces
                 if (!/\S/.test(value)) {
                   return "Password cannot be empty spaces";
                 }
@@ -206,28 +250,11 @@ export default function LoginPage() {
             {/* Google OAuth Button */}
             <Button
               variant="outline"
+              isDisabled={isLoading}
+              onClick={handleGoogleSignIn}
               className="w-full h-12 rounded-xl border-default-200 dark:border-default-100 font-medium hover:bg-default-50/50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
-              onClick={() => console.log("Google Auth requested")}
             >
-              <FcGoogle />
-              {/* <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                  fill="#4285F4"
-                />
-                <path
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  fill="#34A853"
-                />
-                <path
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-                  fill="#FBBC05"
-                />
-                <path
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-                  fill="#EA4335"
-                />
-              </svg> */}
+              <FcGoogle className="size-5" />
               Continue with Google
             </Button>
           </div>

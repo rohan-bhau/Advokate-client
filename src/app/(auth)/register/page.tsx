@@ -15,45 +15,78 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Envelope, ArrowRight, Eye, EyeSlash, Person } from "@gravity-ui/icons";
 import { FcGoogle } from "react-icons/fc";
 import { LuLockKeyhole, LuBriefcase, LuUser } from "react-icons/lu";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isConfirmVisible, setIsConfirmVisible] = useState(false);
 
-  // Controls structural flow: "form" for fields, "role" for profile setup selection
   const [step, setStep] = useState<"form" | "role">("form");
   const [passwordValue, setPasswordValue] = useState("");
+  const router = useRouter();
+
+  const [registrationData, setRegistrationData] = useState<
+    Record<string, string>
+  >({});
 
   const onRegisterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-
     const formData = new FormData(e.currentTarget);
     const data: Record<string, string> = {};
     formData.forEach((value, key) => {
       data[key] = value.toString();
     });
 
-    console.log("Account credential payload:", data);
-
-    // Simulate server side unique email validation & registration success
-    setTimeout(() => {
-      setIsLoading(false);
-      setStep("role"); // Move forward to role configuration selection step
-    }, 1200);
+    setRegistrationData(data);
+    toast("Select your Role for complete your registration")
+    setStep("role"); 
   };
 
-  const handleRoleSelection = (role: "client" | "lawyer") => {
-    console.log("Selected account profile role:", role);
-    alert(
-      `Registration Complete! Signed up as a ${role === "client" ? "User (Client)" : "Lawyer"}`,
-    );
-    // Redirect logic to dashboard or onboarding goes here
+ const handleRoleSelection = async (role: "client" | "lawyer") => {
+   setIsLoading(true);
+   try {
+     const { data, error } = await authClient.signUp.email({
+       email: registrationData.email,
+       password: registrationData.password,
+       name: registrationData.name,
+       role: role,
+     } as any);
+
+     if (error) {
+       toast.error(error.message || "An authentication runtime variance occurred.");
+       return;
+     }
+
+     if (role === "lawyer") {
+       router.push("/dashboard/lawyer");
+     } else {
+       router.push("/");
+     }
+   } catch (err) {
+     console.error("Registration runtime crash:", err);
+   } finally {
+     toast.success("Registration successfull!")
+     setIsLoading(false);
+   }
+ };
+
+  const handleGoogleSignUp = async () => {
+    console.log("google button clicked")
+    // try {
+    //   await authClient.signIn.social({
+    //     provider: "google",
+    //     callbackURL: "/dashboard",
+    //   });
+    // } catch (err) {
+    //   console.error("OAuth loop sequence failure:", err);
+    // }
   };
 
   return (
-    <main className="min-h-screen w-full flex items-center justify-center bg-background text-foreground px-4 transition-colors duration-200">
+    <main className="min-h-[90vh] w-full flex items-center justify-center bg-background text-foreground px-4 transition-colors duration-200">
       <div className="w-full max-w-md relative overflow-hidden">
         <AnimatePresence mode="wait">
           {step === "form" ? (
@@ -64,7 +97,7 @@ export default function RegisterPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.4, ease: [0.215, 0.61, 0.355, 1.0] }}
-              className=" border border-default-100 dark:border-default-50/50 rounded-3xl overflow-hidden p-8  dark:shadow-none transition-all duration-300"
+              className="bg-content1 border border-default-100 dark:border-default-50/50 rounded-3xl overflow-hidden p-8 dark:shadow-none transition-all duration-300"
             >
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold tracking-tight">
@@ -128,7 +161,7 @@ export default function RegisterPage() {
                   <FieldError className="text-xs text-danger mt-1" />
                 </TextField>
 
-                {/* Password Input Field with Visibility Toggle */}
+                {/* Password Input Field */}
                 <TextField
                   isRequired
                   name="password"
@@ -231,38 +264,12 @@ export default function RegisterPage() {
                   <FieldError className="text-xs text-danger mt-1" />
                 </TextField>
 
-                {/* Submit button */}
                 <Button
                   type="submit"
-                  isDisabled={isLoading}
                   className="w-full h-12 font-semibold rounded-xl mt-2 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
                 >
-                  {isLoading ? (
-                    <svg
-                      className="animate-spin h-5 w-5 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                  ) : (
-                    <>
-                      Continue
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
+                  Continue
+                  <ArrowRight className="w-4 h-4" />
                 </Button>
               </Form>
 
@@ -285,14 +292,10 @@ export default function RegisterPage() {
                   <Separator orientation="horizontal" className="flex-1" />
                 </div>
 
-                {/* Google Sign Up */}
                 <Button
                   variant="outline"
+                  onClick={handleGoogleSignUp}
                   className="w-full h-12 rounded-xl border-default-200 dark:border-default-100 font-medium hover:bg-default-50/50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
-                  onClick={() => {
-                    console.log("Google Auth registration requested");
-                    setStep("role"); // Google logins skip credentials and jump directly to role choice selection step
-                  }}
                 >
                   <FcGoogle className="size-5" />
                   Continue with Google
@@ -307,7 +310,7 @@ export default function RegisterPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.4, ease: [0.215, 0.61, 0.355, 1.0] }}
-              className="bg-content1 border border-default-100 dark:border-default-50/50 rounded-3xl p-8  dark:shadow-none transition-all duration-300"
+              className="bg-content1 border border-default-100 dark:border-default-50/50 rounded-3xl p-8 dark:shadow-none transition-all duration-300"
             >
               <div className="text-center mb-8">
                 <h1 className="text-2xl font-bold tracking-tight">
@@ -319,14 +322,18 @@ export default function RegisterPage() {
               </div>
 
               <div className="flex flex-col gap-4">
-                {/* Client Role Option */}
                 <button
                   type="button"
+                  disabled={isLoading}
                   onClick={() => handleRoleSelection("client")}
-                  className="w-full p-5 text-left border border-default-200 rounded-2xl bg-transparent hover:bg-default-50 hover:border-primary group transition-all duration-200 flex items-start gap-4 active:scale-[0.99]"
+                  className="w-full p-5 text-left border border-default-200 rounded-2xl bg-transparent hover:bg-default-50 hover:border-primary group transition-all duration-200 flex items-start gap-4 active:scale-[0.99] disabled:opacity-50"
                 >
                   <div className="p-3 bg-default-100 dark:bg-default-50 rounded-xl text-default-600 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
-                    <LuUser className="size-6" />
+                    {isLoading ? (
+                      <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+                    ) : (
+                      <LuUser className="size-6" />
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-base group-hover:text-primary transition-colors">
@@ -339,14 +346,18 @@ export default function RegisterPage() {
                   </div>
                 </button>
 
-                {/* Lawyer Role Option */}
                 <button
                   type="button"
+                  disabled={isLoading}
                   onClick={() => handleRoleSelection("lawyer")}
-                  className="w-full p-5 text-left border border-default-200 rounded-2xl bg-transparent hover:bg-default-50 hover:border-primary group transition-all duration-200 flex items-start gap-4 active:scale-[0.99]"
+                  className="w-full p-5 text-left border border-default-200 rounded-2xl bg-transparent hover:bg-default-50 hover:border-primary group transition-all duration-200 flex items-start gap-4 active:scale-[0.99] disabled:opacity-50"
                 >
                   <div className="p-3 bg-default-100 dark:bg-default-50 rounded-xl text-default-600 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
-                    <LuBriefcase className="size-6" />
+                    {isLoading ? (
+                      <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+                    ) : (
+                      <LuBriefcase className="size-6" />
+                    )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-base group-hover:text-primary transition-colors">
@@ -363,6 +374,7 @@ export default function RegisterPage() {
               <div className="text-center mt-6">
                 <Button
                   variant="ghost"
+                  isDisabled={isLoading}
                   className="text-xs font-medium text-default-400 hover:text-default-600 border-none bg-transparent"
                   onPress={() => setStep("form")}
                 >
