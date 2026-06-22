@@ -48,7 +48,7 @@ export default function LoginPage() {
        setIsLoading(false); 
        return;
      }
-
+ 
      console.log("Session verified successfully:", session);
 
      const userRole = (session?.user as any)?.role;

@@ -12,11 +12,7 @@ import {
   Pagination,
   Skeleton,
 } from "@heroui/react";
-import {
-  Magnifier,
-  ChevronDown,
-  Star,
-} from "@gravity-ui/icons";
+import { Magnifier, ChevronDown, Star } from "@gravity-ui/icons";
 import { SPECIALIZATIONS } from "../dashboard/lawyer/manage-legal-profile/specializations";
 import { getLawyers } from "@/lib/api/legalProfiles";
 import { GrLocation } from "react-icons/gr";
@@ -79,9 +75,31 @@ export default function BrowseLawyersClient() {
     }
   };
 
+  // ১. মেইন সিঙ্ক ইফেক্ট: ড্রপডাউন বা পেজ চেঞ্জ হলে ডেটা ফেচ হবে
   useEffect(() => {
     fetchFilteredLawyers();
   }, [category, availability, sort, page]);
+
+  // ২. ইউআরএল ট্র্যাকিং ইফেক্ট: নেভবার বা অন্য পেজ থেকে সার্চ কুয়েরি চেঞ্জ হলে ইনপুট সিঙ্ক হবে
+  useEffect(() => {
+    const urlSearch = searchParams.get("search") || "";
+    setSearch(urlSearch);
+    setPage(1); // নতুন সার্চ প্যারামিটার আসলে সবসময় ১ম পেজে রিসেট হবে
+
+    // যদি অলরেডি ব্রাউজ পেজে থাকা অবস্থায় নেভবার থেকে নতুন কিছু সার্চ করা হয়
+    if (urlSearch !== search) {
+      setIsLoading(true);
+      const query = new URLSearchParams(searchParams.toString());
+      getLawyers(`?${query.toString()}`)
+        .then((response) => {
+          setLawyers(response.lawyers || []);
+          setTotalResults(response.total || 0);
+          setTotalPages(response.totalPages || 1);
+        })
+        .catch((err) => console.error(err))
+        .finally(() => setIsLoading(false));
+    }
+  }, [searchParams]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,7 +136,7 @@ export default function BrowseLawyersClient() {
             placeholder="Search by name or specialization..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-12 rounded-xl border border-default-200 bg-background pl-11 pr-4 text-sm text-foreground placeholder-default-400 outline-none focus:border-blue-500 transition-all"
+            className="w-full h-12 rounded-xl border border-default-200 bg-background pl-11 pr-4 text-sm text-foreground outline-none focus:border-blue-500 transition-all"
           />
         </div>
 
@@ -259,7 +277,7 @@ export default function BrowseLawyersClient() {
                 className="bg-content1 border border-default-100 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-2 rounded-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between overflow-hidden"
               >
                 <div className="p-4 sm:p-5 flex flex-col gap-4">
-                  {/*  Avatar, Name, and Status Badge */}
+                  {/* Avatar, Name, and Status Badge */}
                   <div className="flex items-start justify-between w-full gap-2">
                     <div className="flex items-center gap-3 min-w-0">
                       <Badge.Anchor>
@@ -269,7 +287,7 @@ export default function BrowseLawyersClient() {
                             {lawyer.professionalName
                               ? lawyer.professionalName
                                   .split(" ")
-                                  .map((n) => n[0])
+                                  .map((n: string) => n[0])
                                   .join("")
                                   .toUpperCase()
                                   .slice(0, 2)

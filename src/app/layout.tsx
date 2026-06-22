@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import { Providers } from "./providers"; // 1. Import your providers file
 import Footer from "@/components/Footer/Footer";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,13 @@ export default function RootLayout({
       {/* 3. Add global Hero UI utility classes to the body so background/text switch themes automatically */}
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <Providers>
-          <Navbar />
+          <Suspense
+            fallback={
+              <div className="h-20 w-full bg-background animate-pulse" />
+            }
+          >
+            <Navbar />
+          </Suspense>
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster position="bottom-center" reverseOrder={false} />

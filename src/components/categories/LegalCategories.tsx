@@ -2,8 +2,9 @@
 
 import React from "react";
 import { Card } from "@heroui/react";
+import { useRouter } from "next/navigation"; // ১. useRouter ইম্পোর্ট করা হলো
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { Shield, Suitcase, Heart, Globe,  House } from "@gravity-ui/icons";
+import { Shield, Suitcase, Heart, Globe, House } from "@gravity-ui/icons";
 import { FiZap, FiUsers, FiFileText } from "react-icons/fi";
 
 interface CategoryItem {
@@ -15,6 +16,7 @@ interface CategoryItem {
   darkBorder: string;
   iconBg: string;
   iconColor: string;
+  value: string; // ২. ব্যাকএন্ডের ডাইনামিক স্পেসালাইজেশন ভ্যালুর সাথে ম্যাচ করার জন্য প্রোপার্টি
 }
 
 const categories: CategoryItem[] = [
@@ -27,6 +29,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#542132]",
     iconBg: "dark:bg-[#2A151C]",
     iconColor: "text-[#DCA5B9]",
+    value: "Criminal Defense Law",
   },
   {
     id: "corporate",
@@ -37,6 +40,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#213B75]",
     iconBg: "dark:bg-[#182747]",
     iconColor: "text-[#8EAEF8]",
+    value: "Corporate Law",
   },
   {
     id: "family",
@@ -47,6 +51,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#522052]",
     iconBg: "dark:bg-[#2B142B]",
     iconColor: "text-[#E69FE6]",
+    value: "Family Law",
   },
   {
     id: "immigration",
@@ -57,6 +62,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#16573D]",
     iconBg: "dark:bg-[#0F3225]",
     iconColor: "text-[#76DCA7]",
+    value: "Immigration Law",
   },
   {
     id: "real-estate",
@@ -67,6 +73,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#5C5326]",
     iconBg: "dark:bg-[#2E2916]",
     iconColor: "text-[#DFD087]",
+    value: "Real Estate Law",
   },
   {
     id: "property",
@@ -77,6 +84,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#3C2C77]",
     iconBg: "dark:bg-[#211842]",
     iconColor: "text-[#AB99E9]",
+    value: "Intellectual Property Law",
   },
   {
     id: "employment",
@@ -87,6 +95,7 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#1B4B5E]",
     iconBg: "dark:bg-[#112A35]",
     iconColor: "text-[#7AC5E2]",
+    value: "Employment Law",
   },
   {
     id: "tax",
@@ -97,10 +106,11 @@ const categories: CategoryItem[] = [
     darkBorder: "dark:hover:border-[#5E3826]",
     iconBg: "dark:bg-[#2E1E16]",
     iconColor: "text-[#E2A784]",
+    value: "Tax Law",
   },
 ];
 
-const cardVariants:Variants = {
+const cardVariants: Variants = {
   hidden: {
     opacity: 0,
     y: 40,
@@ -121,8 +131,14 @@ const cardVariants:Variants = {
 };
 
 export default function LegalCategories() {
+  const router = useRouter(); 
+
+  const handleCategoryClick = (categoryValue: string) => {
+    router.push(`/browse-lawyer?category=${encodeURIComponent(categoryValue)}`);
+  };
+
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 py-12  bg-background text-foreground transition-colors duration-200">
+    <section className="w-full max-w-7xl mx-auto px-4 py-12 bg-background text-foreground transition-colors duration-200">
       {/* Header section */}
       <div className="mb-8">
         <span className="text-xs font-semibold tracking-wider text-primary uppercase block mb-1">
@@ -139,7 +155,7 @@ export default function LegalCategories() {
             return (
               <motion.div
                 key={category.id}
-                custom={index} 
+                custom={index}
                 variants={cardVariants}
                 initial="hidden"
                 whileInView="visible"
@@ -151,6 +167,7 @@ export default function LegalCategories() {
                 }}
                 whileTap={{ scale: 0.97 }}
                 className="w-full"
+                onClick={() => handleCategoryClick(category.value)} 
               >
                 <Card
                   className={`

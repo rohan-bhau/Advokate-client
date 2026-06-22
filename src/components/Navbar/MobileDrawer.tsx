@@ -119,7 +119,7 @@ if (user?.email) {
         console.error("Sign out routine variance caught:", err);
       }
     };
-
+ 
   return (
     <Drawer>
       <Button variant="secondary">
@@ -166,16 +166,6 @@ if (user?.email) {
             <Drawer.Body>
               <div className="flex flex-col min-h-[calc(100vh-160px)]">
                 <div>
-                  <div className="relative w-full mb-5">
-                    <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
-                      <Magnifier className="h-4 w-4 text-default-400" />
-                    </div>
-                    <input
-                      type="text"
-                      placeholder="Search lawyers..."
-                      className="w-full h-11 rounded-xl border border-default-200 dark:border-default-700 bg-[#F4F7FC] dark:bg-default-100  dark:text-black pl-11 pr-4 text-sm text-foreground outline-none focus:border-blue-400 transition-all"
-                    />
-                  </div>
                   <Separator
                     orientation="horizontal"
                     className="px-6 text-default-100 dark:text-white mb-5"
@@ -215,7 +205,7 @@ if (user?.email) {
                             {user.name
                               ? user.name
                                   .split(" ")
-                                  .map((n) => n[0])
+                                  .map((n:string) => n[0])
                                   .join("")
                                   .toUpperCase()
                                   .slice(0, 2)

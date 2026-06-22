@@ -26,14 +26,14 @@ export default function NewLegalProfileFormPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: session, isPending } = useSession();
-  // console.log(session.user)
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading]= useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   // States
   const [name, setName] = useState("");
   const [hourlyFee, setHourlyFee] = useState("");
+  const [location, setLocation] = useState(""); 
   const [bio, setBio] = useState("");
   const [details, setDetails] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
@@ -70,7 +70,7 @@ export default function NewLegalProfileFormPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!logoUrl) {
-      alert("Profile Image Upload is required!");
+      toast.error("Profile Image Upload is required!");
       return;
     }
     setIsLoading(true);
@@ -80,6 +80,8 @@ export default function NewLegalProfileFormPage() {
       specialization: specialization,
       hourlyFee: Number(hourlyFee).toString(),
       availabilityStatus: availability,
+      location: location,
+      ratings:"",
       bio: bio,
       details: details,
       image: logoUrl,
@@ -87,7 +89,6 @@ export default function NewLegalProfileFormPage() {
       lawyerId: session!.user.id,
       lawyerEmail: session!.user.email,
     };
-    console.log(legalPayload);
 
     try {
       await createLegalProfile(legalPayload as any);
@@ -101,9 +102,9 @@ export default function NewLegalProfileFormPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
+    <div className="w-full max-w-4xl mx-auto px-4 py-10 flex flex-col  justify-center">
       {/* back button */}
-      <div className="mb-6">
+      <div className="mb-6 w-full flex justify-start">
         <Button
           variant="ghost"
           onPress={() => router.back()}
@@ -116,14 +117,14 @@ export default function NewLegalProfileFormPage() {
 
       <Form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-6 bg-content1 border border-default-100 rounded-3xl p-6 sm:p-8 shadow-xl"
+        className="w-full flex flex-col gap-6 bg-content1 border border-default-100 rounded-3xl p-6 sm:p-8 shadow-xl"
       >
-        <legend className="text-xl font-bold text-[#0B3A75]">
+        <legend className="text-xl font-bold text-[#0B3A75] dark:text-white">
           Register New Legal Service
         </legend>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* image*/}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 w-full">
+          {/* image */}
           <div className="lg:col-span-1 flex flex-col items-center gap-4">
             <Label className="text-sm font-semibold text-default-700">
               Profile Image *
@@ -145,14 +146,13 @@ export default function NewLegalProfileFormPage() {
             <input
               type="file"
               accept="image/*"
-              required
               className="hidden"
               onChange={handleLogoUpload}
               ref={fileInputRef}
             />
           </div>
 
-          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
             <div className="flex flex-col gap-1.5">
               <Label>Professional Name *</Label>
               <Input
@@ -227,6 +227,17 @@ export default function NewLegalProfileFormPage() {
               </Select>
             </div>
 
+            {/* ৩. লোকেশন ফিল্ড ইনপুট ব্লক যোগ করা হলো */}
+            <div className="flex flex-col gap-1.5 md:col-span-2">
+              <Label>Practice Location *</Label>
+              <Input
+                required
+                placeholder="e.g. Dhaka, Bangladesh"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
+
             <div className="flex flex-col gap-1.5 md:col-span-2">
               <Label>Bio *</Label>
               <TextArea
@@ -249,16 +260,23 @@ export default function NewLegalProfileFormPage() {
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-default-100 pt-5">
+        <div className="flex justify-end gap-3 border-t border-default-100 pt-5 w-full">
           <Button variant="ghost" onPress={() => router.back()}>
             Cancel
           </Button>
           <Button
             type="submit"
-            isDisabled={isUploading}
-            className="bg-[#1D44B7] text-white"
+            isDisabled={isLoading || isUploading} 
+            className="bg-[#1D44B7] text-white font-semibold rounded-xl px-6 flex items-center gap-2"
           >
-            Save changes
+            {isLoading ? (
+              <>
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Saving...
+              </>
+            ) : (
+              "Save changes"
+            )}
           </Button>
         </div>
       </Form>
