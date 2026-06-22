@@ -18,15 +18,15 @@ import {
 import { ChevronDown, Camera, ArrowLeft } from "@gravity-ui/icons";
 import { TbCloudUpload } from "react-icons/tb";
 import { SPECIALIZATIONS } from "../specializations";
-import { createLegalProfile } from "@/lib/core/actions/legalProfile";
+import { createLegalProfile } from "@/lib/actions/legalProfile";
 import toast from "react-hot-toast";
 import { useSession } from "@/lib/auth-client";
 
 export default function NewLegalProfileFormPage() {
   const router = useRouter();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-   const { data: session, isPending } = useSession();
-    // console.log(session.user)
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: session, isPending } = useSession();
+  // console.log(session.user)
 
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -38,7 +38,7 @@ export default function NewLegalProfileFormPage() {
   const [details, setDetails] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [specialization, setSpecialization] = useState<string>("");
-    const [availability, setAvailability] = useState<string>("Available");
+  const [availability, setAvailability] = useState<string>("Available");
 
   const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -84,14 +84,14 @@ export default function NewLegalProfileFormPage() {
       details: details,
       image: logoUrl,
       status: "pending",
-      lawyerId: session!.user.id, 
+      lawyerId: session!.user.id,
       lawyerEmail: session!.user.email,
     };
-      console.log(legalPayload)
+    console.log(legalPayload);
 
     try {
-        await createLegalProfile(legalPayload as any);
-        toast.success("Legal profile created successfully!")
+      await createLegalProfile(legalPayload as any);
+      toast.success("Legal profile created successfully!");
       router.push("/dashboard/lawyer/manage-legal-profile");
     } catch (err) {
       console.error(err);
@@ -112,8 +112,8 @@ export default function NewLegalProfileFormPage() {
           <ArrowLeft className="size-4" />
           Back to Profiles
         </Button>
-          </div>
-          
+      </div>
+
       <Form
         onSubmit={handleSubmit}
         className="flex flex-col gap-6 bg-content1 border border-default-100 rounded-3xl p-6 sm:p-8 shadow-xl"

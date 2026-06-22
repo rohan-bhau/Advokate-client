@@ -8,6 +8,7 @@ import { Plus, Pencil, FileText, Briefcase, Clock } from "@gravity-ui/icons";
 import { FiCheckCircle as CheckIcon } from "react-icons/fi";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { SPECIALIZATIONS } from "./specializations";
+import Image from "next/image";
 
 interface LegalService {
   id?: string;
@@ -31,27 +32,16 @@ interface ManageLegalClientProps {
     email: string;
     role: string;
   };
+  initialProfiles: LegalService[]; 
 }
 
-export default function ManageLegalClient({ user }: ManageLegalClientProps) {
+export default function ManageLegalClient({
+  user,
+  initialProfiles,
+}: ManageLegalClientProps) {
   const router = useRouter();
 
-  const [services, setServices] = useState<LegalService[]>([
-    {
-      _id: "dummy-1",
-      professionalName: "Barrister John Doe",
-      specialization: "Corporate Law",
-      bio: "Corporate law advisor with over 5 years of legal practice experience.",
-      details:
-        "Specialized in contract enforcement, IP asset protection, and legal compliance structures.",
-      hourlyFee: "120", 
-      availabilityStatus: "Available",
-      status: "pending",
-      image: "https://i.ibb.co/6R4Z9bM/default-logo.png",
-      lawyerId: user.id,
-      lawyerEmail: user.email,
-    },
-  ]);
+  const [services, setServices] = useState<LegalService[]>(initialProfiles);
 
   const handleOpenAddForm = () => {
     router.push("/dashboard/lawyer/manage-legal-profile/new-legal-profile");
@@ -143,17 +133,23 @@ export default function ManageLegalClient({ user }: ManageLegalClientProps) {
                   key={service._id || service.id}
                   className="bg-content1 border border-default-100 hover:border-blue-200 dark:hover:border-blue-900/50 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
                 >
-                  <div className="p-6 flex flex-col h-full justify-between gap-5">
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex gap-4 items-center">
-                        <Avatar className="w-14 h-14 border border-default-100 rounded-xl overflow-hidden">
-                          <Avatar.Image
+                  <div className="p-5 sm:p-6 flex flex-col h-full justify-between gap-5">
+                    {/* Header Block */}
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                      <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start text-center sm:text-left w-full">
+                        {/* Avatar Box wrapper for stability */}
+                        <div className="w-16 h-16 rounded-xl overflow-hidden border border-default-100 flex-shrink-0">
+                          <Image
                             src={service.image}
+                            width={80}
+                            height={80}
                             alt={service.professionalName}
+                            className="w-full h-full object-cover"
                           />
-                        </Avatar>
-                        <div>
-                          <h3 className="font-bold text-lg text-[#0B3A75] dark:text-white">
+                        </div>
+
+                        <div className="flex-1 min-w-0 w-full">
+                          <h3 className="font-bold text-lg text-[#0B3A75] dark:text-white truncate">
                             {service.professionalName}
                           </h3>
                           <span className="inline-block px-2.5 py-0.5 mt-1 rounded-full text-xs font-semibold tracking-wide bg-blue-50 dark:bg-blue-950/40 text-[#1D44B7] dark:text-blue-400 border border-blue-100/50 dark:border-blue-900/30">
@@ -164,7 +160,8 @@ export default function ManageLegalClient({ user }: ManageLegalClientProps) {
                         </div>
                       </div>
 
-                      <div className="flex flex-col items-end gap-1.5">
+                      {/* Availability Badge*/}
+                      <div className="flex justify-center sm:justify-end flex-shrink-0 w-full sm:w-auto">
                         <div
                           className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${
                             service.availabilityStatus === "Available"
@@ -178,46 +175,54 @@ export default function ManageLegalClient({ user }: ManageLegalClientProps) {
                       </div>
                     </div>
 
-                    <div className="space-y-3">
-                      <p className="text-sm text-default-600 dark:text-default-300 font-medium line-clamp-2 bg-default-50/50 dark:bg-default-100/10 p-3 rounded-xl italic">
+                    {/* Bio Summary Section */}
+                    <div className="space-y-4">
+                      <p className="text-sm text-default-600 dark:text-default-300 font-medium bg-default-50/50 dark:bg-default-100/10 p-3 rounded-xl italic break-words">
                         &ldquo;{service.bio}&rdquo;
                       </p>
 
-                      <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
-                        <div className="flex items-center gap-4 text-xs font-semibold text-default-400">
+                      {/* Meta Items Row: Mobile friendly adjustments */}
+                      <div className="flex flex-col gap-3 pt-1 border-b border-default-50 pb-2 sm:border-none sm:pb-0">
+                        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-default-500">
                           <div className="flex items-center gap-1.5">
-                            <Clock className="size-4" />
+                            <Clock className="size-4 text-default-400" />
                             <span>
                               ${Number(service.hourlyFee).toString()} / hr
                             </span>
                           </div>
-                          <div className="flex items-center gap-1.5 max-w-[180px] truncate">
-                            <FileText className="size-4" />
-                            <span className="truncate">{service.details}</span>
+                          <div className="flex items-center gap-1.5 max-w-full truncate">
+                            <FileText className="size-4 text-default-400 flex-shrink-0" />
+                            <span className="truncate max-w-[200px] sm:max-w-xs">
+                              {service.details}
+                            </span>
                           </div>
                         </div>
 
-                        <Chip
-                          size="sm"
-                          color={chipMeta.color}
-                          variant="soft"
-                          className="font-bold text-[11px] px-2.5"
-                        >
-                          {chipMeta.label}
-                        </Chip>
+                        {/* Status Verification Chip */}
+                        <div className="w-full sm:w-auto flex justify-start">
+                          <Chip
+                            size="sm"
+                            color={chipMeta.color}
+                            variant="soft"
+                            className="font-bold text-[11px] px-2.5 w-full sm:w-auto text-center justify-center"
+                          >
+                            {chipMeta.label}
+                          </Chip>
+                        </div>
                       </div>
                     </div>
 
                     <Separator
                       orientation="horizontal"
-                      className="opacity-40"
+                      className="opacity-40 hidden sm:block"
                     />
 
-                    <div className="flex items-center justify-end gap-2.5">
+                    {/* Action Buttons */}
+                    <div className="flex items-center justify-end gap-2.5 mt-2 sm:mt-0 w-full">
                       <Button
                         isIconOnly
                         variant="ghost"
-                        className="border-default-200 text-default-500 hover:text-danger hover:bg-danger-50 hover:border-danger/20 rounded-xl w-9 h-9 min-w-9"
+                        className="border-default-200 text-default-500 hover:text-danger hover:bg-danger-50 hover:border-danger/20 rounded-xl w-10 h-10 min-w-10 flex-shrink-0"
                         onPress={() =>
                           handleDeleteService(service._id || service.id || "")
                         }
@@ -226,7 +231,7 @@ export default function ManageLegalClient({ user }: ManageLegalClientProps) {
                       </Button>
                       <Button
                         variant="outline"
-                        className="border-default-200 rounded-xl h-9 px-4 text-xs font-bold text-default-600 hover:text-[#1D44B7] flex items-center gap-1.5"
+                        className="border-default-200 rounded-xl h-10 px-4 text-xs font-bold text-default-600 hover:text-[#1D44B7] flex items-center justify-center gap-1.5 flex-1 sm:flex-initial"
                         onPress={() => handleOpenEditForm(service)}
                       >
                         <Pencil className="size-3.5" />
