@@ -16,7 +16,7 @@ export default async function ManageLegalProfilePage() {
   console.log(profiles)
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-10 text-foreground bg-background min-h-screen">
+    <main className="max-w-6xl mx-auto px-4 py-10 text-foreground bg-background min-h-[90vh]">
       <ManageLegalClient
         user={lawyerUserData}
         initialProfiles={profiles || []}
