@@ -28,6 +28,7 @@ export default function LoginPage() {
    e.preventDefault();
    setIsLoading(true);
 
+
    const formData = new FormData(e.currentTarget);
    const data: Record<string, string> = {};
    formData.forEach((value, key) => {

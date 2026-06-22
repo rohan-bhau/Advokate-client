@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ComponentType, type SVGProps } from "react";
 
-import { ArrowRightFromSquare, Gear, House } from "@gravity-ui/icons";
+import { ArrowRightFromSquare, CirclePlus, Gear, House, Persons } from "@gravity-ui/icons";
 import { Avatar, Button, Drawer,  Separator } from "@heroui/react";
 import Image from "next/image";
 import logo from "@/assets/nav-logo.png";
@@ -24,7 +24,7 @@ export function MobileDrawer() {
   const [mounted, setMounted] = useState(false);
   //   const [isOpen, setIsOpen] = useState(false);
   const { data: session, isPending } = useSession();
-  const user = session?.user;
+const user = session?.user ? (session.user as any) : undefined;
 //   console.log(user);
 
   useEffect(() => {
@@ -50,13 +50,63 @@ export function MobileDrawer() {
     { icon: Gear, href: "#", label: "Settings" },
         ];
     
-    if (user) {
-        navItems.push({
-          icon: RxDashboard,
-          href: "/dashboard",
-          label: "Dashboard",
-        });
-    }
+  //   if (user) {
+  //       navItems.push({
+  //         icon: RxDashboard,
+  //         href: "/dashboard",
+  //         label: "Dashboard",
+  //       });
+  // }
+
+
+if (user?.email) {
+  const userRole = user.role || "client";
+  if (userRole === "lawyer") {
+    navItems.push(
+      {
+        icon: RxDashboard,
+        href: "/dashboard/lawyer",
+        label: "Dashboard",
+      },
+      {
+        icon: Persons,
+        href: "/dashboard/lawyer/manage-legal-profile",
+        label: "Manage Legal Profile",
+      },
+      {
+        icon: CirclePlus,
+        href: "/dashboard/lawyer/manage-legal-profile/new-legal-profile",
+        label: "New Legal Profile",
+      },
+    );
+  } else if (userRole === "client") {
+    navItems.push(
+      {
+        icon: RxDashboard,
+        href: "/dashboard/client",
+        label: "Client Dashboard",
+      },
+      {
+        icon: Gear,
+        href: "/dashboard/client/settings",
+        label: "My Bookings",
+      },
+    );
+  } else if (userRole === "admin") {
+    navItems.push(
+      {
+        icon: RxDashboard, 
+        href: "/dashboard/admin",
+        label: "Admin Control",
+      },
+      {
+        icon: Persons, 
+        href: "/dashboard/admin/verify-lawyers",
+        label: "Approve Lawyers",
+      },
+    );
+  }
+}
 
     const handleSignOut = async () => {
       try {

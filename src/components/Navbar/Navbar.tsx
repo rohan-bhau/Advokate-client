@@ -10,7 +10,7 @@ import Image from "next/image";
 import logo from "@/assets/nav-logo.png";
 import { MobileDrawer } from "./MobileDrawer";
 import { authClient, useSession } from "@/lib/auth-client";
-import { ArrowRightFromSquare, Gear, Persons } from "@gravity-ui/icons";
+import { ArrowRightFromSquare } from "@gravity-ui/icons";
 import { Avatar, Dropdown, Label } from "@heroui/react";
 import toast from "react-hot-toast";
 // import MobileDrawer from "./MobileDrawer";
@@ -21,7 +21,8 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const { data: session, isPending } = useSession();
-  const user = session?.user;
+  const user = session?.user?(session.user as any) : undefined;
+  // const role = user?.role
   // console.log("navbar", user);
 
   useEffect(() => {
@@ -40,12 +41,25 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Browse Lawyers", href: "/browse" },
+    { name: "Browse Lawyers", href: "/browse-lawyer" },
   ];
 
-  if (user) {
-    navLinks.push({ name: "Dashboard", href: "/dashboard" });
-  }
+const dashboardLinks: Record<string, string> = {
+  client: "/dashboard/client",
+  lawyer: "/dashboard/lawyer",
+  admin: "/dashboard/admin",
+};
+
+if (user?.email) {
+  const userRole = user.role || "client";
+  navLinks.push({
+    name: "Dashboard",
+    href: dashboardLinks[userRole] || "/dashboard/client",
+  });
+}
+  // if (user) {
+  //   navLinks.push({ name: "Dashboard", href: "/dashboard" });
+  // }
 
 
   return (
