@@ -22,7 +22,7 @@ export default function Navbar() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
   const user = session?.user;
-  console.log("navbar", user);
+  // console.log("navbar", user);
 
   useEffect(() => {
     setMounted(true);
