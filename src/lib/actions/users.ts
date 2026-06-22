@@ -13,7 +13,7 @@ export const updateUserRole = async (id: string, role: string) => {
   return result;
 };
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: string | { $oid: string }) => {
   const result = await serverMutation(`/api/user/delete/${id}`, {}, "DELETE");
   revalidatePath("/dashboard/admin/manage-users");
   return result;

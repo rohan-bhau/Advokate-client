@@ -10,6 +10,7 @@ import {
   Chip,
 } from "@heroui/react";
 import { Magnifier, ChevronDown, TrashBin, Pencil } from "@gravity-ui/icons";
+import { DeleteUser } from "./DeleteUser";
 
 interface UserInfo {
   _id: string | { $oid: string };
@@ -240,7 +241,8 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
                         </Button>
 
                         {/* Delete Button */}
-                        <Button
+                        <DeleteUser user={user} isSelf={isSelf} />
+                        {/* <Button
                           isIconOnly
                           size="sm"
                           variant="ghost"
@@ -252,7 +254,7 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
                           }`}
                         >
                           <TrashBin className="size-4" />
-                        </Button>
+                        </Button> */}
                       </div>
                     </Table.Cell>
                   </Table.Row>
