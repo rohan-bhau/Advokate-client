@@ -64,7 +64,7 @@ export async function DashboardSidebar() {
     { iconId: "dashboard", href: "/dashboard/admin", label: "Admin Console" },
     {
       iconId: "users-admin",
-      href: "/dashboard/admin/users",
+      href: "/dashboard/admin/manage-users",
       label: "Manage Users",
     },
     {

@@ -17,9 +17,13 @@ export const auth = betterAuth({
     additionalFields: {
       role: {
         type: "string",
-        required: false, // Set false if social logins don't have it right away
+        required: false, 
         defaultValue: "client",
       },
+      plan: {
+        type: "string",
+        defaultValue:"free"
+      }
     },
   },
 });
