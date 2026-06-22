@@ -5,16 +5,24 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { useTheme } from "next-themes";
-import { Magnifier, Sun, Moon, Bars, Xmark } from "@gravity-ui/icons";
+import { Magnifier, Sun, Moon } from "@gravity-ui/icons";
 import Image from "next/image";
 import logo from "@/assets/nav-logo.png";
+import { MobileDrawer } from "./MobileDrawer";
+import { authClient, useSession } from "@/lib/auth-client";
+import { ArrowRightFromSquare, Gear, Persons } from "@gravity-ui/icons";
+import { Avatar, Dropdown, Label } from "@heroui/react";
+import toast from "react-hot-toast";
+// import MobileDrawer from "./MobileDrawer";
 
 export default function Navbar() {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const router= useRouter()
+  const router = useRouter();
+  const { data: session, isPending } = useSession();
+  const user = session?.user;
+  console.log("navbar", user);
 
   useEffect(() => {
     setMounted(true);
@@ -33,14 +41,18 @@ export default function Navbar() {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Browse Lawyers", href: "/browse" },
-    { name: "Dashboard", href: "/dashboard" },
   ];
+
+  if (user) {
+    navLinks.push({ name: "Dashboard", href: "/dashboard" });
+  }
+
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-default-100 bg-background/90 backdrop-blur-md">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
-          {/* Logo Section - Scaled beautifully */}
+          {/* Logo Section */}
           <Link href="/" className="flex items-center shrink-0">
             <div className="relative flex items-center h-25 w-auto">
               <Image
@@ -54,7 +66,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Centered Navigation Links with Underline Active State */}
+          {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8 self-stretch">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
@@ -78,7 +90,7 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Pill-Shaped Luxury Search Bar */}
+          {/* Luxury Search Bar */}
           <div className="hidden lg:flex flex-1 max-w-sm relative">
             <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
               <Magnifier className="h-4 w-4 text-[#7C8EA6] dark:text-default-400" />
@@ -92,7 +104,6 @@ export default function Navbar() {
 
           {/* Action Tools & Access Controls */}
           <div className="hidden md:flex items-center gap-4">
-            {/* Theme Controller Button with Professional Semantic Hover */}
             <Button
               isIconOnly
               variant="outline"
@@ -107,86 +118,104 @@ export default function Navbar() {
               )}
             </Button>
 
-            {/* Deep Royal Blue Corporate Button */}
-            <Button onClick={()=>router.push("/login")} className="font-semibold bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 rounded-lg dark:hover:bg-blue-700 text-white h-11 px-7 tracking-wide text-sm shadow-sm transition-colors">
-              Login
-            </Button>
+            {isPending ?  (<div className="flex items-center gap-3 animate-pulse">
+    {/* Avatar Skeleton */}
+    <div className="w-10 h-10 rounded-full bg-default-200 dark:bg-default-300/20" />
+
+    {/* Text Skeleton */}
+    <div className="flex flex-col gap-2">
+      <div className="h-3 w-20 rounded bg-default-200 dark:bg-default-300/20" />
+      <div className="h-2 w-28 rounded bg-default-200 dark:bg-default-300/20" />
+    </div>
+  </div>): user ? (
+                  <div className="flex items-center gap-3">
+                    <p className="text-sm leading-5 font-semibold text-[#0B3A75] dark:text-white truncate">
+                      Hi, {user.name ? user.name.split(" ")[0] : "User"}!
+                    </p>
+                    <Dropdown>
+                      <Dropdown.Trigger className="rounded-full">
+                        <Avatar className="w-10 h-10 shrink-0">
+                          <Avatar.Image
+                            alt={user.name || "User Profile"}
+                            src={user.image || undefined}
+                          />
+                          <Avatar.Fallback>
+                            {user.name
+                              ? user.name
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")
+                                  .toUpperCase()
+                                  .slice(0, 2)
+                              : "JD"}
+                          </Avatar.Fallback>
+                        </Avatar>
+                      </Dropdown.Trigger>
+                      <Dropdown.Popover>
+                        <div className="px-3 pt-3 pb-1">
+                          <div className="flex items-center gap-2">
+                            <Avatar className="w-10 h-10 shrink-0">
+                              <Avatar.Image
+                                alt={user.name || "User Profile"}
+                                src={user.image || undefined}
+                              />
+                              <Avatar.Fallback>
+                                {user.name
+                                  ? user.name
+                                      .split(" ")
+                                      .map((n) => n[0])
+                                      .join("")
+                                      .toUpperCase()
+                                      .slice(0, 2)
+                                  : "JD"}
+                              </Avatar.Fallback>
+                            </Avatar>
+                            <div className="flex flex-col gap-0">
+                              <p className="text-sm leading-5 font-medium">
+                                {user.name}
+                              </p>
+                              <p className="text-xs leading-none text-muted">
+                                {user.email}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <Dropdown.Menu>
+                          <Dropdown.Item
+                            id="logout"
+                            textValue="Logout"
+                            variant="danger"
+                            onClick={async () => {
+                              await authClient.signOut();
+                              window.location.reload();
+                              toast.success("Logout Successfull");
+                            }}
+                          >
+                            <div className="flex w-full items-center justify-between gap-2">
+                              <Label>Log Out</Label>
+                              <ArrowRightFromSquare className="size-3.5 text-danger" />
+                            </div>
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown.Popover>
+                    </Dropdown>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={() => router.push("/login")}
+                    className="font-semibold bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 rounded-lg dark:hover:bg-blue-700 text-white h-11 px-7 tracking-wide text-sm shadow-sm transition-colors"
+                  >
+                    Login
+                  </Button>
+                )}
           </div>
 
-          {/* Mobile Shell Menu Controller */}
-          <div className="flex md:hidden items-center gap-1">
-            <Button
-              isIconOnly
-              variant="outline"
-              onClick={toggleTheme}
-              className="rounded-full text-default-500 hover:bg-default-100 h-10 w-10"
-            >
-              {currentTheme === "dark" ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-            </Button>
-
-            <Button
-              isIconOnly
-              variant="outline"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="rounded-full text-default-600 hover:bg-default-100 h-10 w-10"
-            >
-              {isMobileMenuOpen ? (
-                <Xmark className="h-5 w-5" />
-              ) : (
-                <Bars className="h-5 w-5" />
-              )}
-            </Button>
+          {/* Mobile Drawer Shell Drop-in Trigger */}
+          <div className="flex md:hidden items-center">
+            <MobileDrawer />
           </div>
         </div>
       </div>
-
-      {/* Mobile Drawer Shell */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-default-100 bg-background px-4 py-4 space-y-4">
-          <div className="relative w-full">
-            <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
-              <Magnifier className="h-4 w-4 text-default-400 dark:text-black" />
-            </div>
-            <input
-              type="text"
-              placeholder="Search lawyers..."
-              className="w-full h-11 rounded-full border border-default-200 bg-[#F4F7FC] dark:bg-default-100 pl-11 pr-4 text-sm text-foreground dark:text-black focus:outline-none"
-            />
-          </div>
-
-          <div className="flex flex-col gap-1">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`text-sm font-semibold px-4 py-3 rounded-xl transition-colors ${
-                    isActive
-                      ? "bg-blue-50 text-[#0B3A75] dark:bg-default-100 dark:text-blue-400"
-                      : "text-default-600 dark:text-default-400"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </div>
-
-          <div className="pt-2">
-            <Button onClick={()=>router.push("/login")}
-              className="w-full h-11 rounded-xl font-semibold bg-[#1D44B7] text-white"
-            >
-              Login
-            </Button>
-          </div>
-        </div>
-      )}
     </nav>
   );
 }

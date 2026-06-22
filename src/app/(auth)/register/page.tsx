@@ -62,8 +62,10 @@ export default function RegisterPage() {
 
      if (role === "lawyer") {
        router.push("/dashboard/lawyer");
+      //  window.location.reload()
      } else {
        router.push("/");
+      //  window.location.reload()
      }
    } catch (err) {
      console.error("Registration runtime crash:", err);
