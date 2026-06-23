@@ -25,6 +25,7 @@ interface LawyerData {
   bio: string;
   details: string;
   hourlyFee: string;
+  location: string;
   availabilityStatus: "Available" | "Busy";
   image: string;
   status: "pending" | "approved" | "rejected";
@@ -75,18 +76,15 @@ export default function BrowseLawyersClient() {
     }
   };
 
-  // ১. মেইন সিঙ্ক ইফেক্ট: ড্রপডাউন বা পেজ চেঞ্জ হলে ডেটা ফেচ হবে
   useEffect(() => {
     fetchFilteredLawyers();
   }, [category, availability, sort, page]);
 
-  // ২. ইউআরএল ট্র্যাকিং ইফেক্ট: নেভবার বা অন্য পেজ থেকে সার্চ কুয়েরি চেঞ্জ হলে ইনপুট সিঙ্ক হবে
   useEffect(() => {
     const urlSearch = searchParams.get("search") || "";
     setSearch(urlSearch);
-    setPage(1); // নতুন সার্চ প্যারামিটার আসলে সবসময় ১ম পেজে রিসেট হবে
+    setPage(1); 
 
-    // যদি অলরেডি ব্রাউজ পেজে থাকা অবস্থায় নেভবার থেকে নতুন কিছু সার্চ করা হয়
     if (urlSearch !== search) {
       setIsLoading(true);
       const query = new URLSearchParams(searchParams.toString());
@@ -345,7 +343,7 @@ export default function BrowseLawyersClient() {
                     {/* Line 2: Independent Location display line */}
                     <div className="flex items-center gap-1 text-xs text-default-400 font-medium">
                       <GrLocation className="size-3.5 text-default-400 flex-shrink-0" />
-                      <span className="truncate">Dhaka, Bangladesh</span>
+                      <span className="truncate">{lawyer.location || "Dhaka Bangladesh"}</span>
                     </div>
                   </div>
                 </div>

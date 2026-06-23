@@ -47,12 +47,16 @@ export default function ManageLegalClient({
     router.push("/dashboard/lawyer/manage-legal-profile/new-legal-profile");
   };
 
-  const handleOpenEditForm = (service: LegalService) => {
-    console.log(
-      "Edit button clicked for service id:",
-      service._id || service.id,
-    );
-  };
+const handleOpenEditForm = (service: LegalService) => {
+  const idStr =
+    service._id && typeof service._id === "object" && "$oid" in service._id
+      ? (service._id as { $oid: string }).$oid
+      : (service._id as string) || service.id || "";
+
+  router.push(
+    `/dashboard/lawyer/manage-legal-profile/edit-legal-profile/${idStr}`,
+  );
+};
 
   const handleDeleteService = (id: string) => {
     console.log("Delete button clicked for service id:", id);

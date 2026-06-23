@@ -9,6 +9,10 @@ export const getLawyerProfiles = async (lawyerId: string) => {
 };
 
 
+export const getSingleLawyerProfile = async (id: string) => {
+  return serverFetch(`/api/lawyerProfiles/${id}`);
+};
+
 export const getAdminLawyerProfiles = async () => {
   return serverFetch("/api/admin/lawyerProfiles");
 };
