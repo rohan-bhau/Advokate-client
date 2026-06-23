@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Separator, Avatar, Card, Chip } from "@heroui/react";
+import { Button, Separator, Card, Chip } from "@heroui/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Pencil, FileText, Briefcase, Clock } from "@gravity-ui/icons";
 import { FiCheckCircle as CheckIcon } from "react-icons/fi";
-import { FaRegTrashCan } from "react-icons/fa6";
 import { SPECIALIZATIONS } from "./specializations";
 import Image from "next/image";
+import DeleteLegalProfile from "./DeleteLegalProfile";
 
 interface LegalService {
   id?: string;
@@ -58,9 +58,6 @@ const handleOpenEditForm = (service: LegalService) => {
   );
 };
 
-  const handleDeleteService = (id: string) => {
-    console.log("Delete button clicked for service id:", id);
-  };
 
   const getStatusChips = (status: "pending" | "approved" | "rejected") => {
     if (status === "approved")
@@ -223,16 +220,22 @@ const handleOpenEditForm = (service: LegalService) => {
 
                     {/* Action Buttons */}
                     <div className="flex items-center justify-end gap-2.5 mt-2 sm:mt-0 w-full">
-                      <Button
-                        isIconOnly
-                        variant="ghost"
-                        className="border-default-200 text-default-500 hover:text-danger hover:bg-danger-50 hover:border-danger/20 rounded-xl w-10 h-10 min-w-10 flex-shrink-0"
-                        onPress={() =>
-                          handleDeleteService(service._id || service.id || "")
-                        }
-                      >
-                        <FaRegTrashCan className="size-4" />
-                      </Button>
+                      <DeleteLegalProfile
+                        service={service}
+                        onDeleteSuccess={(deletedId) => {
+                          setServices((prev) =>
+                            prev.filter((s) => {
+                              const sid =
+                                s._id &&
+                                typeof s._id === "object" &&
+                                "$oid" in s._id
+                                  ? (s._id as any).$oid
+                                  : (s._id as string) || s.id;
+                              return sid !== deletedId;
+                            }),
+                          );
+                        }}
+                      />
                       <Button
                         variant="outline"
                         className="border-default-200 rounded-xl h-10 px-4 text-xs font-bold text-default-600 hover:text-[#1D44B7] flex items-center justify-center gap-1.5 flex-1 sm:flex-initial"

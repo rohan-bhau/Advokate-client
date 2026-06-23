@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import { revalidatePath } from "next/cache";
 import { serverMutation } from "../core/serverMutation";
 
@@ -11,6 +11,16 @@ export const updateLegalProfile = async (id: string, updatedData: any) => {
     `/api/lawyerProfiles/update/${id}`,
     updatedData,
     "PUT",
+  );
+  revalidatePath("/dashboard/lawyer/manage-legal-profile");
+  return result;
+};
+
+export const deleteLawyerOwnProfile = async (id: string) => {
+  const result = await serverMutation(
+    `/api/lawyerProfiles/delete/${id}`,
+    {},
+    "DELETE",
   );
   revalidatePath("/dashboard/lawyer/manage-legal-profile");
   return result;
