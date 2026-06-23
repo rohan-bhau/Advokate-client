@@ -86,10 +86,9 @@ const router = useRouter()
           <Link
             href={item.href}
             key={item.label}
-            // Adaptive Theme ও অ্যাক্টিভ স্টেট স্টাইলিং
             className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 border ${
               isActive
-                ? "bg-default-200/60 dark:bg-zinc-800/80 text-blue-600 dark:text-blue-400 border-default-300 dark:border-zinc-700/50 shadow-sm"
+                ? "bg-default-200/60 dark:bg-zinc-800/80 border-l-3 border-l-blue-600 text-blue-600 dark:text-blue-400 dark:border-zinc-700/50 shadow-sm"
                 : "text-default-500 hover:text-foreground hover:bg-default-100/70 border-transparent"
             }`}
           >
@@ -206,8 +205,7 @@ const router = useRouter()
 
   return (
     <>
-      {/* DESKTOP SIDEBAR PANEL DISPLAY UNIT */}
-      {/* hidden md:flex ক্লাসের মাধ্যমে ছোট ডিভাইসে এটি পুরোপুরি ইনভিজিবল বা ব্লকড থাকবে */}
+
       <aside className="hidden md:flex bg-content1 w-full h-full overflow-hidden">
         {renderSidebarContent()}
       </aside>

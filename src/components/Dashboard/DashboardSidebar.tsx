@@ -69,8 +69,8 @@ export async function DashboardSidebar() {
     },
     {
       iconId: "company",
-      href: "/dashboard/admin/verifications",
-      label: "Lawyer Verifications",
+      href: "/dashboard/admin/legal-profiles",
+      label: "Legal Profiles",
     },
     {
       iconId: "billing",

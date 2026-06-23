@@ -1,10 +1,14 @@
-import { serverFetch } from "../core/serverMutation"
-
+import { serverFetch } from "../core/serverMutation";
 
 export const getLawyers = async (queryString: string = "") => {
   return serverFetch(`/api/lawyerProfiles${queryString}`);
 };
 
 export const getLawyerProfiles = async (lawyerId: string) => {
-    return serverFetch(`/api/my/lawyerProfiles?lawyerId=${lawyerId}`);
-}
+  return serverFetch(`/api/my/lawyerProfiles?lawyerId=${lawyerId}`);
+};
+
+
+export const getAdminLawyerProfiles = async () => {
+  return serverFetch("/api/admin/lawyerProfiles");
+};
