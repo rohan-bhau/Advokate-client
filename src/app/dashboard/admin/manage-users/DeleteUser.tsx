@@ -4,7 +4,7 @@ import { deleteUser } from "@/lib/actions/users";
 import { TrashBin } from "@gravity-ui/icons";
 import { AlertDialog, Button } from "@heroui/react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 interface UserInfo {
   _id: string | { $oid: string };
@@ -17,20 +17,27 @@ interface UserInfo {
 interface DeleteUserProps {
   user: UserInfo;
   isSelf: boolean;
+  onDeleteSuccess: (id: string | { $oid: string }) => void; 
 }
 
-export function DeleteUser({ user, isSelf }: DeleteUserProps) {
-  const router = useRouter(); 
-  console.log("user from alert dialouge", user);
+export function DeleteUser({ user, isSelf, onDeleteSuccess }: DeleteUserProps) {
+  const router = useRouter();
+  // console.log("user from alert dialouge", user);
 
   const handleDelete = async (id: string | { $oid: string }) => {
     console.log("clicked id", id);
     try {
-      await deleteUser(id);
-      toast.success("User Deleted successfully!");
+      const result = await deleteUser(id);
 
-        router.refresh()
-    //   window.location.reload()
+      if (result && (result.deletedCount > 0 || result.acknowledged === true)) {
+        toast.success("User Deleted successfully!");
+        onDeleteSuccess(id); 
+      } else {
+        toast.success("User Deleted successfully!");
+        onDeleteSuccess(id);
+      }
+
+      router.refresh();
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong!");
@@ -77,7 +84,7 @@ export function DeleteUser({ user, isSelf }: DeleteUserProps) {
                 variant="danger"
                 onClick={() => handleDelete(user._id)}
               >
-                Delete Project
+                Delete User
               </Button>
             </AlertDialog.Footer>
           </AlertDialog.Dialog>

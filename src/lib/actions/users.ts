@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { serverMutation } from "../core/serverMutation";
 
-export const updateUserRole = async (id: string, role: string) => {
+export const updateUserRole = async (id: string | { $oid: string }, role: string) => {
   const result = await serverMutation(
     `/api/user/change-role/${id}`,
     { role },

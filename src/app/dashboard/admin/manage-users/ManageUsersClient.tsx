@@ -11,12 +11,13 @@ import {
 } from "@heroui/react";
 import { Magnifier, ChevronDown, TrashBin, Pencil } from "@gravity-ui/icons";
 import { DeleteUser } from "./DeleteUser";
+import { UpdateRole } from "./UpdateRole";
 
 interface UserInfo {
   _id: string | { $oid: string };
   name: string;
   email: string;
-  role:  "moderator" | "lawyer" | "client";
+  role:"lawyer" | "client";
   createdAt: any;
 }
 
@@ -26,7 +27,7 @@ interface Props {
 }
 
 export default function ManageUsersClient({ initialUsers, adminId }: Props) {
-  const [users] = useState<UserInfo[]>(initialUsers);
+  const [users, setUsers] = useState<UserInfo[]>(initialUsers);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState("10");
@@ -38,7 +39,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
       : (user._id as string);
   };
 
-  // Date Formatting Function
   const formatJoinedDate = (dateData: any) => {
     try {
       const rawDate =
@@ -56,7 +56,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
     }
   };
 
-  // Search and Filter Logic
   const filteredUsers = useMemo(() => {
     return users.filter((u) => {
       const matchesSearch =
@@ -67,7 +66,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
     });
   }, [users, search, roleFilter]);
 
-  // Pagination Logic
   const itemsPerPage = parseInt(rowsPerPage);
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage) || 1;
   const paginatedUsers = useMemo(() => {
@@ -86,10 +84,8 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
         </p>
       </div>
 
-      {/* Top Controls Box: Search, Filter & Entries */}
       <div className="flex flex-col lg:flex-row items-center justify-between gap-4 bg-content1 border border-default-100 p-4 rounded-2xl shadow-sm">
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
-          {/* Search Input */}
           <div className="relative w-full sm:w-72">
             <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
               <Magnifier className="size-4 text-default-400" />
@@ -107,7 +103,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
             />
           </div>
 
-          {/* Role Filter Selector */}
           <div className="w-full sm:w-44">
             <Select
               aria-label="Filter by role"
@@ -128,7 +123,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
               <Select.Popover>
                 <ListBox>
                   <ListBox.Item id="all">All Roles</ListBox.Item>
-                  <ListBox.Item id="moderator">Moderator</ListBox.Item>
                   <ListBox.Item id="lawyer">Lawyer</ListBox.Item>
                   <ListBox.Item id="client">Client</ListBox.Item>
                 </ListBox>
@@ -137,7 +131,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
           </div>
         </div>
 
-        {/* Rows Per Page Dropdown */}
         <div className="flex items-center gap-2 text-xs text-default-400 font-semibold w-full lg:w-auto justify-end">
           <span>Show</span>
           <div className="w-20">
@@ -169,7 +162,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
         </div>
       </div>
 
-      {/* Main Users Table */}
       <Table>
         <Table.ScrollContainer>
           <Table.Content aria-label="Users database matrix table">
@@ -183,11 +175,9 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
             <Table.Body>
               {paginatedUsers.map((user) => {
                 const uid = getUserIdStr(user);
-                const isSelf = uid === adminId; 
+                const isSelf = uid === adminId;
 
-                // Color mapping logic for different roles
                 const getRoleColor = (role: string) => {
-                  if (role === "moderator") return "warning" as const;
                   if (role === "admin") return "danger" as const;
                   if (role === "lawyer") return "success" as const;
                   if (role === "client") return "accent" as const;
@@ -225,36 +215,30 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
                     </Table.Cell>
                     <Table.Cell>
                       <div className="flex items-center gap-2">
-                        {/* Change Role Button  */}
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          isDisabled={isSelf}
-                          className={`border-default-200 rounded-xl font-bold text-xs px-3 transition-all ${
-                            isSelf
-                              ? "opacity-40 cursor-not-allowed text-default-400 bg-transparent hover:bg-transparent hover:text-default-400"
-                              : "text-default-600 hover:text-blue-600 hover:bg-blue-50/50"
-                          }`}
-                        >
-                          <Pencil className="size-3.5" />
-                          Change Role
-                        </Button>
+                        <UpdateRole
+                          currentRole={user.role}
+                          user={user}
+                          isSelf={isSelf}
+                          onUpdateSuccess={(targetId, newRole) => {
+                            setUsers((prev) =>
+                              prev.map((u) =>
+                                getUserIdStr(u) === targetId
+                                  ? { ...u, role: newRole as any }
+                                  : u,
+                              ),
+                            );
+                          }}
+                        />
 
-                        {/* Delete Button */}
-                        <DeleteUser user={user} isSelf={isSelf} />
-                        {/* <Button
-                          isIconOnly
-                          size="sm"
-                          variant="ghost"
-                          isDisabled={isSelf}
-                          className={`border-default-200 rounded-xl transition-all ${
-                            isSelf
-                              ? "opacity-40 cursor-not-allowed text-default-300 bg-transparent hover:bg-transparent hover:text-default-300"
-                              : "text-default-400 hover:text-danger hover:bg-danger-50"
-                          }`}
-                        >
-                          <TrashBin className="size-4" />
-                        </Button> */}
+                        <DeleteUser
+                          user={user}
+                          isSelf={isSelf}
+                          onDeleteSuccess={(deletedId) => {
+                            setUsers((prev) =>
+                              prev.filter((u) => getUserIdStr(u) !== deletedId),
+                            );
+                          }}
+                        />
                       </div>
                     </Table.Cell>
                   </Table.Row>
@@ -264,7 +248,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
           </Table.Content>
         </Table.ScrollContainer>
 
-        {/* Footer Container with Highlighted Pagination */}
         <Table.Footer>
           {totalPages > 1 && (
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 w-full border-t border-default-100/60 mt-2">
@@ -276,7 +259,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
 
               <Pagination className="justify-center">
                 <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm">
-                  {/* Previous Button */}
                   <Pagination.Item>
                     <Pagination.Previous
                       isDisabled={page === 1}
@@ -288,7 +270,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
                     </Pagination.Previous>
                   </Pagination.Item>
 
-                  {/* Pages loop block containing active highlighters */}
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map(
                     (p) => (
                       <Pagination.Item key={p}>
@@ -307,7 +288,6 @@ export default function ManageUsersClient({ initialUsers, adminId }: Props) {
                     ),
                   )}
 
-                  {/* Next Button */}
                   <Pagination.Item>
                     <Pagination.Next
                       isDisabled={page === totalPages}
