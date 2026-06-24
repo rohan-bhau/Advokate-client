@@ -21,6 +21,7 @@ interface HireLawyerModalProps {
     _id: string | { $oid: string };
     professionalName: string;
     hourlyFee: string;
+    specialization: string;
     lawyerEmail?: string;
   };
   currentUser: { id: string; name: string; email: string; role: string } | null;
@@ -70,6 +71,7 @@ export function HireLawyerModal({
       lawyerId: idStr,
       lawyerEmail: lawyer.lawyerEmail || "",
       lawyerName: lawyer.professionalName,
+      specialization: lawyer.specialization,
       clientId: currentUser.id,
       clientEmail: currentUser.email,
       clientName: currentUser.name,

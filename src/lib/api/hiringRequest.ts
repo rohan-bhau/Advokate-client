@@ -11,3 +11,9 @@ export const getLawyerHiringRequests = async (lawyerEmail: string) => {
     `/api/lawyer/hiring-requests?lawyerEmail=${encodeURIComponent(lawyerEmail)}`,
   );
 };
+
+export const getClientHiringRequests = async (clientEmail: string) => {
+  return serverFetch(
+    `/api/client/hiring-requests?clientEmail=${encodeURIComponent(clientEmail)}`,
+  );
+};

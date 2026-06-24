@@ -19,7 +19,7 @@ import {
 import { FaBriefcase } from "react-icons/fa";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { CgOrganisation } from "react-icons/cg";
-import { LuCreditCard, LuFileText, LuLayoutGrid } from "react-icons/lu";
+import { LuCreditCard, LuFileText, LuHistory, LuLayoutGrid } from "react-icons/lu";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Image from "next/image";
@@ -28,7 +28,7 @@ const getIcon = (iconId: string, className: string) => {
   const iconMap: Record<string, React.ReactNode> = {
     dashboard: <LuLayoutGrid className={className} />,
     jobs: <Briefcase className={className} />,
-    "saved-jobs": <Bookmark className={className} />,
+    "saved-jobs": <LuHistory className={className} />,
     applications: <LuFileText className={className} />,
     billing: <LuCreditCard className={className} />,
     settings: <Gear className={className} />,

@@ -16,8 +16,8 @@ export async function DashboardSidebar() {
     { iconId: "jobs", href: "/browse-lawyer", label: "Browse Lawyers" },
     {
       iconId: "saved-jobs",
-      href: "/dashboard/client/appointments",
-      label: "My Appointments",
+      href: "/dashboard/client/hiring-history",
+      label: "Hiring History",
     },
     {
       iconId: "billing",
