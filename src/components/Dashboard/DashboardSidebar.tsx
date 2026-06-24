@@ -45,8 +45,8 @@ export async function DashboardSidebar() {
     },
     {
       iconId: "messages",
-      href: "/dashboard/lawyer/schedules",
-      label: "Consultation Schedules",
+      href: "/dashboard/lawyer/hiring-history",
+      label: "Hiring History",
     },
     {
       iconId: "profile",

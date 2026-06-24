@@ -5,3 +5,9 @@ export const checkHiringStatus = async (lawyerId: string, clientId: string) => {
     `/api/client/hiring-status?lawyerId=${lawyerId}&clientId=${clientId}`,
   );
 };
+
+export const getLawyerHiringRequests = async (lawyerEmail: string) => {
+  return serverFetch(
+    `/api/lawyer/hiring-requests?lawyerEmail=${encodeURIComponent(lawyerEmail)}`,
+  );
+};
