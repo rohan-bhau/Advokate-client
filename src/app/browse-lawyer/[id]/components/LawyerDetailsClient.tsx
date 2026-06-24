@@ -1,20 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { Card, Chip, Separator } from "@heroui/react";
 import { Star, Clock, Briefcase, Calendar } from "@gravity-ui/icons";
 import { SPECIALIZATIONS } from "../../../dashboard/lawyer/manage-legal-profile/specializations";
 import { HireLawyerModal } from "./HireLawyerModal";
 import { GrLocation } from "react-icons/gr";
-import { BsInfoCircle } from "react-icons/bs";
 import { RelatedLawyers } from "./RelatedLawyers";
+import LawyerReviewsSection from "./LawyerReviewsSection";
 
 interface ReviewItem {
+  _id?: string;
+  clientId: string;
   clientName: string;
+  clientEmail: string;
+  lawyerId: string;
   rating: number;
   comment: string;
-  date: string;
+  createdAt: any;
 }
 
 interface LawyerDetailsProps {
@@ -34,6 +38,10 @@ interface LawyerDetailsProps {
   relatedLawyers: any[];
   currentUser: { id: string; name: string; email: string; role: string } | null;
   initialHasApplied: boolean;
+  initialReviews?: any[];
+  hiringStatus?: "pending" | "accepted" | "rejected" | null;
+  totalHires: number; 
+  casesWon: number;
 }
 
 export default function LawyerDetailsClient({
@@ -41,11 +49,25 @@ export default function LawyerDetailsClient({
   relatedLawyers,
   currentUser,
   initialHasApplied,
+  initialReviews = [],
+  hiringStatus = null,
+  totalHires, 
+  casesWon,
 }: LawyerDetailsProps) {
-  const [totalHires] = useState(0);
-  const [casesWon] = useState(0);
-  const [reviews] = useState<ReviewItem[]>([]);
+  const [reviews, setReviews] = useState<ReviewItem[]>(initialReviews);
   const [hasApplied, setHasApplied] = useState(initialHasApplied);
+
+  const getLawyerIdStr = () => {
+    return typeof lawyer._id === "object" && "$oid" in lawyer._id
+      ? lawyer._id.$oid
+      : (lawyer._id as string);
+  };
+
+  const averageRating = useMemo(() => {
+    if (reviews.length === 0) return "0.0";
+    const total = reviews.reduce((acc, curr) => acc + curr.rating, 0);
+    return (total / reviews.length).toFixed(1);
+  }, [reviews]);
 
   const formatExactDate = (dateData: any) => {
     try {
@@ -96,7 +118,7 @@ export default function LawyerDetailsClient({
 
             <div className="flex items-center gap-1 text-amber-500 text-xs font-bold mt-2">
               <Star className="size-3.5 fill-amber-500" />
-              <span>0.0</span>
+              <span>{averageRating}</span>
               <span className="text-default-400 font-normal">
                 ({reviews.length} reviews)
               </span>
@@ -145,7 +167,6 @@ export default function LawyerDetailsClient({
               </div>
             </div>
 
-            {/* hiring modal*/}
             <HireLawyerModal
               lawyer={lawyer}
               currentUser={currentUser}
@@ -202,21 +223,20 @@ export default function LawyerDetailsClient({
             </div>
           </Card>
 
-          <Card className="bg-content1 border border-default-100 p-5 rounded-2xl shadow-sm space-y-4">
-            <h3 className="text-base font-bold text-[#0B3A75] dark:text-white">
-              Client Reviews
-            </h3>
-            <div className="flex items-center gap-2 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-600 dark:text-amber-400 text-xs font-medium">
-              <BsInfoCircle className="size-4 flex-shrink-0" />
-              <span>Only hired clients can leave reviews.</span>
-            </div>
-
-            <div className="text-center py-10 border border-dashed border-default-200 rounded-xl bg-default-50/30">
-              <p className="text-xs text-default-400 font-medium">
-                No reviews recorded yet for this legal consultant.
-              </p>
-            </div>
-          </Card>
+          <LawyerReviewsSection
+            lawyerId={
+              typeof lawyer._id === "object" && "$oid" in lawyer._id
+                ? lawyer._id.$oid
+                : lawyer._id
+            }
+            lawyerEmail={lawyer.lawyerEmail || ""}
+            currentUser={currentUser}
+            hiringStatus={hiringStatus as any}
+            initialReviews={reviews}
+            onReviewAdded={(newReview) =>
+              setReviews((prev) => [newReview, ...prev])
+            }
+          />
         </div>
       </div>
 

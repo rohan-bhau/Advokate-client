@@ -2,7 +2,8 @@ import React, { Suspense } from "react";
 import { getUserSession } from "@/lib/core/core";
 import LawyerDetailsClient from "./components/LawyerDetailsClient";
 import { getLawyers, getSingleLawyerProfile } from "@/lib/api/legalProfiles";
-import { checkHiringStatus } from "@/lib/api/hiringRequest";
+import { checkHiringStatus, getLawyerStats } from "@/lib/api/hiringRequest";
+import { getLawyerReviews } from "@/lib/api/reviews";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -11,16 +12,29 @@ interface Props {
 export default async function LawyerDetailPage({ params }: Props) {
   const { id } = await params;
   const user = await getUserSession();
+  const initialReviewsData = await getLawyerReviews(id).catch(() => []);
 
   const lawyerData = await getSingleLawyerProfile(id);
   const allApprovedLawyersResponse = await getLawyers("?limit=100");
   const allLawyers = allApprovedLawyersResponse?.lawyers || [];
 
+
+  
+
   let hasApplied = false;
+  let hiringStatus = null;
   if (user?.id) {
     const statusRes = await checkHiringStatus(id, user.id);
     hasApplied = statusRes?.hasApplied || false;
+    hiringStatus = statusRes?.status || null;
   }
+
+  const stats = lawyerData?.lawyerEmail
+    ? await getLawyerStats(lawyerData.lawyerEmail).catch(() => ({
+        totalHires: 0,
+        casesWon: 0,
+      }))
+    : { totalHires: 0, casesWon: 0 };
 
   const currentLawyerIdStr =
     lawyerData &&
@@ -60,6 +74,10 @@ export default async function LawyerDetailPage({ params }: Props) {
               : null
           }
           initialHasApplied={hasApplied}
+          initialReviews={initialReviewsData || []}
+          hiringStatus={hiringStatus}
+          totalHires={stats?.totalHires || 0}
+          casesWon={stats?.casesWon || 0}
         />
       </Suspense>
     </div>

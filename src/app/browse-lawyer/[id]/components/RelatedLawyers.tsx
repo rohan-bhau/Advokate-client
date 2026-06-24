@@ -15,6 +15,8 @@ interface RelatedLawyerData {
   location: string;
   image: string;
   availabilityStatus: string;
+  averageRating?: number;
+  totalReviews?: number;
 }
 
 interface RelatedLawyersProps {
@@ -123,9 +125,9 @@ export function RelatedLawyers({
                   {/* Line 1: Review rating info */}
                   <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
                     <Star className="size-3.5 fill-amber-500" />
-                    <span>4.9</span>
+                    <span>{ rel.averageRating}</span>
                     <span className="text-default-400 text-[11px] font-normal">
-                      (218 reviews)
+                      ({rel.totalReviews || 0} reviews)
                     </span>
                   </div>
                   {/* Line 2: Independent Location display line */}

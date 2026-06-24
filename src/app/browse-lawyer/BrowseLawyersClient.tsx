@@ -29,6 +29,8 @@ interface LawyerData {
   availabilityStatus: "Available" | "Busy";
   image: string;
   status: "pending" | "approved" | "rejected";
+  averageRating?: number;
+  totalReviews?: number;
 }
 
 export default function BrowseLawyersClient() {
@@ -51,6 +53,7 @@ export default function BrowseLawyersClient() {
   const [availability, setAvailability] = useState(initialAvailability);
   const [sort, setSort] = useState(initialSort);
   const [page, setPage] = useState(initialPage);
+  // console.log(lawyers)
 
   const fetchFilteredLawyers = async () => {
     setIsLoading(true);
@@ -266,7 +269,8 @@ export default function BrowseLawyersClient() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {lawyers.map((lawyer) => (
+                {lawyers.map((lawyer) => (
+              // console.log(lawyer)
               <Card
                 key={lawyer._id || lawyer.id}
                 onClick={() =>
@@ -335,9 +339,9 @@ export default function BrowseLawyersClient() {
                     {/* Line 1: Review rating info */}
                     <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
                       <Star className="size-3.5 fill-amber-500" />
-                      <span>4.9</span>
+                          <span>{lawyer.averageRating }</span>
                       <span className="text-default-400 text-[11px] font-normal">
-                        (218 reviews)
+                        ({lawyer.totalReviews || 0} reviews)
                       </span>
                     </div>
                     {/* Line 2: Independent Location display line */}
