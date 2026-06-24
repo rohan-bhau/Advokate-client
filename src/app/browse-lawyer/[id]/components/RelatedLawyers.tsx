@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Avatar, Badge, Card, Chip } from "@heroui/react";
-import { SPECIALIZATIONS } from "../../dashboard/lawyer/manage-legal-profile/specializations";
+import { SPECIALIZATIONS } from "../../../dashboard/lawyer/manage-legal-profile/specializations";
 import { Star } from "@gravity-ui/icons";
 import { GrLocation } from "react-icons/gr";
 

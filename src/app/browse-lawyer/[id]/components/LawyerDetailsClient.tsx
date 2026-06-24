@@ -2,19 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Card, Button, Chip, Separator } from "@heroui/react";
-import {
-  Star,
-  Clock,
-  Briefcase,
-  Calendar,
-} from "@gravity-ui/icons";
-import { SPECIALIZATIONS } from "../../dashboard/lawyer/manage-legal-profile/specializations";
-import { RelatedLawyers } from "./RelatedLawyers"; 
+import { Card, Chip, Separator } from "@heroui/react";
+import { Star, Clock, Briefcase, Calendar } from "@gravity-ui/icons";
+import { SPECIALIZATIONS } from "../../../dashboard/lawyer/manage-legal-profile/specializations";
+import { HireLawyerModal } from "./HireLawyerModal";
 import { GrLocation } from "react-icons/gr";
 import { BsInfoCircle } from "react-icons/bs";
-
-
+import { RelatedLawyers } from "./RelatedLawyers";
 
 interface ReviewItem {
   clientName: string;
@@ -35,17 +29,23 @@ interface LawyerDetailsProps {
     image: string;
     availabilityStatus: "Available" | "Busy";
     createdAt: any;
+    lawyerEmail?: string;
   };
-  relatedLawyers: any[]; 
+  relatedLawyers: any[];
+  currentUser: { id: string; name: string; email: string; role: string } | null;
+  initialHasApplied: boolean;
 }
 
 export default function LawyerDetailsClient({
   lawyer,
   relatedLawyers,
+  currentUser,
+  initialHasApplied,
 }: LawyerDetailsProps) {
   const [totalHires] = useState(0);
   const [casesWon] = useState(0);
   const [reviews] = useState<ReviewItem[]>([]);
+  const [hasApplied, setHasApplied] = useState(initialHasApplied);
 
   const formatExactDate = (dateData: any) => {
     try {
@@ -62,14 +62,6 @@ export default function LawyerDetailsClient({
     } catch {
       return "N/A";
     }
-  };
-
-  const handleHireClick = () => {
-    const idStr =
-      lawyer._id && typeof lawyer._id === "object" && "$oid" in lawyer._id
-        ? lawyer._id.$oid
-        : lawyer._id;
-    console.log(`Hire button clicked for lawyer ID: ${idStr}`);
   };
 
   const isBusy = lawyer.availabilityStatus === "Busy";
@@ -153,19 +145,14 @@ export default function LawyerDetailsClient({
               </div>
             </div>
 
-            <Button
-              onPress={handleHireClick}
-              isDisabled={isBusy}
-              className={`w-full mt-6 font-bold h-11 text-xs rounded-xl shadow-md transition-all ${
-                isBusy
-                  ? "bg-default-100 text-default-400 cursor-not-allowed shadow-none"
-                  : "bg-[#1D44B7] hover:bg-[#153491] text-white active:scale-95"
-              }`}
-            >
-              {isBusy
-                ? "Unavailable"
-                : `Hire ${lawyer.professionalName.split(" ")[0]}`}
-            </Button>
+            {/* hiring modal*/}
+            <HireLawyerModal
+              lawyer={lawyer}
+              currentUser={currentUser}
+              hasApplied={hasApplied}
+              setHasApplied={setHasApplied}
+              isBusy={isBusy}
+            />
           </Card>
         </div>
 
@@ -233,7 +220,6 @@ export default function LawyerDetailsClient({
         </div>
       </div>
 
-      {/* related lawyers */}
       <RelatedLawyers
         relatedLawyers={relatedLawyers}
         currentSpecialization={lawyer.specialization}

@@ -83,7 +83,7 @@ export default function BrowseLawyersClient() {
   useEffect(() => {
     const urlSearch = searchParams.get("search") || "";
     setSearch(urlSearch);
-    setPage(1); 
+    setPage(1);
 
     if (urlSearch !== search) {
       setIsLoading(true);
@@ -343,7 +343,9 @@ export default function BrowseLawyersClient() {
                     {/* Line 2: Independent Location display line */}
                     <div className="flex items-center gap-1 text-xs text-default-400 font-medium">
                       <GrLocation className="size-3.5 text-default-400 flex-shrink-0" />
-                      <span className="truncate">{lawyer.location || "Dhaka Bangladesh"}</span>
+                      <span className="truncate">
+                        {lawyer.location || "Dhaka Bangladesh"}
+                      </span>
                     </div>
                   </div>
                 </div>
