@@ -19,3 +19,13 @@ export const updateHiringRequestStatus = async (
   revalidatePath("/dashboard/lawyer/hiring-requests");
   return result;
 };
+
+export const markCaseAsWon = async (id: string) => {
+  const result = await serverMutation(
+    `/api/lawyer/hiring-requests/mark-won/${id}`,
+    {},
+    "PATCH",
+  );
+  revalidatePath("/dashboard/lawyer/hiring-history");
+  return result;
+};
