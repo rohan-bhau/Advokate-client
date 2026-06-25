@@ -2,6 +2,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { stripe } from "@/lib/stripe";
 import LawyerSuccessView from "./components/LawyerSuccessView";
+import { updateLawyerPlanAction } from "@/lib/actions/payment";
 
 interface Props {
   searchParams: Promise<{ session_id?: string }>;
@@ -22,6 +23,19 @@ export default async function LawyerSuccessPage({ searchParams }: Props) {
         session.customer_details?.email || "your registered email";
 
     if (session.status === "complete") {
+        const userId = session.metadata?.userId;
+        const amountTotal = session.amount_total
+          ? session.amount_total / 100
+          : 149;
+        if (userId) {
+          await updateLawyerPlanAction({
+            userId,
+            planStatus: "premium",
+            sessionId: session.id,
+            amount: amountTotal,
+            userEmail: session.customer_details?.email || "",
+          });
+        }
           return (
             <LawyerSuccessView
               sessionId={session_id}

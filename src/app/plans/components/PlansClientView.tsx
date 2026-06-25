@@ -95,7 +95,7 @@ export default function PlansClientView({
           ) : (
             <button
               onClick={handleActivationCheckout}
-              className="w-full bg-gradient-to-r from-amber-500 cursor-pointer to-orange-600 font-extrabold text-white text-xs rounded-xl h-11 shadow-md hover:opacity-95 transition-all"
+              className="w-full bg-gradient-to-r active:translate-x-10/12 from-amber-500 cursor-pointer to-orange-600 font-extrabold text-white text-xs rounded-xl h-11 shadow-md hover:opacity-95 transition-all"
             >
               Proceed to Secure Payment
             </button>
