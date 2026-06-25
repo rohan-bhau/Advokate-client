@@ -24,6 +24,7 @@ import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { BiComment } from "react-icons/bi";
+import { MdOutlineAnalytics } from "react-icons/md";
 
 const getIcon = (iconId: string, className: string) => {
   const iconMap: Record<string, React.ReactNode> = {
@@ -33,7 +34,7 @@ const getIcon = (iconId: string, className: string) => {
     applications: <LuFileText className={className} />,
     review: <BiComment className={className} />,
     billing: <LuCreditCard className={className} />,
-    settings: <Gear className={className} />,
+    settings: <MdOutlineAnalytics className={className} />,
 
     home: <House className={className} />,
     "jobs-recruiter": <FaBriefcase className={className} />,

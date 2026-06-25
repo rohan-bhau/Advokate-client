@@ -67,7 +67,7 @@ export async function DashboardSidebar() {
   ];
 
   const adminNavItems = [
-    { iconId: "dashboard", href: "/dashboard/admin", label: "Admin Console" },
+    { iconId: "dashboard", href: "/dashboard/admin", label: "Admin Overview" },
     {
       iconId: "users-admin",
       href: "/dashboard/admin/manage-users",
@@ -85,8 +85,8 @@ export async function DashboardSidebar() {
     },
     {
       iconId: "settings",
-      href: "/dashboard/admin/settings",
-      label: "Global Settings",
+      href: "/dashboard/admin/analytics",
+      label: "Analytics",
     },
   ];
 

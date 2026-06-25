@@ -13,7 +13,6 @@ import { authClient, useSession } from "@/lib/auth-client";
 import { ArrowRightFromSquare } from "@gravity-ui/icons";
 import { Avatar, Dropdown, Label } from "@heroui/react";
 import toast from "react-hot-toast";
-// import MobileDrawer from "./MobileDrawer";
 
 export default function Navbar() {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -24,8 +23,6 @@ export default function Navbar() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
   const user = session?.user ? (session.user as any) : undefined;
-  // const role = user?.role
-  // console.log("navbar", user);
 
   useEffect(() => {
     setMounted(true);
@@ -46,6 +43,7 @@ export default function Navbar() {
     setTheme(currentTheme === "dark" ? "light" : "dark");
   };
 
+  // ১. কোর লিঙ্কস কন্সট্যান্ট রাখা হলো
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Browse Lawyers", href: "/browse-lawyer" },
@@ -57,16 +55,14 @@ export default function Navbar() {
     admin: "/dashboard/admin",
   };
 
-  if (user?.email) {
+  // 🚀 ২. সিকিউরড মেকানিজম: মাউন্টেড চেক পাস করলেই কেবল ডাইনামিক ড্যাশবোর্ড পুশ হবে
+  if (mounted && user?.email) {
     const userRole = user.role || "client";
     navLinks.push({
       name: "Dashboard",
       href: dashboardLinks[userRole] || "/dashboard/client",
     });
   }
-  // if (user) {
-  //   navLinks.push({ name: "Dashboard", href: "/dashboard" });
-  // }
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,7 +70,6 @@ export default function Navbar() {
     router.push(
       `/browse-lawyer?search=${encodeURIComponent(searchQuery.trim())}`,
     );
-    // setSearchQuery("");
   };
 
   return (
@@ -97,27 +92,28 @@ export default function Navbar() {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8 self-stretch">
-            {navLinks.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  suppressHydrationWarning
-                  key={link.href}
-                  href={link.href}
-                  className={`relative flex items-center h-full text-[15px] font-semibold tracking-wide transition-colors ${
-                    isActive
-                      ? "text-[#0B3A75] dark:text-blue-400"
-                      : "text-[#5C6E85] dark:text-default-400 hover:text-[#0B3A75] dark:hover:text-white"
-                  }`}
-                >
-                  <span
-                    className={`${isActive ? "pb-1 border-b-2 border-[#93B6F0]" : ""}`}
+            {/* 🚀 ফিক্স ৩: মাউন্টেড ট্রু হওয়ার পরই কেবল ম্যাপ রান করবে, যা হাইড্রেশন ক্র্যাশ চিরতরে বন্ধ করবে */}
+            {mounted &&
+              navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`relative flex items-center h-full text-[15px] font-semibold tracking-wide transition-colors ${
+                      isActive
+                        ? "text-[#0B3A75] dark:text-blue-400"
+                        : "text-[#5C6E85] dark:text-default-400 hover:text-[#0B3A75] dark:hover:text-white"
+                    }`}
                   >
-                    {link.name}
-                  </span>
-                </Link>
-              );
-            })}
+                    <span
+                      className={`${isActive ? "pb-1 border-b-2 border-[#93B6F0]" : ""}`}
+                    >
+                      {link.name}
+                    </span>
+                  </Link>
+                );
+              })}
           </div>
 
           {/* Luxury Search Bar */}
@@ -155,10 +151,7 @@ export default function Navbar() {
 
             {isPending ? (
               <div className="flex items-center gap-3 animate-pulse">
-                {/* Avatar Skeleton */}
                 <div className="w-10 h-10 rounded-full bg-default-200 dark:bg-default-300/20" />
-
-                {/* Text Skeleton */}
                 <div className="flex flex-col gap-2">
                   <div className="h-3 w-20 rounded bg-default-200 dark:bg-default-300/20" />
                   <div className="h-2 w-28 rounded bg-default-200 dark:bg-default-300/20" />
@@ -171,7 +164,7 @@ export default function Navbar() {
                 </p>
                 <Dropdown>
                   <Dropdown.Trigger className="rounded-full">
-                    <Avatar className="w-10 h-10 shrink-0">
+                    <Avatar className="w-10 h-10 shrink-0 cursor-pointer">
                       <Avatar.Image
                         alt={user.name || "User Profile"}
                         src={user.image || undefined}
@@ -225,7 +218,7 @@ export default function Navbar() {
                         onClick={async () => {
                           await authClient.signOut();
                           window.location.reload();
-                          toast.success("Logout Successfull");
+                          toast.success("Logout Successful");
                         }}
                       >
                         <div className="flex w-full items-center justify-between gap-2">

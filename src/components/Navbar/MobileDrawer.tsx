@@ -15,6 +15,9 @@ import { authClient, useSession } from "@/lib/auth-client";
 import { RxDashboard } from "react-icons/rx";
 import { AlertDialog } from "@heroui/react";
 import toast from "react-hot-toast";
+import { CgOrganisation } from "react-icons/cg";
+import { FaRegCreditCard } from "react-icons/fa";
+import { MdOutlineAnalytics } from "react-icons/md";
 
 
 export function MobileDrawer() {
@@ -46,8 +49,7 @@ const user = session?.user ? (session.user as any) : undefined;
     label: string;
   }[] = [
     { icon: House, href: "/", label: "Home" },
-    { icon: VscLaw, href: "/browse-lawyers", label: "Browse Lawyers" },
-    { icon: Gear, href: "#", label: "Settings" },
+    { icon: VscLaw, href: "/browse-lawyer", label: "Browse Lawyers" },
         ];
     
   //   if (user) {
@@ -95,14 +97,29 @@ if (user?.email) {
   } else if (userRole === "admin") {
     navItems.push(
       {
-        icon: RxDashboard, 
+        icon: RxDashboard,
         href: "/dashboard/admin",
-        label: "Admin Control",
+        label: "Admin Overview",
       },
       {
-        icon: Persons, 
-        href: "/dashboard/admin/verify-lawyers",
-        label: "Approve Lawyers",
+        icon: Persons,
+        href: "/dashboard/admin/manage-users",
+        label: "Manage Users",
+      },
+      {
+        icon: CgOrganisation,
+        href: "/dashboard/admin/legal-profiles",
+        label: "Legal Profiles",
+      },
+      {
+        icon: FaRegCreditCard,
+        href: "/dashboard/admin/all-transactions",
+        label: "Platform Earnings",
+      },
+      {
+        icon: MdOutlineAnalytics,
+        href: "/dashboard/admin/analytics",
+        label: "Analytics",
       },
     );
   }
