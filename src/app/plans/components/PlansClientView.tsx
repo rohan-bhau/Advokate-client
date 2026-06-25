@@ -13,6 +13,20 @@ interface PlansClientViewProps {
 export default function PlansClientView({
   isAlreadyPaid,
 }: PlansClientViewProps) {
+
+    const handleActivationCheckout = async () => {
+      const response = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ paymentType: "activation" }), 
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      }
+    };
+
   return (
     <div className="min-h-screen bg-background text-foreground py-16 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center space-y-10">
       <div className="text-center max-w-xl space-y-2">
@@ -79,11 +93,12 @@ export default function PlansClientView({
               ✓ Your Profile is Active
             </Button>
           ) : (
-            <Link href="/api/checkout/stripe-session" className="w-full block">
-              <Button className="w-full bg-gradient-to-r from-amber-500 to-orange-600 font-extrabold text-white text-xs rounded-xl h-11 shadow-md hover:opacity-95 transition-all">
-                Proceed to Secure Payment
-              </Button>
-            </Link>
+            <button
+              onClick={handleActivationCheckout}
+              className="w-full bg-gradient-to-r from-amber-500 cursor-pointer to-orange-600 font-extrabold text-white text-xs rounded-xl h-11 shadow-md hover:opacity-95 transition-all"
+            >
+              Proceed to Secure Payment
+            </button>
           )}
           <p className="text-[10px] text-default-400 text-center mt-2.5">
             Secured checkout via Stripe. Encrypted connection.
