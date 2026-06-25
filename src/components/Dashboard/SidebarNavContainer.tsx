@@ -16,7 +16,7 @@ import {
   Persons,
   ArrowRightFromSquare,
 } from "@gravity-ui/icons";
-import { FaBriefcase } from "react-icons/fa";
+import { FaBriefcase, FaRegCreditCard } from "react-icons/fa";
 import { IoAddCircleOutline } from "react-icons/io5";
 import { CgOrganisation } from "react-icons/cg";
 import { LuCreditCard, LuFileText, LuHistory, LuLayoutGrid } from "react-icons/lu";
@@ -24,7 +24,7 @@ import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Image from "next/image";
 import { BiComment } from "react-icons/bi";
-import { MdOutlineAnalytics } from "react-icons/md";
+import { MdHistory, MdOutlineAnalytics } from "react-icons/md";
 
 const getIcon = (iconId: string, className: string) => {
   const iconMap: Record<string, React.ReactNode> = {
@@ -36,12 +36,12 @@ const getIcon = (iconId: string, className: string) => {
     billing: <LuCreditCard className={className} />,
     settings: <MdOutlineAnalytics className={className} />,
 
-    home: <House className={className} />,
+    home: <LuLayoutGrid className={className} />,
     "jobs-recruiter": <FaBriefcase className={className} />,
     "post-job": <IoAddCircleOutline className={className} />,
     company: <CgOrganisation className={className} />,
-    messages: <Envelope className={className} />,
-    profile: <Person className={className} />,
+    messages: <MdHistory className={className} />,
+    profile: <FaRegCreditCard className={className} />,
 
     "users-admin": <Persons className={className} />,
   };

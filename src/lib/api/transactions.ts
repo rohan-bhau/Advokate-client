@@ -9,3 +9,4 @@ export const getLawyerTransactions = async (
     `/api/admin/lawyer-transactions?search=${search}&page=${page}&limit=${limit}`,
   );
 };
+

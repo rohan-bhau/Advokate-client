@@ -18,6 +18,7 @@ import toast from "react-hot-toast";
 import { CgOrganisation } from "react-icons/cg";
 import { FaRegCreditCard } from "react-icons/fa";
 import { MdOutlineAnalytics } from "react-icons/md";
+import { LuHistory } from "react-icons/lu";
 
 
 export function MobileDrawer() {
@@ -68,7 +69,7 @@ if (user?.email) {
       {
         icon: RxDashboard,
         href: "/dashboard/lawyer",
-        label: "Dashboard",
+        label: "Overview",
       },
       {
         icon: Persons,
@@ -78,7 +79,17 @@ if (user?.email) {
       {
         icon: CirclePlus,
         href: "/dashboard/lawyer/manage-legal-profile/new-legal-profile",
-        label: "New Legal Profile",
+        label: "Add New Profile",
+      },
+      {
+        icon: LuHistory,
+        href: "/dashboard/lawyer/hiring-history",
+        label: "Hiring History",
+      },
+      {
+        icon: FaRegCreditCard,
+        href: "/dashboard/lawyer/transactions",
+        label: "Transactions",
       },
     );
   } else if (userRole === "client") {

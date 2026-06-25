@@ -56,13 +56,8 @@ export async function DashboardSidebar() {
     },
     {
       iconId: "profile",
-      href: "/dashboard/lawyer/profile",
-      label: "My Credentials",
-    },
-    {
-      iconId: "settings",
-      href: "/dashboard/lawyer/settings",
-      label: "Account Settings",
+      href: "/dashboard/lawyer/transactions",
+      label: "Transactions",
     },
   ];
 
