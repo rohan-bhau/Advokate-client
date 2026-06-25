@@ -101,6 +101,7 @@ export default function Navbar() {
               const isActive = pathname === link.href;
               return (
                 <Link
+                  suppressHydrationWarning
                   key={link.href}
                   href={link.href}
                   className={`relative flex items-center h-full text-[15px] font-semibold tracking-wide transition-colors ${
