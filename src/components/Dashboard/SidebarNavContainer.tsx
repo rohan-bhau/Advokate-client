@@ -23,6 +23,7 @@ import { LuCreditCard, LuFileText, LuHistory, LuLayoutGrid } from "react-icons/l
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import { BiComment } from "react-icons/bi";
 
 const getIcon = (iconId: string, className: string) => {
   const iconMap: Record<string, React.ReactNode> = {
@@ -30,6 +31,7 @@ const getIcon = (iconId: string, className: string) => {
     jobs: <Briefcase className={className} />,
     "saved-jobs": <LuHistory className={className} />,
     applications: <LuFileText className={className} />,
+    review: <BiComment className={className} />,
     billing: <LuCreditCard className={className} />,
     settings: <Gear className={className} />,
 

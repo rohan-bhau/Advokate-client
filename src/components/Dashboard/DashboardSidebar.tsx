@@ -20,10 +20,16 @@ export async function DashboardSidebar() {
       label: "Hiring History",
     },
     {
+      iconId: "review",
+      href: "/dashboard/client/reviews",
+      label: "Reviews",
+    },
+    {
       iconId: "billing",
       href: "/dashboard/client/billing",
       label: "Billing & Invoices",
     },
+
     {
       iconId: "settings",
       href: "/dashboard/client/settings",
