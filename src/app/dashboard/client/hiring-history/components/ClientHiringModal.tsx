@@ -49,9 +49,20 @@ export function ClientHiringModal({
     }
   };
 
-  const handlePaymentMock = () => {
-    toast.success("Payment button clicked! Processing transaction gateway...");
-  };
+const handleHiringCheckout = async () => {
+  const res = await fetch("/api/checkout_sessions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      paymentType: "hiring",
+      amount: request.hourlyFee,
+      lawyerEmail: request.lawyerEmail,
+      lawyerId: request._id,
+    }),
+  });
+  const data = await res.json();
+  if (data.url) window.location.href = data.url;
+};
 
   const getStatusColor = (status: string) => {
     if (status === "accepted") return "success" as const;
@@ -172,7 +183,7 @@ export function ClientHiringModal({
               {request.status === "accepted" &&
                 request.paymentStatus === "pending" && (
                   <Button
-                    onPress={handlePaymentMock}
+                    onPress={handleHiringCheckout}
                     className="bg-[#1D44B7] text-white text-xs font-bold rounded-xl px-5 h-10 shadow-sm hover:bg-[#153491]"
                   >
                     Pay Attorney Retainer

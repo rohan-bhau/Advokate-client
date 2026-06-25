@@ -10,20 +10,26 @@ interface Props {
 export default async function LawyerSuccessPage({ searchParams }: Props) {
   const { session_id } = await searchParams;
 
-  if (!session_id) {
-    throw new Error("Please provide a valid session_id");
-  }
+ if (!session_id)
+   throw new Error("Please provide a valid session_id (`cs_test_...`)");
 
   const session = await stripe.checkout.sessions.retrieve(session_id);
 
   if (session.status === "open") {
     return redirect("/");
-  }
+    }
+      const customerEmail =
+        session.customer_details?.email || "your registered email";
 
-  const customerEmail =
-    session.customer_details?.email || "your registered email";
+    if (session.status === "complete") {
+          return (
+            <LawyerSuccessView
+              sessionId={session_id}
+              customerEmail={customerEmail}
+            />
+          );
+    }
 
-  return (
-    <LawyerSuccessView sessionId={session_id} customerEmail={customerEmail} />
-  );
+
+
 }
