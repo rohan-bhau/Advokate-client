@@ -12,6 +12,7 @@ export async function DashboardSidebar() {
   }
 
   const clientNavItems = [
+    { iconId: "home", href: "/dashboard/client", label: "Overview" },
     { iconId: "jobs", href: "/browse-lawyer", label: "Browse Lawyers" },
     {
       iconId: "saved-jobs",
@@ -22,6 +23,11 @@ export async function DashboardSidebar() {
       iconId: "review",
       href: "/dashboard/client/reviews",
       label: "Reviews",
+    },
+    {
+      iconId: "profile",
+      href: "/dashboard/client/transactions",
+      label: "Transactions",
     },
     {
       iconId: "update",

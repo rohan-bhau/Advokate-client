@@ -12,13 +12,14 @@ import { Bars, Magnifier, Sun, Moon } from "@gravity-ui/icons";
 import Link from "next/link";
 import { VscLaw } from "react-icons/vsc";
 import { authClient, useSession } from "@/lib/auth-client";
-import { RxDashboard } from "react-icons/rx";
+import { RxAvatar, RxDashboard } from "react-icons/rx";
 import { AlertDialog } from "@heroui/react";
 import toast from "react-hot-toast";
 import { CgOrganisation } from "react-icons/cg";
 import { FaRegCreditCard } from "react-icons/fa";
-import { MdOutlineAnalytics } from "react-icons/md";
+import { MdHistory, MdOutlineAnalytics } from "react-icons/md";
 import { LuHistory } from "react-icons/lu";
+import { BiComment } from "react-icons/bi";
 
 
 export function MobileDrawer() {
@@ -97,12 +98,27 @@ if (user?.email) {
       {
         icon: RxDashboard,
         href: "/dashboard/client",
-        label: "Client Dashboard",
+        label: "Overview",
       },
       {
-        icon: Gear,
-        href: "/dashboard/client/settings",
-        label: "My Bookings",
+        icon: MdHistory,
+        href: "/dashboard/client/hiring-history",
+        label: "Hiring History",
+      },
+      {
+        icon: BiComment,
+        href: "/dashboard/client/reviews",
+        label: "Reviews",
+      },
+      {
+        icon: FaRegCreditCard,
+        href: "/dashboard/client/transactions",
+        label: "Transactions",
+      },
+      {
+        icon: RxAvatar,
+        href: "/dashboard/client/update-profile",
+        label: "Update Profile",
       },
     );
   } else if (userRole === "admin") {
