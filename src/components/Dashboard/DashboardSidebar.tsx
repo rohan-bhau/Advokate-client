@@ -80,7 +80,7 @@ export async function DashboardSidebar() {
     },
     {
       iconId: "billing",
-      href: "/dashboard/admin/payments",
+      href: "/dashboard/admin/all-transactions",
       label: "Platform Earnings",
     },
     {
