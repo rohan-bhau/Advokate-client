@@ -18,7 +18,7 @@ import {
 } from "@gravity-ui/icons";
 import { FaBriefcase, FaRegCreditCard } from "react-icons/fa";
 import { IoAddCircleOutline } from "react-icons/io5";
-import { CgOrganisation } from "react-icons/cg";
+import { CgOrganisation, CgProfile } from "react-icons/cg";
 import { LuCreditCard, LuFileText, LuHistory, LuLayoutGrid } from "react-icons/lu";
 import { authClient } from "@/lib/auth-client";
 import toast from "react-hot-toast";
@@ -35,6 +35,7 @@ const getIcon = (iconId: string, className: string) => {
     review: <BiComment className={className} />,
     billing: <LuCreditCard className={className} />,
     settings: <MdOutlineAnalytics className={className} />,
+    update: <CgProfile className={className} />,
 
     home: <LuLayoutGrid className={className} />,
     "jobs-recruiter": <FaBriefcase className={className} />,

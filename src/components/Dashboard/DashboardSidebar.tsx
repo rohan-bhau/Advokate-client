@@ -12,7 +12,6 @@ export async function DashboardSidebar() {
   }
 
   const clientNavItems = [
-    { iconId: "dashboard", href: "/dashboard/client", label: "Dashboard" },
     { iconId: "jobs", href: "/browse-lawyer", label: "Browse Lawyers" },
     {
       iconId: "saved-jobs",
@@ -25,15 +24,9 @@ export async function DashboardSidebar() {
       label: "Reviews",
     },
     {
-      iconId: "billing",
-      href: "/dashboard/client/billing",
-      label: "Billing & Invoices",
-    },
-
-    {
-      iconId: "settings",
-      href: "/dashboard/client/settings",
-      label: "Settings",
+      iconId: "update",
+      href: "/dashboard/client/update-profile",
+      label: "Update Profile",
     },
   ];
 
