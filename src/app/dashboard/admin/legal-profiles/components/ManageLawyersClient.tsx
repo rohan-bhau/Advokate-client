@@ -40,8 +40,6 @@ export default function ManageLawyersClient({ initialLawyers }: Props) {
   useEffect(() => {
     if (initialLawyers) {
       setLawyers(initialLawyers);
-      const timer = setTimeout(() => setIsLoading(false), 600);
-      return () => clearTimeout(timer);
     }
   }, [initialLawyers]);
 

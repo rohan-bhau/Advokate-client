@@ -62,10 +62,6 @@ export default function EditLegalProfileForm({
   const [details, setDetails] = useState(initialData?.details || "");
   const [logoUrl, setLogoUrl] = useState(initialData?.image || "");
 
-  useEffect(() => {
-    const timer = setTimeout(() => setPageLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   const isUnchanged = useMemo(() => {
     return (
