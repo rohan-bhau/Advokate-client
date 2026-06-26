@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Table,
   Avatar,
@@ -10,8 +10,8 @@ import {
   InputGroup,
 } from "@heroui/react";
 import Link from "next/link";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { LuArrowLeft, LuSearch, LuX } from "react-icons/lu";
-import { getLawyerTransactions } from "@/lib/api/transactions";
 
 interface Transaction {
   _id: string;
@@ -23,43 +23,61 @@ interface Transaction {
   createdAt: string;
 }
 
-export default function TransactionsClient() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalResults, setTotalResults] = useState(0);
-  const [loading, setLoading] = useState(true);
+interface TransactionsClientProps {
+  initialData: {
+    transactions: Transaction[];
+    totalPages: number;
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const data = await getLawyerTransactions(search, page, limit);
-        setTransactions(data.transactions || []);
-        setTotalPages(data.totalPages || 1);
-        setTotalResults(data.total || 0);
-      } catch (err) {
-        console.error("Ledger acquisition failed:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
-  }, [search, page, limit]);
+export default function TransactionsClient({
+  initialData,
+}: TransactionsClientProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // URL query state extraction loops
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentSearch = searchParams.get("search") || "";
+  const currentLimit = Number(searchParams.get("limit")) || 10;
+
+  const [searchInput, setSearchInput] = useState(currentSearch);
+
+  // Sync state cleanly with server initial data payload
+  const transactions = initialData?.transactions || [];
+  const totalPages = initialData?.totalPages || 1;
+  const totalResults = initialData?.total || 0;
+
+  // Global routing query modifier method
+  const updateUrlParams = (
+    newPage: number,
+    newSearch: string,
+    newLimit: number,
+  ) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    params.set("limit", newLimit.toString());
+
+    if (newSearch) {
+      params.set("search", newSearch);
+    } else {
+      params.delete("search");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1);
-    setSearch(searchInput);
+    updateUrlParams(1, searchInput, currentLimit);
   };
 
   const handleClearSearch = () => {
     setSearchInput("");
-    setSearch("");
-    setPage(1);
+    updateUrlParams(1, "", currentLimit);
   };
 
   return (
@@ -164,9 +182,7 @@ export default function TransactionsClient() {
                       className="text-center text-default-400 py-10"
                       colSpan={5}
                     >
-                      {loading
-                        ? "Synchronizing secure gateway records..."
-                        : "No financial matches located."}
+                      No financial matches located.
                     </Table.Cell>
                   </Table.Row>
                 ) : (
@@ -232,17 +248,17 @@ export default function TransactionsClient() {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-default-100">
           <div className="flex items-center gap-4 text-[11px] text-default-400">
             <p>
-              Showing {totalResults === 0 ? 0 : (page - 1) * limit + 1} -{" "}
-              {Math.min(page * limit, totalResults)} of {totalResults} audit
-              records
+              Showing{" "}
+              {totalResults === 0 ? 0 : (currentPage - 1) * currentLimit + 1} -{" "}
+              {Math.min(currentPage * currentLimit, totalResults)} of{" "}
+              {totalResults} audit records
             </p>
             <div className="flex items-center gap-1.5">
               <span>Per page:</span>
               <select
-                value={limit}
+                value={currentLimit}
                 onChange={(e) => {
-                  setLimit(Number(e.target.value));
-                  setPage(1);
+                  updateUrlParams(1, searchInput, Number(e.target.value));
                 }}
                 className="bg-default-100 text-foreground text-[11px] px-1.5 py-1 rounded-md border border-default-200 outline-none cursor-pointer"
               >
@@ -258,8 +274,14 @@ export default function TransactionsClient() {
               <Pagination.Content>
                 <Pagination.Item>
                   <Pagination.Previous
-                    isDisabled={page === 1}
-                    onPress={() => setPage((p) => p - 1)}
+                    isDisabled={currentPage === 1}
+                    onPress={() =>
+                      updateUrlParams(
+                        currentPage - 1,
+                        searchInput,
+                        currentLimit,
+                      )
+                    }
                   >
                     <Pagination.PreviousIcon />
                     <span>Previous</span>
@@ -270,8 +292,10 @@ export default function TransactionsClient() {
                   (p) => (
                     <Pagination.Item key={p}>
                       <Pagination.Link
-                        isActive={p === page}
-                        onPress={() => setPage(p)}
+                        isActive={p === currentPage}
+                        onPress={() =>
+                          updateUrlParams(p, searchInput, currentLimit)
+                        }
                       >
                         {p}
                       </Pagination.Link>
@@ -281,8 +305,14 @@ export default function TransactionsClient() {
 
                 <Pagination.Item>
                   <Pagination.Next
-                    isDisabled={page === totalPages}
-                    onPress={() => setPage((p) => p + 1)}
+                    isDisabled={currentPage === totalPages}
+                    onPress={() =>
+                      updateUrlParams(
+                        currentPage + 1,
+                        searchInput,
+                        currentLimit,
+                      )
+                    }
                   >
                     <span>Next</span>
                     <Pagination.NextIcon />

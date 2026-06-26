@@ -1,11 +1,11 @@
-import { serverFetch } from "../core/serverMutation";
+import { protectedFetch, serverFetch } from "../core/serverMutation";
 
 export const getLawyerTransactions = async (
   search: string = "",
   page: number = 1,
   limit: number = 10,
 ) => {
-  return serverFetch(
+  return protectedFetch(
     `/api/admin/lawyer-transactions?search=${search}&page=${page}&limit=${limit}`,
   );
 };

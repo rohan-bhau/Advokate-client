@@ -1,5 +1,5 @@
-import { serverFetch } from "../core/serverMutation";
+import { protectedFetch, serverFetch } from "../core/serverMutation";
 
 export const getUsers = async () => {
-  return serverFetch(`/api/user`);
+  return protectedFetch(`/api/user`);
 };

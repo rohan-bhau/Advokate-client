@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/serverMutation";
+import { protectedFetch, serverFetch } from "../core/serverMutation";
 
 export const checkHiringStatus = async (lawyerId: string, clientId: string) => {
   return serverFetch(
@@ -7,13 +7,13 @@ export const checkHiringStatus = async (lawyerId: string, clientId: string) => {
 };
 
 export const getLawyerHiringRequests = async (lawyerEmail: string) => {
-  return serverFetch(
+  return protectedFetch(
     `/api/lawyer/hiring-requests?lawyerEmail=${encodeURIComponent(lawyerEmail)}`,
   );
 };
 
 export const getClientHiringRequests = async (clientEmail: string) => {
-  return serverFetch(
+  return protectedFetch(
     `/api/client/hiring-requests?clientEmail=${encodeURIComponent(clientEmail)}`,
   );
 };

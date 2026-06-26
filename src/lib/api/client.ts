@@ -1,4 +1,4 @@
-import { serverFetch } from "../core/serverMutation";
+import { protectedFetch, serverFetch } from "../core/serverMutation";
 
 export const getClientDashboardMetrics = async (email: string) => {
   return serverFetch(
@@ -12,7 +12,7 @@ export const getClientTransactions = async (
   page: number = 1,
   limit: number = 10,
 ) => {
-  return serverFetch(
+  return protectedFetch(
     `/api/client/transactions?email=${encodeURIComponent(email)}&search=${search}&page=${page}&limit=${limit}`,
   );
 };

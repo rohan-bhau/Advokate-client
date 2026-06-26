@@ -3,7 +3,7 @@ import { auth } from "../auth";
 import { redirect } from "next/navigation";
 
 export type User =
-   {
+  | {
       id: string;
       createdAt: Date;
       updatedAt: Date;
@@ -19,7 +19,16 @@ export const getUserSession = async (): Promise<User> => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+
   return session?.user as User;
+};
+
+export const getUserToken = async (): Promise<string | null> => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return session?.session?.token || null;
 };
 
 export const requireRole = async (role: "client" | "lawyer" | "admin") => {

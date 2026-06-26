@@ -1,5 +1,5 @@
-import { serverFetch } from "../core/serverMutation";
+import { protectedFetch, serverFetch } from "../core/serverMutation";
 
 export const getAnalyticsData = async () => {
-  return serverFetch("/api/admin/analytics-data");
+  return protectedFetch("/api/admin/analytics-data");
 };

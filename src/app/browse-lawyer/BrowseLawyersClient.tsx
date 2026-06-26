@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import React, { useState } from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import {
   Card,
   Avatar,
@@ -10,11 +10,9 @@ import {
   ListBox,
   Chip,
   Pagination,
-  Skeleton,
 } from "@heroui/react";
 import { Magnifier, ChevronDown, Star } from "@gravity-ui/icons";
 import { SPECIALIZATIONS } from "../dashboard/lawyer/manage-legal-profile/specializations";
-import { getLawyers } from "@/lib/api/legalProfiles";
 import { GrLocation } from "react-icons/gr";
 
 interface LawyerData {
@@ -33,84 +31,64 @@ interface LawyerData {
   totalReviews?: number;
 }
 
-export default function BrowseLawyersClient() {
+interface BrowseLawyersClientProps {
+  initialData: {
+    lawyers: LawyerData[];
+    total: number;
+    totalPages: number;
+  };
+}
+
+export default function BrowseLawyersClient({
+  initialData,
+}: BrowseLawyersClientProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const initialPage = parseInt(searchParams.get("page") || "1");
-  const initialSearch = searchParams.get("search") || "";
-  const initialCategory = searchParams.get("category") || "all";
-  const initialAvailability = searchParams.get("availability") || "all";
-  const initialSort = searchParams.get("sort") || "default";
+  // URL state management parameters synchronization
+  const currentPage = parseInt(searchParams.get("page") || "1");
+  const currentSearch = searchParams.get("search") || "";
+  const currentCategory = searchParams.get("category") || "all";
+  const currentAvailability = searchParams.get("availability") || "all";
+  const currentSort = searchParams.get("sort") || "default";
 
-  const [lawyers, setLawyers] = useState<LawyerData[]>([]);
-  const [totalResults, setTotalResults] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  // Transient search input boundary state
+  const [searchInput, setSearchInput] = useState(currentSearch);
 
-  const [search, setSearch] = useState(initialSearch);
-  const [category, setCategory] = useState(initialCategory);
-  const [availability, setAvailability] = useState(initialAvailability);
-  const [sort, setSort] = useState(initialSort);
-  const [page, setPage] = useState(initialPage);
-  // console.log(lawyers)
+  // Read clean aggregated datasets from server props directly
+  const lawyers = initialData?.lawyers || [];
+  const totalResults = initialData?.total || 0;
+  const totalPages = initialData?.totalPages || 1;
 
-  const fetchFilteredLawyers = async () => {
-    setIsLoading(true);
-    const query = new URLSearchParams();
-    if (search) query.set("search", search);
-    if (category !== "all") query.set("category", category);
-    if (availability !== "all") query.set("availability", availability);
-    if (sort !== "default") query.set("sort", sort);
-    query.set("page", page.toString());
-    query.set("limit", "8");
+  // Global URL modifier block pipeline
+  const updateUrlParams = (updates: Record<string, string | number>) => {
+    const params = new URLSearchParams(searchParams.toString());
 
-    router.push(`/browse-lawyer?${query.toString()}`, { scroll: false });
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === "all" || value === "default" || !value) {
+        params.delete(key);
+      } else {
+        params.set(key, value.toString());
+      }
+    });
 
-    try {
-      const response = await getLawyers(`?${query.toString()}`);
-      setLawyers(response.lawyers || []);
-      setTotalResults(response.total || 0);
-      setTotalPages(response.totalPages || 1);
-    } catch (err) {
-      console.error("Error loading profiles:", err);
-    } finally {
-      setIsLoading(false);
-    }
+    router.push(`${pathname}?${params.toString()}`, { scroll: false });
   };
-
-  useEffect(() => {
-    fetchFilteredLawyers();
-  }, [category, availability, sort, page]);
-
-  useEffect(() => {
-    const urlSearch = searchParams.get("search") || "";
-    setSearch(urlSearch);
-    setPage(1);
-
-    if (urlSearch !== search) {
-      setIsLoading(true);
-      const query = new URLSearchParams(searchParams.toString());
-      getLawyers(`?${query.toString()}`)
-        .then((response) => {
-          setLawyers(response.lawyers || []);
-          setTotalResults(response.total || 0);
-          setTotalPages(response.totalPages || 1);
-        })
-        .catch((err) => console.error(err))
-        .finally(() => setIsLoading(false));
-    }
-  }, [searchParams]);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1);
-    fetchFilteredLawyers();
+    updateUrlParams({ search: searchInput, page: 1 });
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput("");
+    updateUrlParams({ search: "", page: 1 });
   };
 
   return (
     <div className="space-y-8 bg-background text-foreground min-h-screen p-4 sm:p-8">
-      {/* Title Header */}
+      {/* Title Header Layout Block */}
       <div>
         <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
           Directory
@@ -123,7 +101,7 @@ export default function BrowseLawyersClient() {
         </p>
       </div>
 
-      {/* Filter Bar */}
+      {/* Synchronized Filtering Interface Component */}
       <form
         onSubmit={handleSearchSubmit}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center bg-content1 border border-default-200/60 p-4 rounded-2xl shadow-md"
@@ -135,19 +113,27 @@ export default function BrowseLawyersClient() {
           <input
             type="text"
             placeholder="Search by name or specialization..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full h-12 rounded-xl border border-default-200 bg-background pl-11 pr-4 text-sm text-foreground outline-none focus:border-blue-500 transition-all"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="w-full h-12 rounded-xl border border-default-200 bg-background pl-11 pr-10 text-sm text-foreground outline-none focus:border-blue-500 transition-all"
           />
+          {searchInput && (
+            <button
+              type="button"
+              onClick={handleClearSearch}
+              className="absolute inset-y-0 right-4 flex items-center text-default-400 hover:text-foreground text-xs"
+            >
+              Clear
+            </button>
+          )}
         </div>
 
         <Select
           placeholder="All Categories"
-          selectedKey={category}
-          onSelectionChange={(k) => {
-            setCategory(k as string);
-            setPage(1);
-          }}
+          selectedKey={currentCategory}
+          onSelectionChange={(k) =>
+            updateUrlParams({ category: k as string, page: 1 })
+          }
           className="w-full bg-background border border-default-200 rounded-xl min-h-12 text-foreground"
         >
           <Select.Trigger>
@@ -176,11 +162,10 @@ export default function BrowseLawyersClient() {
 
         <Select
           placeholder="Availability"
-          selectedKey={availability}
-          onSelectionChange={(k) => {
-            setAvailability(k as string);
-            setPage(1);
-          }}
+          selectedKey={currentAvailability}
+          onSelectionChange={(k) =>
+            updateUrlParams({ availability: k as string, page: 1 })
+          }
           className="w-full bg-background border border-default-200 rounded-xl min-h-12 text-foreground"
         >
           <Select.Trigger>
@@ -206,11 +191,10 @@ export default function BrowseLawyersClient() {
 
         <Select
           placeholder="Sort By Fees"
-          selectedKey={sort}
-          onSelectionChange={(k) => {
-            setSort(k as string);
-            setPage(1);
-          }}
+          selectedKey={currentSort}
+          onSelectionChange={(k) =>
+            updateUrlParams({ sort: k as string, page: 1 })
+          }
           className="w-full bg-background border border-default-200 rounded-xl min-h-12 text-foreground"
         >
           <Select.Trigger>
@@ -241,36 +225,17 @@ export default function BrowseLawyersClient() {
         </Select>
       </form>
 
-      {/* Grid Stack */}
+      {/* Grid Architecture Stack */}
       <div className="w-full">
-        {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-            {Array.from({ length: 8 }).map((_, idx) => (
-              <div
-                key={idx}
-                className="space-y-5 rounded-2xl bg-content1 p-5 border border-default-100 animate-pulse"
-              >
-                <div className="flex justify-between items-center">
-                  <Skeleton className="h-14 w-14 rounded-full bg-default-200" />
-                  <Skeleton className="h-6 w-16 rounded-full bg-default-200" />
-                </div>
-                <div className="space-y-3">
-                  <Skeleton className="h-4 w-3/5 rounded-lg bg-default-200" />
-                  <Skeleton className="h-3 w-4/5 rounded-lg bg-default-200" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : lawyers.length === 0 ? (
+        {lawyers.length === 0 ? (
           <div className="text-center py-24 border border-dashed border-default-200 bg-content1/50 rounded-3xl">
             <p className="text-default-500 font-medium text-lg">
               No legal counselors found matching criteria.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-                {lawyers.map((lawyer) => (
-              // console.log(lawyer)
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {lawyers.map((lawyer) => (
               <Card
                 key={lawyer._id || lawyer.id}
                 onClick={() =>
@@ -279,7 +244,6 @@ export default function BrowseLawyersClient() {
                 className="bg-content1 border border-default-100 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-2 rounded-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between overflow-hidden"
               >
                 <div className="p-4 sm:p-5 flex flex-col gap-4">
-                  {/* Avatar, Name, and Status Badge */}
                   <div className="flex items-start justify-between w-full gap-2">
                     <div className="flex items-center gap-3 min-w-0">
                       <Badge.Anchor>
@@ -307,7 +271,6 @@ export default function BrowseLawyersClient() {
                         />
                       </Badge.Anchor>
 
-                      {/* Name and Compact Category placed right next to Avatar */}
                       <div className="min-w-0 flex flex-col gap-0.5">
                         <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors truncate">
                           {lawyer.professionalName}
@@ -334,17 +297,14 @@ export default function BrowseLawyersClient() {
                     </Chip>
                   </div>
 
-                  {/* Ratings and Separate Location Lines Layout */}
                   <div className="flex flex-col gap-1.5 pt-1">
-                    {/* Line 1: Review rating info */}
                     <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
                       <Star className="size-3.5 fill-amber-500" />
-                          <span>{lawyer.averageRating }</span>
+                      <span>{lawyer.averageRating}</span>
                       <span className="text-default-400 text-[11px] font-normal">
                         ({lawyer.totalReviews || 0} reviews)
                       </span>
                     </div>
-                    {/* Line 2: Independent Location display line */}
                     <div className="flex items-center gap-1 text-xs text-default-400 font-medium">
                       <GrLocation className="size-3.5 text-default-400 flex-shrink-0" />
                       <span className="truncate">
@@ -373,19 +333,21 @@ export default function BrowseLawyersClient() {
         )}
       </div>
 
-      {/* Pagination Container */}
+      {/* Controlled Pagination Loop Trigger */}
       {totalPages > 1 && (
         <div className="flex justify-center pt-6">
           <Pagination>
             <Pagination.Summary className="text-default-500 text-xs sm:text-sm font-semibold">
-              Showing Page {page} of {totalPages} Results
+              Showing Page {currentPage} of {totalPages} Results
             </Pagination.Summary>
             <Pagination.Content className="bg-content1 border border-default-200 rounded-xl overflow-hidden shadow-sm">
               <Pagination.Item>
                 <Pagination.Previous
-                  onClick={() => setPage((p) => Math.max(p - 1, 1))}
+                  onClick={() =>
+                    updateUrlParams({ page: Math.max(currentPage - 1, 1) })
+                  }
                   className={`px-3 py-1.5 text-xs flex items-center gap-1.5 font-bold transition-all ${
-                    page === 1
+                    currentPage === 1
                       ? "opacity-40 pointer-events-none text-default-300"
                       : "text-foreground hover:bg-default-100"
                   }`}
@@ -400,10 +362,10 @@ export default function BrowseLawyersClient() {
                 return (
                   <Pagination.Item key={pageNode}>
                     <Pagination.Link
-                      isActive={page === pageNode}
-                      onClick={() => setPage(pageNode)}
+                      isActive={currentPage === pageNode}
+                      onClick={() => updateUrlParams({ page: pageNode })}
                       className={`px-3.5 py-1.5 text-xs font-bold transition-all ${
-                        page === pageNode
+                        currentPage === pageNode
                           ? "bg-[#1D44B7] text-white rounded-lg shadow-sm"
                           : "text-default-500 hover:bg-default-100"
                       }`}
@@ -416,9 +378,13 @@ export default function BrowseLawyersClient() {
 
               <Pagination.Item>
                 <Pagination.Next
-                  onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+                  onClick={() =>
+                    updateUrlParams({
+                      page: Math.min(currentPage + 1, totalPages),
+                    })
+                  }
                   className={`px-3 py-1.5 text-xs flex items-center gap-1.5 font-bold transition-all ${
-                    page === totalPages
+                    currentPage === totalPages
                       ? "opacity-40 pointer-events-none text-default-300"
                       : "text-foreground hover:bg-default-100"
                   }`}

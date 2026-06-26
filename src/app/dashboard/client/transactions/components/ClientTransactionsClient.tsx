@@ -9,57 +9,62 @@ import {
   TextField,
   InputGroup,
 } from "@heroui/react";
-import { getClientTransactions } from "@/lib/api/client";
 import Link from "next/link";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { LuArrowLeft, LuSearch, LuX } from "react-icons/lu";
+
+// Props updated to accept server fetched data safely
+interface ClientTransactionsClientProps {
+  clientEmail: string;
+  initialData: {
+    transactions: any[];
+    totalPages: number;
+    total: number;
+    page: number;
+    limit: number;
+  };
+}
 
 export default function ClientTransactionsClient({
   clientEmail,
-}: {
-  clientEmail: string;
-}) {
-  const [transactions, setTransactions] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
-  const [searchInput, setSearchInput] = useState("");
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalResults, setTotalResults] = useState(0);
-  const [loading, setLoading] = useState(true);
+  initialData,
+}: ClientTransactionsClientProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
 
-  useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      try {
-        const data = await getClientTransactions(
-          clientEmail,
-          search,
-          page,
-          limit,
-        );
-        setTransactions(data.transactions || []);
-        setTotalPages(data.totalPages || 1);
-          setTotalResults(data.total || 0);
-          console.log(data)
-      } catch (err) {
-        console.error("Ledger acquisition failed:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadData();
-  }, [clientEmail, search, page, limit]);
+  // URL state management synchronization
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentSearch = searchParams.get("search") || "";
+
+  const [searchInput, setSearchInput] = useState(currentSearch);
+
+  // Sync state whenever server initialData refreshes cleanly
+  const transactions = initialData?.transactions || [];
+  const totalPages = initialData?.totalPages || 1;
+  const totalResults = initialData?.total || 0;
+  const limit = initialData?.limit || 10;
+
+  // Function to push state mutations directly into Next.js router queries
+  const updateUrlParams = (newPage: number, newSearch: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", newPage.toString());
+    if (newSearch) {
+      params.set("search", newSearch);
+    } else {
+      params.delete("search");
+    }
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setPage(1);
-    setSearch(searchInput);
+    updateUrlParams(1, searchInput);
   };
 
   const handleClearSearch = () => {
     setSearchInput("");
-    setSearch("");
-    setPage(1);
+    updateUrlParams(1, "");
   };
 
   return (
@@ -160,13 +165,11 @@ export default function ClientTransactionsClient({
                       className="text-center text-default-400 py-10"
                       colSpan={5}
                     >
-                      {loading
-                        ? "Synchronizing secure ledger..."
-                        : "No payment logs located."}
+                      No payment logs located.
                     </Table.Cell>
                   </Table.Row>
                 ) : (
-                  transactions.map((tx) => {
+                  transactions.map((tx: any) => {
                     const initials = tx.lawyerEmail
                       ? tx.lawyerEmail.substring(0, 2).toUpperCase()
                       : "LY";
@@ -216,9 +219,9 @@ export default function ClientTransactionsClient({
 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-default-100">
           <p className="text-[11px] text-default-400">
-            Showing {totalResults === 0 ? 0 : (page - 1) * limit + 1} -{" "}
-            {Math.min(page * limit, totalResults)} of {totalResults} settlement
-            briefs
+            Showing {totalResults === 0 ? 0 : (currentPage - 1) * limit + 1} -{" "}
+            {Math.min(currentPage * limit, totalResults)} of {totalResults}{" "}
+            settlement briefs
           </p>
 
           {totalPages > 1 && (
@@ -226,8 +229,10 @@ export default function ClientTransactionsClient({
               <Pagination.Content>
                 <Pagination.Item>
                   <Pagination.Previous
-                    isDisabled={page === 1}
-                    onPress={() => setPage((p) => p - 1)}
+                    isDisabled={currentPage === 1}
+                    onPress={() =>
+                      updateUrlParams(currentPage - 1, searchInput)
+                    }
                   >
                     <Pagination.PreviousIcon />
                     <span>Previous</span>
@@ -238,8 +243,8 @@ export default function ClientTransactionsClient({
                   (p) => (
                     <Pagination.Item key={p}>
                       <Pagination.Link
-                        isActive={p === page}
-                        onPress={() => setPage(p)}
+                        isActive={p === currentPage}
+                        onPress={() => updateUrlParams(p, searchInput)}
                       >
                         {p}
                       </Pagination.Link>
@@ -249,8 +254,10 @@ export default function ClientTransactionsClient({
 
                 <Pagination.Item>
                   <Pagination.Next
-                    isDisabled={page === totalPages}
-                    onPress={() => setPage((p) => p + 1)}
+                    isDisabled={currentPage === totalPages}
+                    onPress={() =>
+                      updateUrlParams(currentPage + 1, searchInput)
+                    }
                   >
                     <span>Next</span>
                     <Pagination.NextIcon />
