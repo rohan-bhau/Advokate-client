@@ -6,17 +6,6 @@ const client = new MongoClient(process.env.MONGO_URI!);
 const db = client.db(process.env.MONGO_CLIENT_NAME);
 
 export const auth = betterAuth({
-    baseURL: "http://localhost:3000",
-
-  cookies: {
-    sessionToken: {
-      options: {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: false
-      }
-    }
-  },
 
   emailAndPassword: {
     enabled: true,

@@ -56,6 +56,8 @@ export default function LoginPage() {
 
      toast.success(`Welcome back, ${firstName}`);
 
+     router.refresh();
+
      if (userRole === "lawyer") {
        router.push("/dashboard/lawyer");
      } else {

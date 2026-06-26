@@ -60,6 +60,8 @@ export default function RegisterPage() {
        return;
      }
 
+     router.refresh();
+
      if (role === "lawyer") {
        router.push("/dashboard/lawyer");
       //  window.location.reload()
