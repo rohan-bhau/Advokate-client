@@ -3,8 +3,10 @@
 import React from "react";
 import { Button } from "@heroui/react";
 import { motion, Variants } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function HeroContent() {
+  const router = useRouter()
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -60,7 +62,9 @@ export default function HeroContent() {
         variants={itemVariants}
         className="flex flex-wrap items-center gap-5 mt-8"
       >
-        <Button className="font-semibold rounded-md bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors duration-200">
+        <Button
+          onClick={()=>router.push("/browse-lawyer")}
+          className="font-semibold rounded-md bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors duration-200">
           Browse Lawyers
         </Button>
 

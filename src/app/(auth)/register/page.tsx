@@ -78,15 +78,20 @@ export default function RegisterPage() {
  };
 
   const handleGoogleSignUp = async () => {
-    console.log("google button clicked")
-    // try {
-    //   await authClient.signIn.social({
-    //     provider: "google",
-    //     callbackURL: "/dashboard",
-    //   });
-    // } catch (err) {
-    //   console.error("OAuth loop sequence failure:", err);
-    // }
+        try {
+          setIsLoading(true);
+
+          const { error } = await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/",
+          });
+
+          if (error) {
+            toast.error(error.message || "Google sign in failed.");
+          }
+        } finally {
+          setIsLoading(false);
+        }
   };
 
   return (

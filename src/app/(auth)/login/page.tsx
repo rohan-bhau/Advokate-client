@@ -71,17 +71,22 @@ export default function LoginPage() {
    }
  };
 
-  const handleGoogleSignIn = async () => {
-    console.log("google button clicked")
-    // try {
-    //   await authClient.signIn.social({
-    //     provider: "google",
-    //     callbackURL: "/dashboard", 
-    //   });
-    // } catch (err) {
-    //   console.error("Google Auth execution failure:", err);
-    // }
-  };
+const handleGoogleSignIn = async () => {
+    try {
+        setIsLoading(true);
+
+        const { error } = await authClient.signIn.social({
+            provider: "google",
+            callbackURL: "/",
+        });
+
+        if (error) {
+            toast.error(error.message || "Google sign in failed.");
+        }
+    } finally {
+        setIsLoading(false);
+    }
+};
 
   return (
     <main className="min-h-[90vh] w-full flex items-center justify-center bg-background text-foreground px-4 transition-colors duration-200">

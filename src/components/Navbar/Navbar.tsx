@@ -238,7 +238,12 @@ export default function Navbar() {
                 >
                   Login
                 </Button>
-                <Button onClick={() => router.push("/register")}>Register</Button>
+                <Button
+                  onClick={() => router.push("/register")}
+                  className="font-semibold  rounded-lg h-11 px-7 tracking-wide text-sm shadow-sm transition-colors"
+                >
+                  Register
+                </Button>
               </div>
             )}
           </div>

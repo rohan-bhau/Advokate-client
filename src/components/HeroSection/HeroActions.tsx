@@ -3,8 +3,11 @@
 import React from "react";
 import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function HeroActions() {
+  const router = useRouter()
   return (
     <motion.div
       initial={{ opacity: 0, y: 15 }}
@@ -12,11 +15,11 @@ export default function HeroActions() {
       transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
       className="flex flex-wrap items-center gap-4 mt-8"
     >
-      <Button
-        className="font-semibold  bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors"
-      >
-        Browse Lawyers
-      </Button>
+
+        <Button onClick={()=>router.push("/browse-lawyer")} className="font-semibold  bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors">
+          Browse Lawyers
+        </Button>
+
 
       <Button
         variant="outline"
