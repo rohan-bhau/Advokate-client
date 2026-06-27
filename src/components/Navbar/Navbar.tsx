@@ -231,12 +231,15 @@ export default function Navbar() {
                 </Dropdown>
               </div>
             ) : (
-              <Button
-                onClick={() => router.push("/login")}
-                className="font-semibold bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 rounded-lg dark:hover:bg-blue-700 text-white h-11 px-7 tracking-wide text-sm shadow-sm transition-colors"
-              >
-                Login
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => router.push("/login")}
+                  className="font-semibold bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 rounded-lg dark:hover:bg-blue-700 text-white h-11 px-7 tracking-wide text-sm shadow-sm transition-colors"
+                >
+                  Login
+                </Button>
+                <Button onClick={() => router.push("/register")}>Register</Button>
+              </div>
             )}
           </div>
 

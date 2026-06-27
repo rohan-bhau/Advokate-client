@@ -93,12 +93,12 @@ export default function PlansClientView({
               ✓ Your Profile is Active
             </Button>
           ) : (
-            <button
+            <Button
               onClick={handleActivationCheckout}
               className="w-full bg-gradient-to-r  from-amber-500 cursor-pointer to-orange-600 font-extrabold text-white text-xs rounded-xl h-11 shadow-md hover:opacity-95 transition-all"
             >
               Proceed to Secure Payment
-            </button>
+            </Button>
           )}
           <p className="text-[10px] text-default-400 text-center mt-2.5">
             Secured checkout via Stripe. Encrypted connection.

@@ -191,9 +191,9 @@ export default function FeaturedSectionClient({
                         /hr
                       </span>
                     </div>
-                    <span className="text-xs text-default-400/80 font-medium">
+                    {/* <span className="text-xs text-default-400/80 font-medium">
                       {displayHires} hires
-                    </span>
+                    </span> */}
                   </div>
                 </Card>
               </motion.div>
