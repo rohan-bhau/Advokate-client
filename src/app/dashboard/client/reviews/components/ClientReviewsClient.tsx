@@ -127,6 +127,33 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
     }
   };
 
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+
+    pages.push(1);
+
+    if (page > 3) {
+      pages.push("ellipsis");
+    }
+
+    const start = Math.max(2, page - 1);
+    const end = Math.min(totalPages - 1, page + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (page < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   return (
     <div className="space-y-6 w-full">
       <div>
@@ -202,40 +229,65 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
           </div>
 
           {totalPages > 1 && (
-            <Pagination className="justify-center mt-8">
-              <Pagination.Content>
-                <Pagination.Item>
-                  <Pagination.Previous
-                    isDisabled={page === 1}
-                    onPress={() => setPage((p) => p - 1)}
-                  >
-                    <Pagination.PreviousIcon />
-                    <span>Previous</span>
-                  </Pagination.Previous>
-                </Pagination.Item>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (p) => (
-                    <Pagination.Item key={p}>
-                      <Pagination.Link
-                        isActive={p === page}
-                        onPress={() => setPage(p)}
-                      >
-                        {p}
-                      </Pagination.Link>
-                    </Pagination.Item>
-                  ),
-                )}
-                <Pagination.Item>
-                  <Pagination.Next
-                    isDisabled={page === totalPages}
-                    onPress={() => setPage((p) => p + 1)}
-                  >
-                    <span>Next</span>
-                    <Pagination.NextIcon />
-                  </Pagination.Next>
-                </Pagination.Item>
-              </Pagination.Content>
-            </Pagination>
+            <div className="flex items-center justify-center pt-4 w-full border-t border-default-100/60 mt-2 overflow-hidden">
+              <Pagination className="justify-center">
+                <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
+                  <Pagination.Item>
+                    <Pagination.Previous
+                      isDisabled={page === 1}
+                      onPress={() => setPage((p) => Math.max(p - 1, 1))}
+                      className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
+                        page === 1
+                          ? "opacity-30 pointer-events-none text-default-300"
+                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                      }`}
+                    >
+                      <Pagination.PreviousIcon className="size-4 shrink-0" />
+                      <span className="hidden sm:block">Previous</span>
+                    </Pagination.Previous>
+                  </Pagination.Item>
+
+                  {getPageNumbers().map((p, i) =>
+                    p === "ellipsis" ? (
+                      <Pagination.Item key={`ellipsis-${i}`}>
+                        <Pagination.Ellipsis />
+                      </Pagination.Item>
+                    ) : (
+                      <Pagination.Item key={p}>
+                        <Pagination.Link
+                          isActive={p === page}
+                          onPress={() => setPage(p)}
+                          className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center cursor-pointer transition-all ${
+                            page === p
+                              ? "bg-[#1D44B7] text-white rounded-lg shadow-sm hover:bg-[#153491]"
+                              : "text-default-500 hover:bg-default-100 rounded-lg"
+                          }`}
+                        >
+                          {p}
+                        </Pagination.Link>
+                      </Pagination.Item>
+                    ),
+                  )}
+
+                  <Pagination.Item>
+                    <Pagination.Next
+                      isDisabled={page === totalPages}
+                      onPress={() =>
+                        setPage((p) => Math.min(p + 1, totalPages))
+                      }
+                      className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
+                        page === totalPages
+                          ? "opacity-30 pointer-events-none text-default-300"
+                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                      }`}
+                    >
+                      <span className="hidden sm:block">Next</span>
+                      <Pagination.NextIcon className="size-4 shrink-0" />
+                    </Pagination.Next>
+                  </Pagination.Item>
+                </Pagination.Content>
+              </Pagination>
+            </div>
           )}
         </div>
       )}

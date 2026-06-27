@@ -80,13 +80,40 @@ export default function TransactionsClient({
     updateUrlParams(1, "", currentLimit);
   };
 
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+
+    pages.push(1);
+
+    if (currentPage > 3) {
+      pages.push("ellipsis");
+    }
+
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (currentPage < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-start">
         <Link href="/dashboard">
           <Button
             size="sm"
-            variant="secondary"
+            variant="outline"
             className="bg-default-100 hover:bg-default-200 text-default-700 font-semibold rounded-xl text-xs flex items-center gap-2 h-9 px-4 transition-all"
           >
             <LuArrowLeft className="w-4 h-4" />
@@ -150,7 +177,7 @@ export default function TransactionsClient({
 
         <Table
           aria-label="Lawyer Premium Transactions Table"
-          className="border-none"
+          className="border-none shadow-none"
         >
           <Table.ScrollContainer>
             <Table.Content className="min-w-[800px]">
@@ -201,7 +228,7 @@ export default function TransactionsClient({
                               <Avatar.Fallback>{initials}</Avatar.Fallback>
                             </Avatar>
                             <div className="flex flex-col">
-                              <span className="text-xs font-semibold text-foreground">
+                              <span className="text-xs font-semibold text-foreground select-all">
                                 {tx.lawyerEmail}
                               </span>
                               <span className="text-[10px] text-amber-600 font-medium bg-amber-50 dark:bg-amber-950/20 px-1.5 py-0.5 rounded-md mt-0.5 w-max">
@@ -245,9 +272,9 @@ export default function TransactionsClient({
           </Table.ScrollContainer>
         </Table>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-default-100">
-          <div className="flex items-center gap-4 text-[11px] text-default-400">
-            <p>
+        <div className="flex flex-col md:flex-row items-center justify-center md:justify-between gap-4 pt-4 border-t border-default-100 overflow-hidden">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[11px] text-default-400 w-full md:w-auto">
+            <p className="text-center md:text-left">
               Showing{" "}
               {totalResults === 0 ? 0 : (currentPage - 1) * currentLimit + 1} -{" "}
               {Math.min(currentPage * currentLimit, totalResults)} of{" "}
@@ -269,9 +296,10 @@ export default function TransactionsClient({
             </div>
           </div>
 
-          {totalPages > 1 && (
+          <div className="flex justify-center md:justify-end max-w-full">
             <Pagination className="justify-center">
-              <Pagination.Content>
+              <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
+                {/* Previous Button */}
                 <Pagination.Item>
                   <Pagination.Previous
                     isDisabled={currentPage === 1}
@@ -282,20 +310,37 @@ export default function TransactionsClient({
                         currentLimit,
                       )
                     }
+                    className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
+                      currentPage === 1
+                        ? "opacity-30 pointer-events-none text-default-300"
+                        : "text-foreground hover:bg-default-100"
+                    }`}
                   >
-                    <Pagination.PreviousIcon />
-                    <span>Previous</span>
+                    <Pagination.PreviousIcon className="size-4 shrink-0" />
+                    <span className="hidden sm:block">Previous</span>
                   </Pagination.Previous>
                 </Pagination.Item>
 
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (p) => (
+                {/* Dynamic Ellipsis Page Loop */}
+                {getPageNumbers().map((p, i) =>
+                  p === "ellipsis" ? (
+                    <Pagination.Item key={`ellipsis-${i}`}>
+                      <div className="px-2 text-default-400 text-xs select-none">
+                        ...
+                      </div>
+                    </Pagination.Item>
+                  ) : (
                     <Pagination.Item key={p}>
                       <Pagination.Link
                         isActive={p === currentPage}
                         onPress={() =>
                           updateUrlParams(p, searchInput, currentLimit)
                         }
+                        className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center transition-all ${
+                          currentPage === p
+                            ? "bg-[#1D44B7] text-white rounded-lg shadow-sm"
+                            : "text-default-500 hover:bg-default-100 rounded-lg"
+                        }`}
                       >
                         {p}
                       </Pagination.Link>
@@ -303,6 +348,7 @@ export default function TransactionsClient({
                   ),
                 )}
 
+                {/* Next Button */}
                 <Pagination.Item>
                   <Pagination.Next
                     isDisabled={currentPage === totalPages}
@@ -313,14 +359,19 @@ export default function TransactionsClient({
                         currentLimit,
                       )
                     }
+                    className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
+                      currentPage === totalPages
+                        ? "opacity-30 pointer-events-none text-default-300"
+                        : "text-foreground hover:bg-default-100"
+                    }`}
                   >
-                    <span>Next</span>
-                    <Pagination.NextIcon />
+                    <span className="hidden sm:block">Next</span>
+                    <Pagination.NextIcon className="size-4 shrink-0" />
                   </Pagination.Next>
                 </Pagination.Item>
               </Pagination.Content>
             </Pagination>
-          )}
+          </div>
         </div>
       </div>
     </div>

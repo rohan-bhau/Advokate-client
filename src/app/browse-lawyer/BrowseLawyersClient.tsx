@@ -86,6 +86,33 @@ export default function BrowseLawyersClient({
     updateUrlParams({ search: "", page: 1 });
   };
 
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+
+    pages.push(1);
+
+    if (currentPage > 3) {
+      pages.push("ellipsis");
+    }
+
+    const start = Math.max(2, currentPage - 1);
+    const end = Math.min(totalPages - 1, currentPage + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (currentPage < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   return (
     <div className="space-y-8 bg-background text-foreground min-h-screen p-4 sm:p-8">
       {/* Title Header Layout Block */}
@@ -246,40 +273,44 @@ export default function BrowseLawyersClient({
                 <div className="p-4 sm:p-5 flex flex-col gap-4">
                   <div className="flex items-start justify-between w-full gap-2">
                     <div className="flex items-center gap-3 min-w-0">
-                      <Badge.Anchor>
-                        <Avatar className="w-12 h-12 sm:w-14 sm:h-14 border border-default-200 rounded-full overflow-hidden flex-shrink-0">
-                          <Avatar.Image src={lawyer.image} />
-                          <Avatar.Fallback>
-                            {lawyer.professionalName
-                              ? lawyer.professionalName
-                                  .split(" ")
-                                  .map((n: string) => n[0])
-                                  .join("")
-                                  .toUpperCase()
-                                  .slice(0, 2)
-                              : "JD"}
-                          </Avatar.Fallback>
-                        </Avatar>
-                        <Badge
-                          color={
-                            lawyer.availabilityStatus === "Available"
-                              ? "success"
-                              : "danger"
-                          }
-                          placement="bottom-right"
-                          size="sm"
-                        />
-                      </Badge.Anchor>
+                      <div className="flex flex-col md:flex-row md:items-center md:gap-3">
+                        <div>
+                          <Badge.Anchor>
+                            <Avatar className="w-12 h-12 sm:w-14 sm:h-14 border border-default-200 rounded-full overflow-hidden flex-shrink-0">
+                              <Avatar.Image src={lawyer.image} />
+                              <Avatar.Fallback>
+                                {lawyer.professionalName
+                                  ? lawyer.professionalName
+                                      .split(" ")
+                                      .map((n: string) => n[0])
+                                      .join("")
+                                      .toUpperCase()
+                                      .slice(0, 2)
+                                  : "JD"}
+                              </Avatar.Fallback>
+                            </Avatar>
+                            <Badge
+                              color={
+                                lawyer.availabilityStatus === "Available"
+                                  ? "success"
+                                  : "danger"
+                              }
+                              placement="bottom-right"
+                              size="sm"
+                            />
+                          </Badge.Anchor>
+                        </div>
 
-                      <div className="min-w-0 flex flex-col gap-0.5">
-                        <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors truncate">
-                          {lawyer.professionalName}
-                        </h3>
-                        <p className="text-[11px] sm:text-xs font-semibold text-blue-600 dark:text-blue-400 truncate tracking-wide">
-                          {SPECIALIZATIONS.find(
-                            (s) => s.value === lawyer.specialization,
-                          )?.label || lawyer.specialization}
-                        </p>
+                        <div className=" flex flex-col gap-0.5 ">
+                          <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors truncate">
+                            {lawyer.professionalName}
+                          </h3>
+                          <p className="text-[11px] sm:text-xs font-semibold text-blue-600 dark:text-blue-400 truncate tracking-wide">
+                            {SPECIALIZATIONS.find(
+                              (s) => s.value === lawyer.specialization,
+                            )?.label || lawyer.specialization}
+                          </p>
+                        </div>
                       </div>
                     </div>
 
@@ -333,70 +364,80 @@ export default function BrowseLawyersClient({
         )}
       </div>
 
-      {/* Controlled Pagination Loop Trigger */}
-      {totalPages > 1 && (
-        <div className="flex justify-center pt-6">
-          <Pagination>
-            <Pagination.Summary className="text-default-500 text-xs sm:text-sm font-semibold">
-              Showing Page {currentPage} of {totalPages} Results
-            </Pagination.Summary>
-            <Pagination.Content className="bg-content1 border border-default-200 rounded-xl overflow-hidden shadow-sm">
+      <div className="flex flex-col md:flex-row items-center justify-center md:justify-between gap-4 pt-8 w-full border-t border-default-100 overflow-hidden">
+        <p className="text-default-400 text-xs font-semibold text-center md:text-left">
+          Showing Page {currentPage} of {totalPages} Results
+        </p>
+
+        <div className="flex justify-center md:justify-end max-w-full">
+          <Pagination className="justify-center">
+            <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
+              {/* Previous Button */}
               <Pagination.Item>
                 <Pagination.Previous
-                  onClick={() =>
+                  isDisabled={currentPage === 1}
+                  onPress={() =>
                     updateUrlParams({ page: Math.max(currentPage - 1, 1) })
                   }
-                  className={`px-3 py-1.5 text-xs flex items-center gap-1.5 font-bold transition-all ${
+                  className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                     currentPage === 1
-                      ? "opacity-40 pointer-events-none text-default-300"
+                      ? "opacity-30 pointer-events-none text-default-300"
                       : "text-foreground hover:bg-default-100"
                   }`}
                 >
-                  <Pagination.PreviousIcon />
-                  <span>Previous</span>
+                  <Pagination.PreviousIcon className="size-4 shrink-0" />
+                  <span className="hidden sm:block">Previous</span>
                 </Pagination.Previous>
               </Pagination.Item>
 
-              {Array.from({ length: totalPages }).map((_, idx) => {
-                const pageNode = idx + 1;
-                return (
-                  <Pagination.Item key={pageNode}>
+              {/* Dynamic Ellipsis Page Loop */}
+              {getPageNumbers().map((p, i) =>
+                p === "ellipsis" ? (
+                  <Pagination.Item key={`ellipsis-${i}`}>
+                    <div className="px-2 text-default-400 text-xs select-none">
+                      ...
+                    </div>
+                  </Pagination.Item>
+                ) : (
+                  <Pagination.Item key={p}>
                     <Pagination.Link
-                      isActive={currentPage === pageNode}
-                      onClick={() => updateUrlParams({ page: pageNode })}
-                      className={`px-3.5 py-1.5 text-xs font-bold transition-all ${
-                        currentPage === pageNode
+                      isActive={p === currentPage}
+                      onPress={() => updateUrlParams({ page: p })}
+                      className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center transition-all ${
+                        currentPage === p
                           ? "bg-[#1D44B7] text-white rounded-lg shadow-sm"
-                          : "text-default-500 hover:bg-default-100"
+                          : "text-default-500 hover:bg-default-100 rounded-lg"
                       }`}
                     >
-                      {pageNode}
+                      {p}
                     </Pagination.Link>
                   </Pagination.Item>
-                );
-              })}
+                ),
+              )}
 
+              {/* Next Button */}
               <Pagination.Item>
                 <Pagination.Next
-                  onClick={() =>
+                  isDisabled={currentPage === totalPages}
+                  onPress={() =>
                     updateUrlParams({
                       page: Math.min(currentPage + 1, totalPages),
                     })
                   }
-                  className={`px-3 py-1.5 text-xs flex items-center gap-1.5 font-bold transition-all ${
+                  className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                     currentPage === totalPages
-                      ? "opacity-40 pointer-events-none text-default-300"
+                      ? "opacity-30 pointer-events-none text-default-300"
                       : "text-foreground hover:bg-default-100"
                   }`}
                 >
-                  <span>Next</span>
-                  <Pagination.NextIcon />
+                  <span className="hidden sm:block">Next</span>
+                  <Pagination.NextIcon className="size-4 shrink-0" />
                 </Pagination.Next>
               </Pagination.Item>
             </Pagination.Content>
           </Pagination>
         </div>
-      )}
+      </div>
     </div>
   );
 }

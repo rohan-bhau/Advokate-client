@@ -11,13 +11,7 @@ import {
   Modal,
   Surface,
 } from "@heroui/react";
-import {
-  Magnifier,
-  ChevronDown,
-  Check,
-  Xmark,
-  Eye,
-} from "@gravity-ui/icons";
+import { Magnifier, ChevronDown, Check, Xmark, Eye } from "@gravity-ui/icons";
 import toast from "react-hot-toast";
 import { FaTrophy } from "react-icons/fa";
 import { HiOutlineInformationCircle } from "react-icons/hi2";
@@ -149,6 +143,33 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
     return filteredRequests.slice(start, start + itemsPerPage);
   }, [filteredRequests, page, itemsPerPage]);
 
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+
+    pages.push(1);
+
+    if (page > 3) {
+      pages.push("ellipsis");
+    }
+
+    const start = Math.max(2, page - 1);
+    const end = Math.min(totalPages - 1, page + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    if (page < totalPages - 2) {
+      pages.push("ellipsis");
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   return (
     <div className="space-y-6 text-foreground bg-background w-full">
       <div>
@@ -255,27 +276,12 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
 
             <Table.Body>
               {paginatedRequests.length === 0 ? (
-                <Table.Row className="hover:bg-transparent">
-                  <Table.Cell>
-                    <span className="text-2xl block mb-1">📁</span>
-                  </Table.Cell>
-                  <Table.Cell className="font-medium text-default-400 text-xs">
-                    No hiring records or proposals found.
-                  </Table.Cell>
-                  <Table.Cell aria-hidden="true">
-                    <span></span>
-                  </Table.Cell>
-                  <Table.Cell aria-hidden="true">
-                    <span></span>
-                  </Table.Cell>
-                  <Table.Cell aria-hidden="true">
-                    <span></span>
-                  </Table.Cell>
-                  <Table.Cell aria-hidden="true">
-                    <span></span>
-                  </Table.Cell>
-                  <Table.Cell aria-hidden="true">
-                    <span></span>
+                <Table.Row>
+                  <Table.Cell
+                    className="text-center text-default-400 py-10"
+                    colSpan={7}
+                  >
+                    No hiring data found.
                   </Table.Cell>
                 </Table.Row>
               ) : (
@@ -355,6 +361,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                               </Button>
                               <Button
                                 size="sm"
+                                variant="secondary"
                                 isDisabled={actionLoading !== null}
                                 onPress={() =>
                                   handleStatusUpdate(reqId, "accepted")
@@ -377,7 +384,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
 
         <Table.Footer>
           {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 w-full border-t border-default-100/60 mt-2">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 w-full border-t border-default-100/60 mt-2 overflow-hidden">
               <Pagination.Summary className="text-default-400 text-xs font-semibold">
                 Showing {(page - 1) * itemsPerPage + 1}-
                 {Math.min(filteredRequests.length, page * itemsPerPage)} of{" "}
@@ -385,25 +392,37 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
               </Pagination.Summary>
 
               <Pagination className="justify-center">
-                <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm">
+                <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
                   <Pagination.Item>
                     <Pagination.Previous
                       isDisabled={page === 1}
                       onPress={() => setPage((p) => Math.max(p - 1, 1))}
-                      className="cursor-pointer"
+                      className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
+                        page === 1
+                          ? "opacity-30 pointer-events-none text-default-300"
+                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                      }`}
                     >
-                      <Pagination.PreviousIcon />
-                      <span>Previous</span>
+                      <Pagination.PreviousIcon className="size-4 shrink-0" />
+                      <span className="hidden sm:block">Previous</span>
                     </Pagination.Previous>
                   </Pagination.Item>
 
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                    (p) => (
+                  {getPageNumbers().map((p, i) =>
+                    p === "ellipsis" ? (
+                      <Pagination.Item key={`ellipsis-${i}`}>
+                        <Pagination.Ellipsis />
+                      </Pagination.Item>
+                    ) : (
                       <Pagination.Item key={p}>
                         <Pagination.Link
                           isActive={p === page}
                           onPress={() => setPage(p)}
-                          className={`cursor-pointer transition-all ${p === page ? "bg-[#1D44B7] text-white font-bold rounded-lg shadow-sm hover:bg-[#153491]" : "text-default-600 hover:bg-default-100"}`}
+                          className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center cursor-pointer transition-all ${
+                            page === p
+                              ? "bg-[#1D44B7] text-white rounded-lg shadow-sm hover:bg-[#153491]"
+                              : "text-default-500 hover:bg-default-100 rounded-lg"
+                          }`}
                         >
                           {p}
                         </Pagination.Link>
@@ -417,10 +436,14 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                       onPress={() =>
                         setPage((p) => Math.min(p + 1, totalPages))
                       }
-                      className="cursor-pointer"
+                      className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
+                        page === totalPages
+                          ? "opacity-30 pointer-events-none text-default-300"
+                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                      }`}
                     >
-                      <span>Next</span>
-                      <Pagination.NextIcon />
+                      <span className="hidden sm:block">Next</span>
+                      <Pagination.NextIcon className="size-4 shrink-0" />
                     </Pagination.Next>
                   </Pagination.Item>
                 </Pagination.Content>
@@ -430,7 +453,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
         </Table.Footer>
       </Table>
 
-      {/*  Case Details Information Popup Modal */}
+      {/* Case Details Information Popup Modal */}
       <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
         <Modal.Backdrop>
           <Modal.Container placement="auto">
@@ -438,7 +461,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
               <Modal.CloseTrigger />
               <Modal.Header>
                 <Modal.Icon className="bg-blue-500/10 text-[#1D44B7]">
-                  <HiOutlineInformationCircle  className="size-5" />
+                  <HiOutlineInformationCircle className="size-5" />
                 </Modal.Icon>
                 <Modal.Heading>Case File Docket</Modal.Heading>
                 <p className="mt-1 text-xs text-default-400">
