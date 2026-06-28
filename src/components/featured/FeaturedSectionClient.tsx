@@ -116,7 +116,7 @@ export default function FeaturedSectionClient({
               >
                 <Card
                   onClick={() => router.push(`/browse-lawyer/${lawyer._id}`)}
-                  className="bg-[#0D1117]/5 dark:bg-[#0F141C] border border-default-200/60 dark:border-[#1E2530] rounded-2xl transition-all duration-200 cursor-pointer p-5 flex flex-col justify-between gap-4 shadow-sm hover:shadow-md hover:border-default-400/80 dark:hover:border-[#2E3748]"
+                  className="bg-[#0D1117]/5 dark:bg-[#0F141C]  rounded-2xl transition-all duration-200 cursor-pointer p-5 flex flex-col justify-between gap-4 shadow-sm hover:shadow-md hover:border-default-400/80 dark:hover:border-[#2E3748]"
                 >
                   <div className="flex items-center justify-between gap-3 w-full">
                     <div className="flex items-center gap-3 min-w-0">

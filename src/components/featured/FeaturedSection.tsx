@@ -10,7 +10,7 @@ export default async function FeaturedSection() {
 
   const featuredLawyers = data?.featuredLawyers || [];
     const topExperts = data?.topExperts || [];
-    // console.log(topExperts)
+    console.log({topExperts: topExperts, featuredLawyers: featuredLawyers})
 
   return (
     <FeaturedSectionClient

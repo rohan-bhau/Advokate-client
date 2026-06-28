@@ -18,6 +18,7 @@ export default function Footer() {
       { name: "Our Team", href: "#" },
       { name: "Careers", href: "#" },
       { name: "Contact", href: "#" },
+      { name: "Privacy Policy", href: "#" },
     ],
     services: [
       { name: "Browse Lawyers", href: "/browse" },
