@@ -47,13 +47,11 @@ export default function FaqSection() {
   return (
     <section className="w-full py-16 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto space-y-10 overflow-hidden">
       <div className="text-center space-y-2">
-        <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-          QUESTIONS
-        </span>
-        <h2 className="text-3xl md:text-4xl font-black text-foreground tracking-tight mt-0.5">
+        <span className="eyebrow">Questions</span>
+        <h2 className="mt-1.5 font-serif text-3xl md:text-4xl font-bold text-foreground tracking-tight">
           Frequently Asked Questions
         </h2>
-        <p className="text-xs sm:text-sm text-default-400 max-w-md mx-auto font-medium">
+        <p className="text-xs sm:text-sm text-muted max-w-md mx-auto font-medium">
           Got questions about our premier verification ledger, billing, or
           hiring frameworks? We have answers.
         </p>
@@ -70,14 +68,14 @@ export default function FaqSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: false, margin: "-10px" }}
               transition={{ duration: 0.4, delay: index * 0.08 }}
-              className="bg-[#0D1117]/5 dark:bg-[#0F141C] border border-default-200/50 dark:border-[#1E2530] rounded-2xl overflow-hidden transition-colors duration-200 hover:border-default-400/80 dark:hover:border-[#2E3748]"
+              className="card-surface overflow-hidden transition-colors duration-200 hover:border-border-tertiary"
             >
               <button
                 type="button"
                 onClick={() => toggleFaq(index)}
                 className="w-full p-5 flex items-center justify-between gap-4 text-left outline-none cursor-pointer group select-none bg-transparent border-none"
               >
-                <span className="font-semibold text-sm sm:text-base text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-150">
+                <span className="font-semibold text-sm sm:text-base text-foreground group-hover:text-brand-500 dark:group-hover:text-brand-600 transition-colors duration-150">
                   {faq.question}
                 </span>
 
@@ -86,8 +84,8 @@ export default function FaqSection() {
                   transition={{ duration: 0.25, ease: "easeInOut" }}
                   className={`p-1.5 rounded-xl border shrink-0 transition-colors ${
                     isOpen
-                      ? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400"
-                      : "bg-default-100/50 border-default-200 text-default-500 group-hover:text-foreground"
+                      ? "bg-brand-100/15 border-brand-100/40 text-brand-500 dark:text-brand-600"
+                      : "bg-content2/50 border-border text-muted group-hover:text-foreground"
                   }`}
                 >
                   <LuPlus className="size-4" />
@@ -116,7 +114,7 @@ export default function FaqSection() {
                       },
                     }}
                   >
-                    <div className="px-5 pb-5 text-xs sm:text-sm text-default-500 dark:text-default-400 leading-relaxed font-medium">
+                    <div className="px-5 pb-5 text-xs sm:text-sm text-muted leading-relaxed font-medium">
                       {faq.answer}
                     </div>
                   </motion.div>

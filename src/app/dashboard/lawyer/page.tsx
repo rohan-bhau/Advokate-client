@@ -20,7 +20,20 @@ export default async function LawyerDashboardPage() {
     );
   }
 
-  const data = await getLawyerDashboardMetrics(lawyerEmail);
+  let data: any = {
+    metrics: {
+      totalHires: 0,
+      completedCases: 0,
+      pendingRequests: 0,
+      totalEarnings: 0,
+    },
+    recentHires: [],
+  };
+  try {
+    data = await getLawyerDashboardMetrics(lawyerEmail);
+  } catch (err) {
+    console.error("Failed to load lawyer dashboard:", err);
+  }
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

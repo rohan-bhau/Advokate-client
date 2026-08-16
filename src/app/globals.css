@@ -1,2 +1,260 @@
 @import "tailwindcss";
-@import "@heroui/styles"; 
+@import "@heroui/styles";
+
+/* ============================================================
+   Advokate Premium Design System
+   A cohesive navy + gold aesthetic that stays elegant and clean
+   in both light and dark themes.
+   ============================================================ */
+
+/* ---- Theme tokens (light) ---- */
+@layer base {
+  :root,
+  .light,
+  .default,
+  [data-theme="light"],
+  [data-theme="default"] {
+    color-scheme: light;
+
+    --background: #f5f7fb;
+    --foreground: #0d1b31;
+
+    --surface: #ffffff;
+    --surface-secondary: #f1f4fa;
+    --surface-tertiary: #e9eef6;
+
+    --overlay: #ffffff;
+
+    --content1: #ffffff;
+    --content2: #f2f5fb;
+    --content3: #e8edf6;
+
+    --muted: #5d6b84;
+    --border: #e3e9f3;
+    --separator: #e6ebf4;
+
+    --accent: #1d44b7;
+    --accent-foreground: #ffffff;
+    --focus: #1d44b7;
+
+    --brand-50: #eef3ff;
+    --brand-100: #dbe6ff;
+    --brand-500: #1d44b7;
+    --brand-600: #173a9e;
+    --brand-700: #122e7d;
+
+    --gold-300: #e8cd8a;
+    --gold-400: #d9b566;
+    --gold-500: #c39a45;
+    --gold-600: #a87f33;
+
+    /* Legacy HeroUI surfaces mapped to premium values */
+    --content1: #ffffff;
+    --content2: #f2f5fb;
+    --content3: #e8edf6;
+  }
+
+  /* ---- Theme tokens (dark) ---- */
+  .dark,
+  [data-theme="dark"] {
+    color-scheme: dark;
+
+    --background: #080c15;
+    --foreground: #eef2fb;
+
+    --surface: #10151f;
+    --surface-secondary: #161c29;
+    --surface-tertiary: #1c2434;
+
+    --overlay: #121826;
+
+    --content1: #121826;
+    --content2: #171e2d;
+    --content3: #1d2536;
+
+    --muted: #8b97ad;
+    --border: #1e2738;
+    --separator: #1b2333;
+
+    --accent: #4d7cff;
+    --accent-foreground: #ffffff;
+    --focus: #4d7cff;
+
+    --brand-50: #0f1c3d;
+    --brand-100: #14254f;
+    --brand-500: #3b6cff;
+    --brand-600: #5b84ff;
+    --brand-700: #7ba0ff;
+
+    --gold-300: #f0dca4;
+    --gold-400: #e6c87e;
+    --gold-500: #d4ae58;
+    --gold-600: #bf9750;
+  }
+}
+
+/* ---- Expose custom tokens as Tailwind utilities ---- */
+@theme inline {
+  --color-content1: var(--content1);
+  --color-content2: var(--content2);
+  --color-content3: var(--content3);
+
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-700: var(--brand-700);
+
+  --color-gold-300: var(--gold-300);
+  --color-gold-400: var(--gold-400);
+  --color-gold-500: var(--gold-500);
+  --color-gold-600: var(--gold-600);
+
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+}
+
+/* ============================================================
+   Global base polish
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: color-mix(in oklab, var(--accent) 22%, transparent);
+  color: var(--foreground);
+}
+
+/* Elegant thin scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--foreground) 18%, transparent)
+    transparent;
+}
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--foreground) 18%, transparent);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--foreground) 30%, transparent);
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Refined focus ring that follows theme */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Reusable premium helpers
+   ============================================================ */
+
+/* Soft premium card surface (replaces undefined bg-content1) */
+.card-surface {
+  background-color: var(--content1);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow:
+    0 1px 2px 0 rgb(13 27 49 / 0.04),
+    0 8px 24px -12px rgb(13 27 49 / 0.08);
+}
+.dark .card-surface {
+  box-shadow:
+    0 1px 2px 0 rgb(0 0 0 / 0.3),
+    0 12px 32px -16px rgb(0 0 0 / 0.5);
+}
+
+/* Small-caps eyebrow label */
+.eyebrow {
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Gradient brand text */
+.text-gradient-brand {
+  background-image: linear-gradient(
+    100deg,
+    var(--brand-500) 0%,
+    var(--gold-400) 120%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.dark .text-gradient-brand {
+  background-image: linear-gradient(100deg, #7ba0ff 0%, #e6c87e 130%);
+}
+
+/* Subtle grid texture for hero / section backdrops */
+.bg-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+}
+
+/* Radially fading brand glow used behind hero visuals */
+.bg-hero-glow {
+  background:
+    radial-gradient(
+      52% 60% at 72% 40%,
+      color-mix(in oklab, var(--accent) 16%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 50% at 20% 20%,
+      color-mix(in oklab, var(--gold-500) 12%, transparent) 0%,
+      transparent 70%
+    );
+}
+
+/* Gradient hairline separator */
+.hairline-gradient {
+  height: 1px;
+  border: none;
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    color-mix(in oklab, var(--foreground) 12%, transparent),
+    transparent
+  );
+}
+
+/* Soft press animation for interactive cards */
+.card-press {
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+.card-press:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -20px rgb(13 27 49 / 0.25);
+}

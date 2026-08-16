@@ -106,13 +106,13 @@ export default function RegisterPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.4, ease: [0.215, 0.61, 0.355, 1.0] }}
-              className="bg-content1 border border-default-100 dark:border-default-50/50 rounded-3xl overflow-hidden p-8 dark:shadow-none transition-all duration-300"
+              className="card-surface rounded-[1.75rem] overflow-hidden p-8 transition-all duration-300"
             >
               <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold tracking-tight">
+                <h1 className="font-serif text-3xl font-bold tracking-tight">
                   Create an account
                 </h1>
-                <p className="text-sm text-default-400 dark:text-gray-500 mt-2">
+                <p className="text-sm text-muted mt-2">
                   Get started with your credentials
                 </p>
               </div>
@@ -125,7 +125,7 @@ export default function RegisterPage() {
                   type="text"
                   className="w-full"
                 >
-                  <Label className="text-sm font-medium mb-1.5 block text-default-700 dark:text-default-300">
+                  <Label className="text-sm font-medium mb-1.5 block text-foreground">
                     Full Name
                   </Label>
                   <InputGroup className="transition-all duration-200">
@@ -155,7 +155,7 @@ export default function RegisterPage() {
                     return null;
                   }}
                 >
-                  <Label className="text-sm font-medium mb-1.5 block text-default-700 dark:text-default-300">
+                  <Label className="text-sm font-medium mb-1.5 block text-foreground">
                     Email Address
                   </Label>
                   <InputGroup className="transition-all duration-200">
@@ -195,7 +195,7 @@ export default function RegisterPage() {
                     return null;
                   }}
                 >
-                  <Label className="text-sm font-medium mb-1.5 block text-default-700 dark:text-default-300">
+                  <Label className="text-sm font-medium mb-1.5 block text-foreground">
                     Password
                   </Label>
                   <InputGroup className="transition-all duration-200">
@@ -214,7 +214,7 @@ export default function RegisterPage() {
                           isVisible ? "Hide password" : "Show password"
                         }
                         variant="ghost"
-                        className="w-8 h-8 min-w-8 text-default-400 hover:text-default-600 border-none bg-transparent hover:bg-default-100 rounded-lg"
+                        className="w-8 h-8 min-w-8 text-muted hover:text-foreground border-none bg-transparent hover:bg-default-100 rounded-lg"
                         onPress={() => setIsVisible(!isVisible)}
                       >
                         {isVisible ? (
@@ -240,7 +240,7 @@ export default function RegisterPage() {
                     return null;
                   }}
                 >
-                  <Label className="text-sm font-medium mb-1.5 block text-default-700 dark:text-default-300">
+                  <Label className="text-sm font-medium mb-1.5 block text-foreground">
                     Confirm Password
                   </Label>
                   <InputGroup className="transition-all duration-200">
@@ -259,7 +259,7 @@ export default function RegisterPage() {
                           isConfirmVisible ? "Hide password" : "Show password"
                         }
                         variant="ghost"
-                        className="w-8 h-8 min-w-8 text-default-400 hover:text-default-600 border-none bg-transparent hover:bg-default-100 rounded-lg"
+                        className="w-8 h-8 min-w-8 text-muted hover:text-foreground border-none bg-transparent hover:bg-default-100 rounded-lg"
                         onPress={() => setIsConfirmVisible(!isConfirmVisible)}
                       >
                         {isConfirmVisible ? (
@@ -275,7 +275,7 @@ export default function RegisterPage() {
 
                 <Button
                   type="submit"
-                  className="w-full h-12 font-semibold rounded-xl mt-2 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full h-12 font-semibold rounded-xl mt-2 bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/20 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   Continue
                   <ArrowRight className="w-4 h-4" />
@@ -283,11 +283,11 @@ export default function RegisterPage() {
               </Form>
 
               <div className="text-center mt-6 space-y-5">
-                <p className="text-sm text-default-500">
+                <p className="text-sm text-muted">
                   Already have an account?{" "}
                   <Link
                     href="/login"
-                    className="text-primary font-medium hover:underline"
+                    className="text-brand-500 dark:text-brand-600 font-medium hover:underline"
                   >
                     Sign in
                   </Link>
@@ -304,7 +304,7 @@ export default function RegisterPage() {
                 <Button
                   variant="outline"
                   onClick={handleGoogleSignUp}
-                  className="w-full h-12 rounded-xl border-default-200 dark:border-default-100 font-medium hover:bg-default-50/50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                  className="w-full h-12 rounded-xl border-border font-medium hover:bg-surface-secondary/50 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                 >
                   <FcGoogle className="size-5" />
                   Continue with Google
@@ -319,13 +319,13 @@ export default function RegisterPage() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.4, ease: [0.215, 0.61, 0.355, 1.0] }}
-              className="bg-content1 border border-default-100 dark:border-default-50/50 rounded-3xl p-8 dark:shadow-none transition-all duration-300"
+              className="card-surface rounded-[1.75rem] p-8 transition-all duration-300"
             >
               <div className="text-center mb-8">
-                <h1 className="text-2xl font-bold tracking-tight">
+                <h1 className="font-serif text-2xl font-bold tracking-tight">
                   Choose your account type
                 </h1>
-                <p className="text-sm text-default-400 dark:text-gray-500 mt-2">
+                <p className="text-sm text-muted mt-2">
                   Select the role that fits your goals on the portal
                 </p>
               </div>
@@ -335,20 +335,20 @@ export default function RegisterPage() {
                   type="button"
                   disabled={isLoading}
                   onClick={() => handleRoleSelection("client")}
-                  className="w-full p-5 text-left border border-default-200 rounded-2xl bg-transparent hover:bg-default-50 hover:border-primary group transition-all duration-200 flex items-start gap-4 active:scale-[0.99] disabled:opacity-50"
+                  className="w-full p-5 text-left border border-border rounded-2xl bg-transparent hover:bg-surface-secondary hover:border-brand-100 group transition-all duration-200 flex items-start gap-4 active:scale-[0.99] disabled:opacity-50"
                 >
-                  <div className="p-3 bg-default-100 dark:bg-default-50 rounded-xl text-default-600 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+                  <div className="p-3 bg-content2 rounded-xl text-muted group-hover:text-brand-500 group-hover:bg-brand-100/15 transition-colors">
                     {isLoading ? (
-                      <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+                      <div className="animate-spin h-6 w-6 border-2 border-brand-500 border-t-transparent rounded-full" />
                     ) : (
                       <LuUser className="size-6" />
                     )}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-base group-hover:text-primary transition-colors">
+                    <h3 className="font-semibold text-base group-hover:text-brand-500 dark:group-hover:text-brand-600 transition-colors">
                       I am a Client / User
                     </h3>
-                    <p className="text-xs text-default-400 mt-1 leading-relaxed">
+                    <p className="text-xs text-muted mt-1 leading-relaxed">
                       I want to browse legal categories, match with
                       professionals, and find legal representation.
                     </p>
@@ -359,20 +359,20 @@ export default function RegisterPage() {
                   type="button"
                   disabled={isLoading}
                   onClick={() => handleRoleSelection("lawyer")}
-                  className="w-full p-5 text-left border border-default-200 rounded-2xl bg-transparent hover:bg-default-50 hover:border-primary group transition-all duration-200 flex items-start gap-4 active:scale-[0.99] disabled:opacity-50"
+                  className="w-full p-5 text-left border border-border rounded-2xl bg-transparent hover:bg-surface-secondary hover:border-brand-100 group transition-all duration-200 flex items-start gap-4 active:scale-[0.99] disabled:opacity-50"
                 >
-                  <div className="p-3 bg-default-100 dark:bg-default-50 rounded-xl text-default-600 group-hover:text-primary group-hover:bg-primary/10 transition-colors">
+                  <div className="p-3 bg-content2 rounded-xl text-muted group-hover:text-brand-500 group-hover:bg-brand-100/15 transition-colors">
                     {isLoading ? (
-                      <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full" />
+                      <div className="animate-spin h-6 w-6 border-2 border-brand-500 border-t-transparent rounded-full" />
                     ) : (
                       <LuBriefcase className="size-6" />
                     )}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-base group-hover:text-primary transition-colors">
+                    <h3 className="font-semibold text-base group-hover:text-brand-500 dark:group-hover:text-brand-600 transition-colors">
                       I am a Practitioner / Lawyer
                     </h3>
-                    <p className="text-xs text-default-400 mt-1 leading-relaxed">
+                    <p className="text-xs text-muted mt-1 leading-relaxed">
                       I want to claim my practice profile, review case
                       assignments, and handle active consumer clients.
                     </p>
@@ -384,7 +384,7 @@ export default function RegisterPage() {
                 <Button
                   variant="ghost"
                   isDisabled={isLoading}
-                  className="text-xs font-medium text-default-400 hover:text-default-600 border-none bg-transparent"
+                  className="text-xs font-medium text-muted hover:text-foreground border-none bg-transparent"
                   onPress={() => setStep("form")}
                 >
                   Change registration info

@@ -92,13 +92,13 @@ const router = useRouter()
             key={item.label}
             className={`flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold transition-all duration-200 border ${
               isActive
-                ? "bg-default-200/60 dark:bg-zinc-800/80 border-l-3 border-l-blue-600 text-blue-600 dark:text-blue-400 dark:border-zinc-700/50 shadow-sm"
-                : "text-default-500 hover:text-foreground hover:bg-default-100/70 border-transparent"
+                ? "bg-brand-100/20 border-l-3 border-l-brand-500 text-brand-500 dark:text-brand-600 shadow-sm"
+                : "text-muted hover:text-foreground hover:bg-surface-secondary border-transparent"
             }`}
           >
             {getIcon(
               item.iconId,
-              `size-5 shrink-0 transition-colors ${isActive ? "text-blue-600 dark:text-blue-400" : "text-default-400"}`,
+              `size-5 shrink-0 transition-colors ${isActive ? "text-brand-500 dark:text-brand-600" : "text-muted"}`,
             )}
             <span>{item.label}</span>
           </Link>
@@ -108,7 +108,7 @@ const router = useRouter()
   );
 
   const renderSidebarContent = () => (
-    <div className="flex flex-col h-full justify-between bg-content1 text-foreground p-4 w-full">
+    <div className="flex flex-col h-full justify-between bg-surface text-foreground p-4 w-full">
       <div className="w-full">
         {/* Brand Logo Area */}
         <div className="px-2 mb-6 pt-2">
@@ -120,16 +120,16 @@ const router = useRouter()
               height={50}
               className="object-contain"
             />
-            <span className="font-bold text-xl tracking-tight text-[#0B3A75] dark:text-white">
+            <span className="font-bold text-xl tracking-tight text-foreground">
               Advokate
             </span>
           </div>
-          <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold tracking-wide mt-1.5 block uppercase">
+          <span className="text-[10px] text-brand-500 dark:text-brand-600 font-bold tracking-wide mt-1.5 block uppercase">
             {displayRole}
           </span>
         </div>
 
-        <hr className="border-default-100 mb-6 mx-2 opacity-60" />
+        <hr className="border-border mb-6 mx-2 opacity-60" />
 
         {/* Navigation List Stack */}
         {renderNavLinks()}
@@ -210,7 +210,7 @@ const router = useRouter()
   return (
     <>
 
-      <aside className="hidden md:flex bg-content1 w-full h-full overflow-hidden">
+      <aside className="hidden md:flex bg-surface w-full h-full overflow-hidden">
         {renderSidebarContent()}
       </aside>
     </>

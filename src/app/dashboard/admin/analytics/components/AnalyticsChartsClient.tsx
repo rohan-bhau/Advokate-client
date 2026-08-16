@@ -42,7 +42,7 @@ export default function AnalyticsChartsClient({ data }: { data: any }) {
           return (
             <li
               key={`item-${index}`}
-              className="flex items-center gap-3 text-xs font-semibold text-default-600"
+              className="flex items-center gap-3 text-xs font-semibold text-muted"
             >
               <span
                 className="w-3 h-3 rounded-full shrink-0"
@@ -50,7 +50,7 @@ export default function AnalyticsChartsClient({ data }: { data: any }) {
               />
               <span>
                 {entry.value}{" "}
-                <span className="text-default-400 font-medium">
+                <span className="text-muted font-medium">
                   ({percentage}%)
                 </span>
               </span>
@@ -63,8 +63,8 @@ export default function AnalyticsChartsClient({ data }: { data: any }) {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="p-5 bg-content1 rounded-2xl border border-default-100 shadow-sm space-y-2">
-        <h3 className="text-xs font-bold text-default-600 uppercase tracking-wider">
+      <div className="p-5 bg-content1 rounded-2xl border border-border shadow-sm space-y-2">
+        <h3 className="text-xs font-bold text-muted uppercase tracking-wider">
           Revenue Overview
         </h3>
         <div className="h-52">
@@ -96,8 +96,8 @@ export default function AnalyticsChartsClient({ data }: { data: any }) {
         </div>
       </div>
 
-      <div className="p-5 bg-content1 rounded-2xl border border-default-100 shadow-sm space-y-2">
-        <h3 className="text-xs font-bold text-default-600 uppercase tracking-wider">
+      <div className="p-5 bg-content1 rounded-2xl border border-border shadow-sm space-y-2">
+        <h3 className="text-xs font-bold text-muted uppercase tracking-wider">
           Users by Role
         </h3>
         <div className="h-52 flex items-center justify-between">
@@ -127,8 +127,8 @@ export default function AnalyticsChartsClient({ data }: { data: any }) {
         </div>
       </div>
 
-      <div className="p-5 bg-content1 rounded-2xl border border-default-100 shadow-sm space-y-2 md:col-span-2">
-        <h3 className="text-xs font-bold text-default-600 uppercase tracking-wider">
+      <div className="p-5 bg-content1 rounded-2xl border border-border shadow-sm space-y-2 md:col-span-2">
+        <h3 className="text-xs font-bold text-muted uppercase tracking-wider">
           Hires Over Time
         </h3>
         <div className="h-56">

@@ -7,7 +7,12 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function ManageUsersPage() {
-  const users = await getUsers();
+  let users: any[] = [];
+  try {
+    users = (await getUsers()) || [];
+  } catch (err) {
+    console.error("Failed to load users:", err);
+  }
   const currentAdmin = await getUserSession();
 
   return (

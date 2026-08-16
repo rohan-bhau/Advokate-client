@@ -9,8 +9,14 @@ export default async function LawyerHiringRequestsPage() {
   await requireRole("lawyer");
   const user = await getUserSession();
 
-const requests = user?.email ? await getLawyerHiringRequests(user.email) : [];
-    console.log(requests)
+let requests: any[] = [];
+    if (user?.email) {
+      try {
+        requests = (await getLawyerHiringRequests(user.email)) || [];
+      } catch (err) {
+        console.error("Failed to load hiring requests:", err);
+      }
+    }
 
   return (
     <div className="p-4 sm:p-8 max-w-7xl mx-auto min-h-screen bg-background">

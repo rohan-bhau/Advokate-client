@@ -15,17 +15,23 @@ export default function CallToActionSection() {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: false }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="relative w-full rounded-3xl p-8 md:p-12 text-center overflow-hidden border border-default-200/50 dark:border-[#1E2530] bg-gradient-to-br from-blue-50/40 via-indigo-50/20 to-transparent dark:from-[#0F141C] dark:via-[#0D1117] dark:to-[#0A0D14] shadow-sm dark:shadow-2xl"
+        className="relative w-full rounded-[1.75rem] p-8 md:p-14 text-center overflow-hidden border border-border shadow-xl shadow-brand-500/5"
       >
-        <div className="absolute -top-24 -left-24 w-48 h-48 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -right-24 w-48 h-48 bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute inset-0 -z-0 bg-linear-to-br from-brand-500 via-[#1b2f6e] to-[#0a1230]" />
+        <div className="absolute -top-24 -left-24 w-64 h-64 bg-gold-400/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-100/20 rounded-full blur-3xl pointer-events-none" />
+        {/* Fine grid texture */}
+        <div className="absolute inset-0 bg-grid opacity-20" />
 
         <div className="relative z-10 max-w-2xl mx-auto space-y-6">
-          <h2 className="text-3xl md:text-4xl font-black text-foreground tracking-tight">
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-white backdrop-blur">
+            Get started today
+          </span>
+          <h2 className="font-serif text-3xl md:text-5xl font-bold tracking-tight text-white">
             Ready to find your lawyer?
           </h2>
 
-          <p className="text-sm md:text-base text-default-500 dark:text-default-400 font-medium max-w-lg mx-auto leading-relaxed">
+          <p className="text-sm md:text-base text-white/80 font-medium max-w-lg mx-auto leading-relaxed">
             Join thousands of clients who resolved their legal matters with
             expert guidance.
           </p>
@@ -33,7 +39,7 @@ export default function CallToActionSection() {
           <div className="pt-2">
             <Button
               onPress={() => router.push("/register")}
-              className="h-12 px-8 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 shadow-md hover:shadow-lg dark:hover:shadow-blue-500/20 active:scale-[0.98] transition-all duration-200"
+              className="h-12 px-9 rounded-full text-sm font-bold text-[#0a1230] bg-gold-400 hover:bg-gold-300 shadow-lg shadow-black/20 hover:shadow-xl active:scale-[0.98] transition-all duration-200"
             >
               Create Free Account
             </Button>

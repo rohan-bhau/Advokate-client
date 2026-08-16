@@ -6,11 +6,16 @@ import FeaturedSectionClient from "./FeaturedSectionClient";
 export const dynamic = "force-dynamic";
 
 export default async function FeaturedSection() {
-  const data = await getHomeFeaturedData();
+  let data;
+  try {
+    data = await getHomeFeaturedData();
+  } catch (err) {
+    console.error("Failed to load featured lawyers:", err);
+    data = null;
+  }
 
   const featuredLawyers = data?.featuredLawyers || [];
-    const topExperts = data?.topExperts || [];
-    console.log({topExperts: topExperts, featuredLawyers: featuredLawyers})
+  const topExperts = data?.topExperts || [];
 
   return (
     <FeaturedSectionClient

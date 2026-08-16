@@ -47,7 +47,7 @@ export default function LawyerSuccessView({ sessionId, customerEmail }: Props) {
           href="/dashboard/lawyer/manage-legal-profile/new-legal-profile"
           className="w-full"
         >
-          <Button className="w-full bg-[#1D44B7] text-white text-xs font-bold rounded-xl h-11 shadow-md hover:bg-[#153491]">
+          <Button className="w-full bg-brand-500 text-white text-xs font-bold rounded-xl h-11 shadow-md hover:bg-brand-600">
             Create/View My Profile
           </Button>
         </Link>

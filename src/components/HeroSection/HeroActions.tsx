@@ -16,7 +16,7 @@ export default function HeroActions() {
       className="flex flex-wrap items-center gap-4 mt-8"
     >
 
-        <Button onClick={()=>router.push("/browse-lawyer")} className="font-semibold  bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors">
+        <Button onClick={()=>router.push("/browse-lawyer")} className="font-semibold  bg-brand-500 hover:bg-brand-600 dark:bg-brand-500 dark:hover:bg-brand-600 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors">
           Browse Lawyers
         </Button>
 
@@ -27,7 +27,7 @@ export default function HeroActions() {
       >
         {/* Modern play icon geometry */}
         <svg
-          className="w-4 h-4 text-[#1D44B7] dark:text-blue-400 fill-current"
+          className="w-4 h-4 text-brand-500 dark:text-brand-600 fill-current"
           viewBox="0 0 24 24"
         >
           <path d="M8 5v14l11-7z" />

@@ -75,14 +75,14 @@ const handleOpenEditForm = (service: LegalService) => {
           <h1 className="text-3xl font-bold tracking-tight">
             Manage Legal Profile
           </h1>
-          <p className="text-sm text-default-400 mt-1">
+          <p className="text-sm text-muted mt-1">
             Welcome back, {user.name}. Track or scale your litigation services
             workspace.
           </p>
         </div>
         <Button
           onPress={handleOpenAddForm}
-          className="bg-[#1D44B7] text-white font-semibold rounded-xl h-11 px-5 flex items-center gap-2 shadow-md transition-transform active:scale-95"
+          className="bg-brand-500 text-white font-semibold rounded-xl h-11 px-5 flex items-center gap-2 shadow-md transition-transform active:scale-95"
         >
           <Plus className="size-4" />
           Add Legal Service
@@ -98,22 +98,22 @@ const handleOpenEditForm = (service: LegalService) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col items-center justify-center text-center py-20 px-4 bg-default-50/50 dark:bg-default-100/10 border border-dashed border-default-200 rounded-3xl"
+            className="flex flex-col items-center justify-center text-center py-20 px-4 bg-content2/50 dark:bg-content2/10 border border-dashed border-border rounded-3xl"
           >
-            <div className="w-16 h-16 bg-[#1D44B7]/10 rounded-2xl flex items-center justify-center text-[#1D44B7] mb-5">
+            <div className="w-16 h-16 bg-brand-500/10 rounded-2xl flex items-center justify-center text-brand-500 mb-5">
               <Briefcase className="size-8" />
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-default-800">
               No Legal Services Registered
             </h2>
-            <p className="text-sm text-default-400 max-w-md mt-2 leading-relaxed">
+            <p className="text-sm text-muted max-w-md mt-2 leading-relaxed">
               You haven&apos;t added any legal consulting profiles yet. Add your
               professional specialties, set your rates, and showcase your
               portfolio.
             </p>
             <Button
               onPress={handleOpenAddForm}
-              className="bg-[#1D44B7] text-white font-semibold rounded-xl h-11 px-6 mt-6 flex items-center gap-2 shadow-md active:scale-95"
+              className="bg-brand-500 text-white font-semibold rounded-xl h-11 px-6 mt-6 flex items-center gap-2 shadow-md active:scale-95"
             >
               <Plus className="size-4" />
               Setup First Service Profile
@@ -132,14 +132,14 @@ const handleOpenEditForm = (service: LegalService) => {
               return (
                 <Card
                   key={service._id || service.id}
-                  className="bg-content1 border border-default-100 hover:border-blue-200 dark:hover:border-blue-900/50 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
+                  className="bg-content1 border border-border hover:border-brand-100 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
                 >
                   <div className="p-5 sm:p-6 flex flex-col h-full justify-between gap-5">
                     {/* Header Block */}
                     <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                       <div className="flex flex-col sm:flex-row gap-4 items-center sm:items-start text-center sm:text-left w-full">
                         {/* Avatar Box wrapper for stability */}
-                        <div className="w-16 h-16 rounded-xl overflow-hidden border border-default-100 flex-shrink-0">
+                        <div className="w-16 h-16 rounded-xl overflow-hidden border border-border flex-shrink-0">
                           <Image
                             src={service.image}
                             width={80}
@@ -150,10 +150,10 @@ const handleOpenEditForm = (service: LegalService) => {
                         </div>
 
                         <div className="flex-1 min-w-0 w-full">
-                          <h3 className="font-bold text-lg text-[#0B3A75] dark:text-white truncate">
+                          <h3 className="font-bold text-lg text-foreground dark:text-white truncate">
                             {service.professionalName}
                           </h3>
-                          <span className="inline-block px-2.5 py-0.5 mt-1 rounded-full text-xs font-semibold tracking-wide bg-blue-50 dark:bg-blue-950/40 text-[#1D44B7] dark:text-blue-400 border border-blue-100/50 dark:border-blue-900/30">
+                          <span className="inline-block px-2.5 py-0.5 mt-1 rounded-full text-xs font-semibold tracking-wide bg-blue-50 dark:bg-blue-950/40 text-brand-500 dark:text-brand-600 border border-blue-100/50 dark:border-blue-900/30">
                             {SPECIALIZATIONS.find(
                               (s) => s.value === service.specialization,
                             )?.label || service.specialization}
@@ -178,21 +178,21 @@ const handleOpenEditForm = (service: LegalService) => {
 
                     {/* Bio Summary Section */}
                     <div className="space-y-4">
-                      <p className="text-sm text-default-600 dark:text-default-300 font-medium bg-default-50/50 dark:bg-default-100/10 p-3 rounded-xl italic break-words">
+                      <p className="text-sm text-foreground font-medium bg-content2/50 dark:bg-content2/10 p-3 rounded-xl italic break-words">
                         &ldquo;{service.bio}&rdquo;
                       </p>
 
                       {/* Meta Items Row: Mobile friendly adjustments */}
                       <div className="flex flex-col gap-3 pt-1 border-b border-default-50 pb-2 sm:border-none sm:pb-0">
-                        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-default-500">
+                        <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-muted">
                           <div className="flex items-center gap-1.5">
-                            <Clock className="size-4 text-default-400" />
+                            <Clock className="size-4 text-muted" />
                             <span>
                               ${Number(service.hourlyFee).toString()} / hr
                             </span>
                           </div>
                           <div className="flex items-center gap-1.5 max-w-full truncate">
-                            <FileText className="size-4 text-default-400 flex-shrink-0" />
+                            <FileText className="size-4 text-muted flex-shrink-0" />
                             <span className="truncate max-w-[200px] sm:max-w-xs">
                               {service.details}
                             </span>
@@ -238,7 +238,7 @@ const handleOpenEditForm = (service: LegalService) => {
                       />
                       <Button
                         variant="outline"
-                        className="border-default-200 rounded-xl h-10 px-4 text-xs font-bold text-default-600 hover:text-[#1D44B7] flex items-center justify-center gap-1.5 flex-1 sm:flex-initial"
+                        className="border-border rounded-xl h-10 px-4 text-xs font-bold text-muted hover:text-brand-500 flex items-center justify-center gap-1.5 flex-1 sm:flex-initial"
                         onPress={() => handleOpenEditForm(service)}
                       >
                         <Pencil className="size-3.5" />

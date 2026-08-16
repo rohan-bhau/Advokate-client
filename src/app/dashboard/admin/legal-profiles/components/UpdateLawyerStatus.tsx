@@ -53,7 +53,7 @@ export function UpdateLawyerStatus({
         <Button
           size="sm"
           variant="ghost"
-          className="border-default-200 rounded-xl font-bold text-xs px-3 transition-all text-default-600 hover:text-blue-600 hover:bg-blue-50/50"
+          className="border-default-200 rounded-xl font-bold text-xs px-3 transition-all text-default-600 hover:text-brand-500 hover:bg-brand-100/10"
         >
           <Pencil className="size-3.5" />
           Status

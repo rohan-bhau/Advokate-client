@@ -122,7 +122,7 @@ export default function NewLegalProfileFormPageClient({
         <Button
           variant="ghost"
           onPress={() => router.back()}
-          className="border-default-200 text-default-600 hover:text-[#1D44B7] rounded-xl h-10 px-4 text-sm font-semibold flex items-center gap-2 transition-all"
+          className="border-border text-muted hover:text-brand-500 rounded-xl h-10 px-4 text-sm font-semibold flex items-center gap-2 transition-all"
         >
           <ArrowLeft className="size-4" />
           Back to Profiles
@@ -130,7 +130,7 @@ export default function NewLegalProfileFormPageClient({
       </div>
 
       {plan === "free" ? (
-        <Card className="bg-content1 border border-amber-200 dark:border-amber-900/40 p-8 rounded-2xl text-center flex flex-col items-center gap-5 shadow-sm">
+        <Card className="card-surface p-8 rounded-2xl text-center flex flex-col items-center gap-5">
           <div className="w-16 h-16 rounded-full bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900 flex items-center justify-center text-amber-500">
             <Rocket className="w-7 h-7" />
           </div>
@@ -139,7 +139,7 @@ export default function NewLegalProfileFormPageClient({
             <h2 className="text-2xl font-bold text-foreground tracking-tight">
               Activate Your Legal Directory Profile
             </h2>
-            <p className="text-default-500 dark:text-default-400 text-sm max-w-md mx-auto leading-relaxed">
+            <p className="text-muted dark:text-muted text-sm max-w-md mx-auto leading-relaxed">
               To publish your profile and start receiving retainer requests from
               premium clients, you need to complete a{" "}
               <span className="text-amber-600 dark:text-amber-400 font-semibold">
@@ -149,14 +149,14 @@ export default function NewLegalProfileFormPageClient({
             </p>
           </div>
 
-          <div className="w-full bg-default-50 dark:bg-[#121212] border border-default-200 dark:border-neutral-800 p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-1 text-left">
+          <div className="w-full bg-content2 dark:bg-[#121212] border border-border dark:border-neutral-800 p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-1 text-left">
             <div className="flex gap-3 items-center">
               <LuSparkles className="text-amber-500 dark:text-yellow-400 w-5 h-5 shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-foreground">
                   Lifetime Listing Access
                 </p>
-                <p className="text-xs text-default-500 dark:text-default-400">
+                <p className="text-xs text-muted dark:text-muted">
                   No monthly recurring quotas or billing cycles. Pay once, stay
                   verified forever.
                 </p>
@@ -173,9 +173,9 @@ export default function NewLegalProfileFormPageClient({
       ) : (
         <Form
           onSubmit={handleSubmit}
-          className="w-full flex flex-col gap-6 bg-content1 border border-default-100 rounded-3xl p-6 sm:p-8 shadow-xl"
+          className="w-full flex flex-col gap-6 bg-surface border border-border rounded-3xl p-6 sm:p-8 shadow-xl"
         >
-          <legend className="text-xl font-bold text-[#0B3A75] dark:text-white">
+          <legend className="text-xl font-bold text-foreground dark:text-white">
             Register New Legal Service
           </legend>
 
@@ -186,14 +186,14 @@ export default function NewLegalProfileFormPageClient({
                 Profile Image *
               </Label>
               <div
-                className={`relative group cursor-pointer w-32 h-32 rounded-full border-2 ${!logoUrl ? "border-danger" : "border-default-200"}`}
+                className={`relative group cursor-pointer w-32 h-32 rounded-full border-2 ${!logoUrl ? "border-danger" : "border-border"}`}
                 onClick={() => fileInputRef.current?.click()}
               >
                 <Avatar className="w-full h-full">
                   {logoUrl ? (
                     <Avatar.Image src={logoUrl} />
                   ) : (
-                    <div className="flex bg-default-100 w-full h-full items-center justify-center text-default-400">
+                    <div className="flex bg-content2 w-full h-full items-center justify-center text-muted">
                       <TbCloudUpload className="text-3xl" />
                     </div>
                   )}
@@ -316,14 +316,14 @@ export default function NewLegalProfileFormPageClient({
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 border-t border-default-100 pt-5 w-full">
+          <div className="flex justify-end gap-3 border-t border-border pt-5 w-full">
             <Button variant="ghost" onPress={() => router.back()}>
               Cancel
             </Button>
             <Button
               type="submit"
               isDisabled={isLoading || isUploading}
-              className="bg-[#1D44B7] text-white font-semibold rounded-xl px-6 flex items-center gap-2"
+              className="bg-brand-500 text-white font-semibold rounded-xl px-6 flex items-center gap-2"
             >
               {isLoading ? (
                 <>

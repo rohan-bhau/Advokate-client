@@ -20,7 +20,21 @@ export default async function ClientDashboardPage() {
     );
   }
 
-  const data = await getClientDashboardMetrics(clientEmail);
+  let data: any = {
+    metrics: {
+      totalHires: 0,
+      acceptedCases: 0,
+      completedCases: 0,
+      pendingRequests: 0,
+      totalEarnings: 0,
+    },
+    recentHires: [],
+  };
+  try {
+    data = await getClientDashboardMetrics(clientEmail);
+  } catch (err) {
+    console.error("Failed to load client dashboard:", err);
+  }
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

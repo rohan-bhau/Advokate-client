@@ -157,18 +157,18 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
   return (
     <div className="space-y-6 w-full">
       <div>
-        <h1 className="text-xl font-bold text-[#0B3A75] dark:text-white">
+        <h1 className="text-xl font-bold text-foreground dark:text-white">
           My Law Firm Reviews
         </h1>
-        <p className="text-xs text-default-400 mt-1">
+        <p className="text-xs text-muted mt-1">
           Manage and update audits or consulting responses you published.
         </p>
       </div>
 
       {reviews.length === 0 ? (
-        <Card className="text-center py-16 border border-dashed border-default-200 bg-default-50/50 rounded-2xl shadow-sm">
+        <Card className="text-center py-16 border border-dashed border-border bg-content2/50 rounded-2xl shadow-sm">
           <span className="text-3xl">📝</span>
-          <p className="text-xs font-medium text-default-400 mt-3">
+          <p className="text-xs font-medium text-muted mt-3">
             You haven't posted any consulting reviews yet.
           </p>
         </Card>
@@ -178,12 +178,12 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
             {displayedReviews.map((rev) => (
               <Card
                 key={rev._id}
-                className="bg-content1 border border-default-100 p-5 rounded-2xl shadow-sm flex flex-col justify-between space-y-4 hover:border-default-300 transition-all"
+                className="card-surface p-5 rounded-2xl flex flex-col justify-between space-y-4 hover:border-default-300 transition-all"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col max-w-[70%]">
-                      <span className="text-[10px] uppercase font-bold text-blue-600 dark:text-blue-400 tracking-wider">
+                      <span className="text-[10px] uppercase font-bold text-brand-500 dark:text-brand-600 tracking-wider">
                         Recipient Legal Consultant
                       </span>
                       <span className="text-xs font-bold text-default-700 mt-0.5 truncate">
@@ -196,14 +196,14 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                     </div>
                   </div>
 
-                  <div className="bg-default-50 dark:bg-default-100/5 p-3 rounded-xl border border-default-100/50 min-h-[70px]">
-                    <p className="text-xs text-default-600 dark:text-default-300 whitespace-pre-line leading-relaxed break-words">
+                  <div className="bg-content2 dark:bg-content2/5 p-3 rounded-xl border border-border/50 min-h-[70px]">
+                    <p className="text-xs text-foreground whitespace-pre-line leading-relaxed break-words">
                       {rev.comment}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-default-100/60 text-default-400 text-[11px] font-medium">
+                <div className="flex items-center justify-between pt-2 border-t border-border/60 text-muted text-[11px] font-medium">
                   <div className="flex items-center gap-1">
                     <Calendar className="size-3.5" />
                     <span>{formatExactDate(rev.createdAt)}</span>
@@ -212,13 +212,13 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                   <div className="flex items-center gap-2">
                     <Button
                       onClick={() => openEditModal(rev)}
-                      className="h-8 min-w-8 bg-default-100 text-default-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg p-0 transition-all"
+                      className="h-8 min-w-8 bg-content2 text-muted hover:bg-blue-50 hover:text-brand-500 rounded-lg p-0 transition-all"
                     >
                       <Pencil className="size-3.5" />
                     </Button>
                     <Button
                       onClick={() => triggerDeleteDialog(rev._id)}
-                      className="h-8 min-w-8 bg-default-100 text-default-600 hover:bg-danger-50 hover:text-danger-600 rounded-lg p-0 transition-all"
+                      className="h-8 min-w-8 bg-content2 text-muted hover:bg-danger-50 hover:text-danger-600 rounded-lg p-0 transition-all"
                     >
                       <TrashBin className="size-3.5" />
                     </Button>
@@ -229,9 +229,9 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
           </div>
 
           {totalPages > 1 && (
-            <div className="flex items-center justify-center pt-4 w-full border-t border-default-100/60 mt-2 overflow-hidden">
+            <div className="flex items-center justify-center pt-4 w-full border-t border-border/60 mt-2 overflow-hidden">
               <Pagination className="justify-center">
-                <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
+                <Pagination.Content className="card-surface rounded-xl flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
                   <Pagination.Item>
                     <Pagination.Previous
                       isDisabled={page === 1}
@@ -239,7 +239,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                       className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                         page === 1
                           ? "opacity-30 pointer-events-none text-default-300"
-                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                          : "text-foreground hover:bg-content2 cursor-pointer"
                       }`}
                     >
                       <Pagination.PreviousIcon className="size-4 shrink-0" />
@@ -259,8 +259,8 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                           onPress={() => setPage(p)}
                           className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center cursor-pointer transition-all ${
                             page === p
-                              ? "bg-[#1D44B7] text-white rounded-lg shadow-sm hover:bg-[#153491]"
-                              : "text-default-500 hover:bg-default-100 rounded-lg"
+                              ? "bg-brand-500 text-white rounded-lg shadow-sm hover:bg-brand-600"
+                              : "text-muted hover:bg-content2 rounded-lg"
                           }`}
                         >
                           {p}
@@ -278,7 +278,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                       className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                         page === totalPages
                           ? "opacity-30 pointer-events-none text-default-300"
-                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                          : "text-foreground hover:bg-content2 cursor-pointer"
                       }`}
                     >
                       <span className="hidden sm:block">Next</span>
@@ -294,7 +294,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
 
       {isEditOpen && currentReview && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <Card className="bg-content1 border border-default-100 p-6 rounded-2xl w-full max-w-md shadow-xl space-y-4">
+          <Card className="card-surface p-6 rounded-2xl w-full max-w-md shadow-xl space-y-4">
             <div className="flex justify-between items-center">
               <h3 className="text-sm font-bold text-foreground">
                 Modify Client Feedback
@@ -302,7 +302,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
               <button
                 type="button"
                 onClick={() => setIsEditOpen(false)}
-                className="text-default-400 hover:text-foreground text-xs font-bold"
+                className="text-muted hover:text-foreground text-xs font-bold"
               >
                 ✕
               </button>
@@ -310,7 +310,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
 
             <form onSubmit={handleUpdate} className="space-y-4">
               <div className="space-y-1">
-                <span className="text-[11px] font-bold text-default-400 block">
+                <span className="text-[11px] font-bold text-muted block">
                   Edit Assessment Metric
                 </span>
                 <div className="flex items-center gap-1">
@@ -330,7 +330,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
               </div>
 
               <div className="space-y-1">
-                <span className="text-[11px] font-bold text-default-400 block">
+                <span className="text-[11px] font-bold text-muted block">
                   Edit Narrative Statement
                 </span>
                 <TextArea
@@ -352,14 +352,14 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                 <Button
                   type="button"
                   onClick={() => setIsEditOpen(false)}
-                  className="bg-default-100 text-default-600 text-xs font-bold rounded-xl h-9 px-4"
+                  className="bg-content2 text-muted text-xs font-bold rounded-xl h-9 px-4"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   isDisabled={actionLoading}
-                  className={`bg-[#1D44B7] text-white text-xs font-bold rounded-xl h-9 px-4 ${
+                  className={`bg-brand-500 text-white text-xs font-bold rounded-xl h-9 px-4 ${
                     actionLoading ? "opacity-70" : ""
                   }`}
                 >
@@ -375,11 +375,11 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
         <AlertDialog isOpen={isDeleteOpen}>
           <AlertDialog.Backdrop>
             <AlertDialog.Container>
-              <AlertDialog.Dialog className="sm:max-w-[400px] bg-content1 p-6 rounded-2xl border border-default-100 shadow-xl space-y-4 relative">
+              <AlertDialog.Dialog className="sm:max-w-[400px] bg-surface p-6 rounded-2xl border border-border shadow-xl space-y-4 relative">
                 <button
                   type="button"
                   onClick={() => setIsDeleteOpen(false)}
-                  className="absolute right-4 top-4 text-default-400 hover:text-foreground text-xs font-bold focus:outline-none"
+                  className="absolute right-4 top-4 text-muted hover:text-foreground text-xs font-bold focus:outline-none"
                 >
                   ✕
                 </button>
@@ -392,7 +392,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                 </AlertDialog.Header>
 
                 <AlertDialog.Body>
-                  <p className="text-xs text-default-500 leading-relaxed">
+                  <p className="text-xs text-muted leading-relaxed">
                     This will permanently clear your published litigation score
                     feedback statement from the profile registry. This action
                     cannot be undone.
@@ -403,7 +403,7 @@ export default function ClientReviewsClient({ initialReviews }: Props) {
                   <Button
                     type="button"
                     onClick={() => setIsDeleteOpen(false)}
-                    className="bg-default-100 text-default-600 text-xs font-bold rounded-xl h-9 px-4 hover:bg-default-200 transition-all"
+                    className="bg-content2 text-muted text-xs font-bold rounded-xl h-9 px-4 hover:bg-default-200 transition-all"
                   >
                     Cancel
                   </Button>

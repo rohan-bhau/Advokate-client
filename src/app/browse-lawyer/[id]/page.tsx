@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import Link from "next/link";
 import { getUserSession } from "@/lib/core/core";
 import LawyerDetailsClient from "./components/LawyerDetailsClient";
 import { getLawyers, getSingleLawyerProfile } from "@/lib/api/legalProfiles";
@@ -14,19 +15,29 @@ export default async function LawyerDetailPage({ params }: Props) {
   const user = await getUserSession();
   const initialReviewsData = await getLawyerReviews(id).catch(() => []);
 
-  const lawyerData = await getSingleLawyerProfile(id);
-  const allApprovedLawyersResponse = await getLawyers("?limit=100");
-  const allLawyers = allApprovedLawyersResponse?.lawyers || [];
-
-
-  
+  let lawyerData = null;
+  let allLawyers = [];
+  try {
+    const [profile, allApprovedLawyersResponse] = await Promise.all([
+      getSingleLawyerProfile(id),
+      getLawyers("?limit=100"),
+    ]);
+    lawyerData = profile;
+    allLawyers = allApprovedLawyersResponse?.lawyers || [];
+  } catch (err) {
+    console.error("Failed to load lawyer profile:", err);
+  }
 
   let hasApplied = false;
   let hiringStatus = null;
-  if (user?.id) {
-    const statusRes = await checkHiringStatus(id, user.id);
-    hasApplied = statusRes?.hasApplied || false;
-    hiringStatus = statusRes?.status || null;
+  if (user?.id && lawyerData) {
+    try {
+      const statusRes = await checkHiringStatus(id, user.id);
+      hasApplied = statusRes?.hasApplied || false;
+      hiringStatus = statusRes?.status || null;
+    } catch (err) {
+      console.error("Failed to check hiring status:", err);
+    }
   }
 
   const stats = lawyerData?.lawyerEmail
@@ -44,18 +55,42 @@ export default async function LawyerDetailPage({ params }: Props) {
       ? lawyerData._id.$oid
       : lawyerData?._id || id;
 
-  const filteredRelatedLawyers = allLawyers
-    .filter((l: any) => {
-      const lIdStr =
-        l._id && typeof l._id === "object" && "$oid" in l._id
-          ? l._id.$oid
-          : l._id || l.id;
-      return (
-        l.specialization === lawyerData?.specialization &&
-        lIdStr !== currentLawyerIdStr
-      );
-    })
-    .slice(0, 4);
+  const filteredRelatedLawyers = lawyerData
+    ? allLawyers
+        .filter((l: any) => {
+          const lIdStr =
+            l._id && typeof l._id === "object" && "$oid" in l._id
+              ? l._id.$oid
+              : l._id || l.id;
+          return (
+            l.specialization === lawyerData?.specialization &&
+            lIdStr !== currentLawyerIdStr
+          );
+        })
+        .slice(0, 4)
+    : [];
+
+  if (!lawyerData) {
+    return (
+      <div className="min-h-[70vh] bg-background text-foreground flex items-center justify-center px-4">
+        <div className="card-surface max-w-md w-full p-8 text-center flex flex-col items-center gap-5">
+          <div className="w-14 h-14 rounded-full bg-content2 flex items-center justify-center text-2xl">
+            ⚖️
+          </div>
+          <div className="space-y-1.5">
+            <h2 className="text-xl font-bold">Lawyer not found</h2>
+            <p className="text-sm text-muted max-w-xs mx-auto leading-relaxed">
+              We couldn't load this profile. It may be unavailable or the
+              service is temporarily offline.
+            </p>
+          </div>
+          <Link href="/browse-lawyer" className="w-full block bg-brand-500 text-white text-xs font-bold rounded-xl h-10 shadow-sm hover:bg-brand-600 flex items-center justify-center transition-all">
+            Browse Lawyers
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground py-10 px-4 sm:px-6 lg:px-8 space-y-10">

@@ -12,8 +12,12 @@ export default async function ManageLegalProfilePage() {
     email: user?.email || "",
     role: user?.role || "lawyer",
   };
-  const profiles = await getLawyerProfiles(user!.id)
-  // console.log(profiles)
+  let profiles: any[] = [];
+  try {
+    profiles = (await getLawyerProfiles(user!.id)) || [];
+  } catch (err) {
+    console.error("Failed to load lawyer profiles:", err);
+  }
 
   return (
     <main className="max-w-6xl mx-auto px-4 py-10 text-foreground bg-background min-h-[90vh]">

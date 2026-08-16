@@ -6,7 +6,16 @@ import { getAnalyticsData } from "@/lib/api/analytics";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const data = await getAnalyticsData();
+  let data: any = {
+    cards: { totalUsers: 0, totalLawyers: 0, totalHires: 0, totalRevenue: 0 },
+    recentActivities: [],
+    revenueOverview: [],
+  };
+  try {
+    data = await getAnalyticsData();
+  } catch (err) {
+    console.error("Failed to load admin dashboard:", err);
+  }
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

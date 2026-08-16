@@ -74,14 +74,14 @@ const handleHiringCheckout = async () => {
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <Modal.Backdrop>
         <Modal.Container placement="auto">
-          <Modal.Dialog className="sm:max-w-lg bg-content1 text-foreground border border-default-100 rounded-2xl">
+          <Modal.Dialog className="sm:max-w-lg bg-surface text-foreground border border-border rounded-3xl">
             <Modal.CloseTrigger />
             <Modal.Header>
-              <Modal.Icon className="bg-blue-500/10 text-[#1D44B7]">
+              <Modal.Icon className="bg-brand-100/15 text-brand-500">
                 <CircleInfo className="size-5" />
               </Modal.Icon>
               <Modal.Heading>Retainer Proposal Details</Modal.Heading>
-              <p className="mt-1 text-xs text-default-400">
+              <p className="mt-1 text-xs text-muted">
                 Review your contract status and case documentation parameters.
               </p>
             </Modal.Header>
@@ -89,9 +89,9 @@ const handleHiringCheckout = async () => {
             <Modal.Body className="p-6 space-y-4">
               <Surface variant="default" className="space-y-4">
                 {/* Lawyer Profile Metadata */}
-                <div className="grid grid-cols-2 gap-4 bg-default-50 dark:bg-default-100/5 p-3 rounded-xl border border-default-100/50">
+                <div className="grid grid-cols-2 gap-4 bg-content2 dark:bg-content2/5 p-3 rounded-xl border border-border/50">
                   <div>
-                    <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                       Attorney Name
                     </span>
                     <span className="text-xs font-semibold text-foreground">
@@ -99,7 +99,7 @@ const handleHiringCheckout = async () => {
                     </span>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                       Specialization
                     </span>
                     <span className="text-xs font-semibold text-foreground truncate block capitalize">
@@ -107,7 +107,7 @@ const handleHiringCheckout = async () => {
                     </span>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                       Proposal Status
                     </span>
                     <Chip
@@ -120,7 +120,7 @@ const handleHiringCheckout = async () => {
                     </Chip>
                   </div>
                   <div>
-                    <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                       Payment Status
                     </span>
                     <Chip
@@ -138,25 +138,25 @@ const handleHiringCheckout = async () => {
 
                 {/* Case Parameters */}
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                     Case Title / Primary Issue
                   </span>
-                  <h3 className="text-sm font-bold text-foreground bg-background p-2.5 rounded-lg border border-default-200">
+                  <h3 className="text-sm font-bold text-foreground bg-background p-2.5 rounded-lg border border-border">
                     {request.caseTitle}
                   </h3>
                 </div>
 
                 <div className="space-y-1">
-                  <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                  <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                     Litigation Narrative
                   </span>
-                  <p className="text-xs text-default-600 dark:text-default-300 leading-relaxed bg-background p-3 rounded-xl border border-default-200 whitespace-pre-line max-h-36 overflow-y-auto">
+                  <p className="text-xs text-foreground leading-relaxed bg-background p-3 rounded-xl border border-border whitespace-pre-line max-h-36 overflow-y-auto">
                     {request.caseDescription}
                   </p>
                 </div>
 
                 {/* Meta Meta Details */}
-                <div className="flex items-center justify-between text-xs text-default-400 pt-2 border-t border-default-100/50">
+                <div className="flex items-center justify-between text-xs text-muted pt-2 border-t border-border/50">
                   <span className="flex items-center gap-1">
                     <Clock className="size-3.5" /> Rate:{" "}
                     <b>${request.hourlyFee}/hr</b>
@@ -184,7 +184,7 @@ const handleHiringCheckout = async () => {
                 request.paymentStatus === "pending" && (
                   <Button
                     onPress={handleHiringCheckout}
-                    className="bg-[#1D44B7] text-white text-xs font-bold rounded-xl px-5 h-10 shadow-sm hover:bg-[#153491]"
+                    className="bg-brand-500 text-white text-xs font-bold rounded-xl px-5 h-10 shadow-sm hover:bg-brand-600"
                   >
                     Pay Attorney Retainer
                   </Button>

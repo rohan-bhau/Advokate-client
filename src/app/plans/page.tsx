@@ -26,7 +26,7 @@ export default async function PlansPage() {
           </div>
           <Link
             href="/login"
-            className="w-full block bg-[#1D44B7] text-white text-xs font-bold rounded-xl h-10 shadow-sm hover:bg-[#153491] flex items-center justify-center transition-all"
+            className="w-full block bg-brand-500 text-white text-xs font-bold rounded-xl h-10 shadow-sm hover:bg-brand-600 flex items-center justify-center transition-all"
           >
             Sign In to Account
           </Link>

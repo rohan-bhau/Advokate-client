@@ -109,8 +109,8 @@ export default function LawyerReviewsSection({
   const canLeaveReview = currentUser && hiringStatus === "accepted";
 
   return (
-    <Card className="bg-content1 border border-default-100 p-5 rounded-2xl shadow-sm space-y-5 w-full">
-      <h3 className="text-base font-bold text-[#0B3A75] dark:text-white">
+    <Card className="card-surface p-6 rounded-2xl space-y-5 w-full">
+      <h3 className="text-base font-bold text-foreground">
         Client Reviews
       </h3>
 
@@ -118,9 +118,9 @@ export default function LawyerReviewsSection({
       {canLeaveReview ? (
         <form
           onSubmit={handleReviewSubmit}
-          className="space-y-4 bg-default-50 dark:bg-default-100/5 p-4 rounded-xl border border-default-200 w-full"
+          className="space-y-4 bg-content2 p-4 rounded-xl border border-border w-full"
         >
-          <span className="text-xs font-bold text-default-700 block">
+          <span className="text-xs font-bold text-foreground block">
             Provide Quality Evaluation
           </span>
 
@@ -135,7 +135,7 @@ export default function LawyerReviewsSection({
                 <Star
                   className={`size-5 ${
                     star <= rating
-                      ? "text-amber-500 fill-amber-500"
+                      ? "text-gold-500 fill-gold-500"
                       : "text-default-300"
                   }`}
                 />
@@ -164,10 +164,10 @@ export default function LawyerReviewsSection({
             <Button
               type="submit"
               isDisabled={submitLoading}
-              className={`bg-[#1D44B7] text-white text-xs font-bold rounded-xl px-5 h-10 shadow-sm transition-all ${
+              className={`bg-brand-500 text-white text-xs font-bold rounded-xl px-5 h-10 shadow-sm transition-all ${
                 submitLoading
                   ? "opacity-70 cursor-not-allowed"
-                  : "hover:bg-[#153491]"
+                  : "hover:bg-brand-600"
               }`}
             >
               {submitLoading ? (
@@ -182,7 +182,7 @@ export default function LawyerReviewsSection({
           </div>
         </form>
       ) : (
-        <div className="flex items-center gap-2 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-600 dark:text-amber-400 text-xs font-medium">
+        <div className="flex items-center gap-2 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-gold-600 dark:text-gold-400 text-xs font-medium">
           <BsInfoCircle className="size-4 flex-shrink-0" />
           <span>
             Only client retainers accepted by this attorney can publish reviews.
@@ -192,7 +192,7 @@ export default function LawyerReviewsSection({
 
       <div className="max-h-[400px] overflow-y-auto space-y-4 pr-1.5 custom-scrollbar w-full">
         {initialReviews.length === 0 ? (
-          <div className="text-center py-10 border border-dashed border-default-200 rounded-xl bg-default-50/30">
+          <div className="text-center py-10 border border-dashed border-border rounded-xl bg-content2/50">
             <p className="text-xs text-default-400 font-medium">
               No reviews recorded yet for this legal consultant.
             </p>
@@ -208,7 +208,7 @@ export default function LawyerReviewsSection({
               </Avatar>
 
               <div className="flex flex-col max-w-[85%] sm:max-w-[90%]">
-                <div className="bg-neutral-100 dark:bg-neutral-900 px-3 py-2 rounded-2xl border border-default-100/50">
+                <div className="bg-content2 px-3 py-2 rounded-2xl border border-border">
                   <div className="flex flex-col mb-0.5">
                     <span className="text-xs font-bold text-foreground leading-tight">
                       {rev.clientName}
@@ -217,16 +217,16 @@ export default function LawyerReviewsSection({
                       {rev.clientEmail}
                     </span> */}
                   </div>
-                  <p className="text-xs text-default-700 dark:text-default-300 whitespace-pre-line leading-relaxed break-words mt-1">
+                  <p className="text-xs text-muted whitespace-pre-line leading-relaxed break-words mt-1">
                     {rev.comment}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-3 px-2 mt-1 text-[10px] text-default-400 font-medium">
+                <div className="flex items-center gap-3 px-2 mt-1 text-[10px] text-muted font-medium">
                   <span>{formatExactDate(rev.createdAt)}</span>
                   <span>•</span>
-                  <div className="flex items-center gap-0.5 text-amber-500 font-bold">
-                    <Star className="size-3 fill-amber-500" />
+                  <div className="flex items-center gap-0.5 text-gold-500 font-bold">
+                    <Star className="size-3 fill-gold-500" />
                     <span>{rev.rating}.0</span>
                   </div>
                 </div>

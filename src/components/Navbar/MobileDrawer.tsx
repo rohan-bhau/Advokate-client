@@ -200,7 +200,7 @@ if (user?.email) {
                       height={50}
                       className="object-contain"
                     />
-                    <span className="font-bold text-xl tracking-tight text-[#0B3A75] dark:text-white">
+                    <span className="font-bold text-xl tracking-tight text-foreground dark:text-white">
                       Advokate
                     </span>
                   </div>
@@ -223,8 +223,8 @@ if (user?.email) {
                           key={item.label}
                           className={`flex items-center gap-3 w-full h-12 px-4 rounded-xl text-sm font-semibold tracking-wide transition-all ${
                             isActive
-                              ? "bg-blue-50/70 text-[#1D44B7]  border-l-3 border-[#1A73E8] dark:bg-blue-500/10 dark:text-blue-400 shadow-sm"
-                              : "text-[#5C6E85] dark:text-default-400 hover:bg-blue-50/70 dark:hover:bg-blue-500/10 hover:text-[#1D44B7] dark:hover:text-blue-400"
+                              ? "bg-brand-100/20 text-brand-500 dark:text-brand-600 border-l-3 border-l-brand-500 shadow-sm"
+                              : "text-muted hover:bg-surface-secondary hover:text-foreground"
                           }`}
                         >
                           <item.icon className="size-5 text-muted" />
@@ -235,7 +235,7 @@ if (user?.email) {
                   </nav>
                 </div>
 
-                <div className="mt-auto bg-default-50 dark:bg-default-100/50 rounded-2xl p-4 flex flex-col gap-4">
+                <div className="mt-auto bg-surface-secondary dark:bg-surface-tertiary/60 rounded-2xl p-4 flex flex-col gap-4">
                   {user ? (
                     <div className="flex items-center justify-between w-full">
                       {/* Left Side: Consolidated Info Sub-wrapper */}
@@ -307,7 +307,7 @@ if (user?.email) {
                     </div>
                   ) : (
                     <Button
-                      className="w-full h-11 rounded-xl font-semibold bg-[#1D44B7] text-white active:scale-[0.98]"
+                      className="w-full h-11 rounded-xl font-semibold bg-brand-500 hover:bg-brand-600 text-white active:scale-[0.98]"
                       onPress={() => {
                         router.push("/login");
                       }}

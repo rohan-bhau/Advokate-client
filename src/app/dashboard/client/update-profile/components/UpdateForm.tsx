@@ -108,7 +108,7 @@ export default function UpdateForm() {
         <Button
           variant="ghost"
           onPress={() => router.back()}
-          className="border-neutral-200/80 dark:border-neutral-800/80 text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-white rounded-full h-10 px-5 text-xs font-semibold flex items-center gap-2 transition-all backdrop-blur-md"
+          className="border-neutral-200/80 dark:border-neutral-800/80 text-neutral-600 dark:text-neutral-400 hover:text-black dark:hover:text-foreground rounded-full h-10 px-5 text-xs font-semibold flex items-center gap-2 transition-all backdrop-blur-md"
         >
           <ArrowLeft className="size-4" />
           Back to Console

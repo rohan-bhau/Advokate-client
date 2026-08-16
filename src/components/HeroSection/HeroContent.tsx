@@ -4,28 +4,29 @@ import React from "react";
 import { Button } from "@heroui/react";
 import { motion, Variants } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { ShieldCheck } from "@gravity-ui/icons";
 
 export default function HeroContent() {
-  const router = useRouter()
+  const router = useRouter();
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
+        staggerChildren: 0.14,
+        delayChildren: 0.08,
       },
     },
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 25 },
+    hidden: { opacity: 0, y: 26 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         duration: 0.6,
-        ease: [0.16, 1, 0.3, 1] as const, 
+        ease: [0.16, 1, 0.3, 1] as const,
       },
     },
   };
@@ -37,46 +38,74 @@ export default function HeroContent() {
       animate="visible"
       className="max-w-2xl text-left"
     >
-      {/* 1. Main Heading Layer */}
+      {/* Eyebrow badge */}
+      <motion.span
+        variants={itemVariants}
+        className="inline-flex items-center gap-2 rounded-full border border-brand-100 bg-brand-50/80 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-brand-500 dark:border-brand-100/20 dark:bg-brand-100/10 dark:text-brand-700"
+      >
+        <ShieldCheck className="size-3.5" />
+        Verified legal professionals
+      </motion.span>
+
+      {/* Main heading */}
       <motion.h1
         variants={itemVariants}
-        className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-[#1E3A60] dark:text-white leading-[1.15] tracking-tight drop-shadow-sm"
+        className="mt-5 font-serif text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl"
       >
-        Find & Hire <br />
-        <span className="text-[#1D44B7] dark:text-blue-500 font-sans tracking-wide block mt-2">
+        Find &amp; Hire
+        <br />
+        <span className="text-gradient-brand mt-1 block font-sans font-extrabold tracking-tight">
           Expert Legal Counsel
         </span>
       </motion.h1>
 
-      {/* 2. Content Description Subtext */}
+      {/* Subtext */}
       <motion.p
         variants={itemVariants}
-        className="mt-6 text-base sm:text-lg text-[#5C6E85] dark:text-default-400 font-medium max-w-lg leading-relaxed"
+        className="mt-6 max-w-lg text-base font-medium leading-relaxed text-muted sm:text-lg"
       >
         Connecting clients with verified and experienced lawyers for all your
-        legal needs.
+        legal needs — with secure, transparent hiring and payments.
       </motion.p>
 
-      {/* 3. Staggered Button Group Elements */}
+      {/* CTAs */}
       <motion.div
         variants={itemVariants}
-        className="flex flex-wrap items-center gap-5 mt-8"
+        className="mt-9 flex flex-wrap items-center gap-4"
       >
         <Button
-          onClick={()=>router.push("/browse-lawyer")}
-          className="font-semibold rounded-md bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-12 px-8 tracking-wide text-sm shadow-md transition-colors duration-200">
+          onClick={() => router.push("/browse-lawyer")}
+          className="h-12 rounded-full bg-brand-500 px-8 text-sm font-semibold tracking-wide text-white shadow-lg shadow-brand-500/25 transition-all hover:bg-brand-600 hover:shadow-xl hover:shadow-brand-500/30 active:scale-[0.98]"
+        >
           Browse Lawyers
         </Button>
 
         <Button
           variant="outline"
-          className="font-semibold border-none rounded-md text-[#1D44B7] dark:text-blue-400 hover:bg-blue-50/50 dark:hover:bg-default-100 h-12 px-5 text-sm flex items-center gap-2 transition-colors duration-200"
+          onClick={() => router.push("/register")}
+          className="h-12 rounded-full border border-border bg-surface/60 px-6 text-sm font-semibold text-foreground backdrop-blur transition-colors hover:border-brand-100 hover:bg-surface"
         >
-          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
-            <path d="M8 5v14l11-7z" />
-          </svg>
-          How it works
+          Get Started
         </Button>
+      </motion.div>
+
+      {/* Trust stats */}
+      <motion.div
+        variants={itemVariants}
+        className="mt-12 grid max-w-md grid-cols-3 gap-4"
+      >
+        {[
+          { value: "500+", label: "Verified Lawyers" },
+          { value: "4.9/5", label: "Average Rating" },
+          { value: "100%", label: "Secure Payments" },
+        ].map((stat) => (
+          <div key={stat.label} className="flex flex-col gap-1">
+            <span className="text-2xl font-extrabold text-foreground">
+              {stat.value}
+            </span>
+            <span className="text-xs font-medium text-muted">{stat.label}</span>
+          </div>
+        ))}
       </motion.div>
     </motion.div>
   );

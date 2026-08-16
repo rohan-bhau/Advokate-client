@@ -117,13 +117,11 @@ export default function BrowseLawyersClient({
     <div className="space-y-8 bg-background text-foreground min-h-screen p-4 sm:p-8">
       {/* Title Header Layout Block */}
       <div>
-        <span className="text-xs font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-          Directory
-        </span>
-        <h1 className="text-4xl font-extrabold tracking-tight mt-1 text-foreground">
+        <span className="eyebrow">Directory</span>
+        <h1 className="mt-1.5 font-serif text-4xl font-bold tracking-tight text-foreground">
           Browse Lawyers
         </h1>
-        <p className="text-sm text-default-400 mt-1">
+        <p className="text-sm text-muted mt-1">
           {totalResults} attorneys available found
         </p>
       </div>
@@ -131,7 +129,7 @@ export default function BrowseLawyersClient({
       {/* Synchronized Filtering Interface Component */}
       <form
         onSubmit={handleSearchSubmit}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center bg-content1 border border-default-200/60 p-4 rounded-2xl shadow-md"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-center card-surface p-4 rounded-2xl shadow-md"
       >
         <div className="relative w-full lg:col-span-2">
           <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
@@ -142,13 +140,13 @@ export default function BrowseLawyersClient({
             placeholder="Search by name or specialization..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full h-12 rounded-xl border border-default-200 bg-background pl-11 pr-10 text-sm text-foreground outline-none focus:border-blue-500 transition-all"
+            className="w-full h-12 rounded-xl border border-border bg-background pl-11 pr-10 text-sm text-foreground outline-none focus:border-brand-100 transition-all"
           />
           {searchInput && (
             <button
               type="button"
               onClick={handleClearSearch}
-              className="absolute inset-y-0 right-4 flex items-center text-default-400 hover:text-foreground text-xs"
+              className="absolute inset-y-0 right-4 flex items-center text-muted hover:text-foreground text-xs"
             >
               Clear
             </button>
@@ -255,8 +253,8 @@ export default function BrowseLawyersClient({
       {/* Grid Architecture Stack */}
       <div className="w-full">
         {lawyers.length === 0 ? (
-          <div className="text-center py-24 border border-dashed border-default-200 bg-content1/50 rounded-3xl">
-            <p className="text-default-500 font-medium text-lg">
+          <div className="text-center py-24 border border-dashed border-border bg-content1/50 rounded-3xl">
+            <p className="text-muted font-medium text-lg">
               No legal counselors found matching criteria.
             </p>
           </div>
@@ -268,7 +266,7 @@ export default function BrowseLawyersClient({
                 onClick={() =>
                   router.push(`/browse-lawyer/${lawyer._id || lawyer.id}`)
                 }
-                className="bg-content1 border border-default-100 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-2 rounded-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between overflow-hidden"
+                className="card-surface card-press hover:border-brand-100 rounded-2xl cursor-pointer group flex flex-col justify-between overflow-hidden"
               >
                 <div className="p-4 sm:p-5 flex flex-col gap-4">
                   <div className="flex items-start justify-between w-full gap-2">
@@ -302,10 +300,10 @@ export default function BrowseLawyersClient({
                         </div>
 
                         <div className=" flex flex-col gap-0.5 ">
-                          <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors truncate">
+                          <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-brand-500 dark:group-hover:text-brand-600 transition-colors truncate">
                             {lawyer.professionalName}
                           </h3>
-                          <p className="text-[11px] sm:text-xs font-semibold text-blue-600 dark:text-blue-400 truncate tracking-wide">
+                          <p className="text-[11px] sm:text-xs font-semibold text-brand-500 dark:text-brand-600 truncate tracking-wide">
                             {SPECIALIZATIONS.find(
                               (s) => s.value === lawyer.specialization,
                             )?.label || lawyer.specialization}
@@ -345,7 +343,7 @@ export default function BrowseLawyersClient({
                   </div>
                 </div>
 
-                <Card.Footer className="border-t border-default-100 bg-default-50/50 px-4 sm:px-5 py-3 flex items-center justify-between gap-2 mt-auto w-full">
+                <Card.Footer className="border-t border-border bg-content2/50 px-4 sm:px-5 py-3 flex items-center justify-between gap-2 mt-auto w-full">
                   <div className="flex items-baseline gap-0.5">
                     <span className="text-base sm:text-lg font-extrabold text-foreground">
                       ${Number(lawyer.hourlyFee).toString()}
@@ -354,7 +352,7 @@ export default function BrowseLawyersClient({
                       /hr
                     </span>
                   </div>
-                  <span className="text-[11px] font-bold text-default-400 group-hover:text-blue-500 transition-colors flex items-center gap-1">
+                  <span className="text-[11px] font-bold text-default-400 group-hover:text-brand-500 transition-colors flex items-center gap-1">
                     View Profile &rarr;
                   </span>
                 </Card.Footer>
@@ -371,7 +369,7 @@ export default function BrowseLawyersClient({
 
         <div className="flex justify-center md:justify-end max-w-full">
           <Pagination className="justify-center">
-            <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
+            <Pagination.Content className="bg-surface border border-border rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
               {/* Previous Button */}
               <Pagination.Item>
                 <Pagination.Previous
@@ -382,7 +380,7 @@ export default function BrowseLawyersClient({
                   className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                     currentPage === 1
                       ? "opacity-30 pointer-events-none text-default-300"
-                      : "text-foreground hover:bg-default-100"
+                      : "text-foreground hover:bg-surface-secondary"
                   }`}
                 >
                   <Pagination.PreviousIcon className="size-4 shrink-0" />
@@ -405,8 +403,8 @@ export default function BrowseLawyersClient({
                       onPress={() => updateUrlParams({ page: p })}
                       className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center transition-all ${
                         currentPage === p
-                          ? "bg-[#1D44B7] text-white rounded-lg shadow-sm"
-                          : "text-default-500 hover:bg-default-100 rounded-lg"
+                          ? "bg-brand-500 text-white rounded-lg shadow-sm"
+                          : "text-muted hover:bg-surface-secondary rounded-lg"
                       }`}
                     >
                       {p}
@@ -427,7 +425,7 @@ export default function BrowseLawyersClient({
                   className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                     currentPage === totalPages
                       ? "opacity-30 pointer-events-none text-default-300"
-                      : "text-foreground hover:bg-default-100"
+                      : "text-foreground hover:bg-surface-secondary"
                   }`}
                 >
                   <span className="hidden sm:block">Next</span>

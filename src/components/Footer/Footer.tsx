@@ -35,7 +35,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="w-full border-t border-default-100 bg-background/50 dark:bg-default-50/20 backdrop-blur-sm">
+    <footer className="w-full border-t border-border bg-background/60 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         {/* Top Layout Grid */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-12">
@@ -52,7 +52,7 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <p className="text-sm text-[#5C6E85] dark:text-default-400 max-w-xs font-medium leading-relaxed">
+            <p className="text-sm text-muted max-w-xs font-medium leading-relaxed">
               Connecting individuals and corporations with elite, verified legal
               professionals worldwide.
             </p>
@@ -61,21 +61,21 @@ export default function Footer() {
             <div className="flex items-center gap-3">
               <a
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full  text-[#5C6E85]  hover:bg-[#f5f8fa ] hover:text-[#000000] hover:border hover:border-base transition-all text-lg"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-surface-secondary hover:text-foreground border border-transparent hover:border-border transition-all text-lg"
                 aria-label="Twitter X"
               >
                 <BsTwitterX size={15} />
               </a>
               <a
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full  text-[#5C6E85] hover:border  hover:border-base hover:text-[#0A66C2]  transition-all text-sm"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-surface-secondary hover:border hover:border-border hover:text-[#0A66C2] transition-all text-sm"
                 aria-label="LinkedIn"
               >
                 <FaLinkedinIn size={15} />
               </a>
               <a
                 href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-full  text-[#5C6E85] hover:border  hover:border-base  hover:bg-[#f5f8fa] hover:text-[#1877F2] transition-all text-sm"
+                className="flex h-9 w-9 items-center justify-center rounded-full text-muted hover:bg-surface-secondary hover:border hover:border-border hover:text-[#1877F2] transition-all text-sm"
                 aria-label="Facebook"
               >
                 <RiFacebookFill size={15} />
@@ -86,7 +86,7 @@ export default function Footer() {
           {/* Column 2: Links Navigation Columns Subgrid */}
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-2">
             <div>
-              <h3 className="text-sm font-bold tracking-wider text-[#1E3A60] dark:text-white uppercase font-sans">
+              <h3 className="text-sm font-bold tracking-wider text-foreground uppercase font-sans">
                 Company
               </h3>
               <ul role="list" className="mt-4 space-y-2.5">
@@ -94,7 +94,7 @@ export default function Footer() {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className="text-sm font-medium text-[#5C6E85] dark:text-default-400 hover:text-[#0B3A75] dark:hover:text-white transition-colors duration-150"
+                      className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-150"
                     >
                       {item.name}
                     </Link>
@@ -104,7 +104,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <h3 className="text-sm font-bold tracking-wider text-[#1E3A60] dark:text-white uppercase font-sans">
+              <h3 className="text-sm font-bold tracking-wider text-foreground uppercase font-sans">
                 Services
               </h3>
               <ul role="list" className="mt-4 space-y-2.5">
@@ -112,7 +112,7 @@ export default function Footer() {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className="text-sm font-medium text-[#5C6E85] dark:text-default-400 hover:text-[#0B3A75] dark:hover:text-white transition-colors duration-150"
+                      className="text-sm font-medium text-muted hover:text-foreground transition-colors duration-150"
                     >
                       {item.name}
                     </Link>
@@ -123,10 +123,10 @@ export default function Footer() {
 
             {/* Newsletter Column Container aligned on the grid wrapper */}
             <div className="col-span-2 sm:col-span-1 mt-4 sm:mt-0">
-              <h3 className="text-sm font-bold tracking-wider text-[#1E3A60] dark:text-white uppercase font-sans">
+              <h3 className="text-sm font-bold tracking-wider text-foreground uppercase font-sans">
                 Newsletter
               </h3>
-              <p className="mt-4 text-xs font-medium text-[#5C6E85] dark:text-default-400 leading-relaxed">
+              <p className="mt-4 text-xs font-medium text-muted leading-relaxed">
                 Receive premium legal insights and updates right in your inbox.
               </p>
 
@@ -136,10 +136,10 @@ export default function Footer() {
                   type="email"
                   required
                   placeholder="Enter your email"
-                  className="w-full h-10 rounded-lg border border-default-200 bg-default-50/50 pl-3.5 pr-12 text-xs text-foreground placeholder-default-400 outline-none focus:border-primary dark:focus:border-blue-500 transition-all"
+                  className="w-full h-10 rounded-lg border border-border bg-surface pl-3.5 pr-12 text-xs text-foreground placeholder-muted outline-none focus:border-brand-100 transition-all"
                 />
                 <Button
-                  className="absolute right-1 rounded-md bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-8 w-8 min-w-8"
+                  className="absolute right-1 rounded-md bg-brand-500 hover:bg-brand-600 text-white h-8 w-8 min-w-8"
                   aria-label="Subscribe"
                 >
                   <BiSend size={14} />
@@ -150,20 +150,20 @@ export default function Footer() {
         </div>
 
         {/* Bottom Section: Legal & Copyright Notices */}
-        <div className="mt-12 border-t border-default-100 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-[#7C8EA6] dark:text-default-400 font-medium">
+        <div className="mt-12 border-t border-border pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-muted font-medium">
             &copy; {currentYear} Advokate Inc. All rights reserved.
           </p>
-          <div className="flex items-center gap-6 text-xs font-medium text-[#7C8EA6] dark:text-default-400">
+          <div className="flex items-center gap-6 text-xs font-medium text-muted">
             <Link
               href="#"
-              className="hover:text-[#0B3A75] dark:hover:text-white transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               Terms of Service
             </Link>
             <Link
               href="#"
-              className="hover:text-[#0B3A75] dark:hover:text-white transition-colors"
+              className="hover:text-foreground transition-colors"
             >
               Cookie Settings
             </Link>

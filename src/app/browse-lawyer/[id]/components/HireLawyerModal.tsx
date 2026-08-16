@@ -107,7 +107,7 @@ export function HireLawyerModal({
             ? "bg-success-100 text-success cursor-not-allowed shadow-none font-extrabold"
             : isBusy
               ? "bg-default-100 text-default-400 cursor-not-allowed shadow-none"
-              : "bg-[#1D44B7] hover:bg-[#153491] text-white active:scale-95"
+              : "bg-brand-500 hover:bg-brand-600 text-white active:scale-95"
         }`}
       >
         {hasApplied
@@ -121,10 +121,10 @@ export function HireLawyerModal({
       <Modal isOpen={isOpen} onOpenChange={setIsOpen}>
         <Modal.Backdrop>
           <Modal.Container placement="auto">
-            <Modal.Dialog className="sm:max-w-md bg-content1 text-foreground border border-default-100 rounded-2xl">
+            <Modal.Dialog className="sm:max-w-md bg-surface text-foreground border border-border rounded-3xl">
               <Modal.CloseTrigger />
               <Modal.Header>
-                <Modal.Icon className="bg-blue-500/10 text-[#1D44B7]">
+                <Modal.Icon className="bg-brand-100/15 text-brand-500">
                   <Envelope className="size-5" />
                 </Modal.Icon>
                 <Modal.Heading>Retainer Request Contract</Modal.Heading>
@@ -142,7 +142,7 @@ export function HireLawyerModal({
                     onSubmit={handleFormSubmit}
                   >
                     {/*  Client Information displaying as Read-Only */}
-                    <div className="grid grid-cols-2 gap-3 bg-default-50 dark:bg-default-100/5 p-3 rounded-xl border border-default-100">
+                    <div className="grid grid-cols-2 gap-3 bg-content2 p-3 rounded-xl border border-border">
                       <div>
                         <span className="text-[10px] uppercase tracking-wider text-default-400 font-bold block">
                           Client Name
@@ -188,7 +188,7 @@ export function HireLawyerModal({
                         aria-label="Case Description Parameters"
                         required
                         placeholder="Provide details about the legal assistance you need..."
-                        className="h-32 w-full border border-default-200 rounded-xl p-3 text-sm bg-background outline-none focus:border-blue-500 transition-all"
+                        className="h-32 w-full border border-border rounded-xl p-3 text-sm bg-background outline-none focus:border-brand-100 transition-all"
                         value={caseDescription}
                         onChange={(e) => setCaseDescription(e.target.value)}
                       />
@@ -210,7 +210,7 @@ export function HireLawyerModal({
                   type="submit"
                   form="retainer-modal-form"
                   isDisabled={isSubmitLoading}
-                  className="bg-[#1D44B7] text-white text-xs font-bold rounded-xl px-4 h-10"
+                  className="bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold rounded-xl px-4 h-10"
                 >
                   {isSubmitLoading ? "Submitting..." : "Submit Request"}
                 </Button>

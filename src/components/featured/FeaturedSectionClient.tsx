@@ -75,10 +75,8 @@ export default function FeaturedSectionClient({
       <div className="space-y-6">
         <div className="flex items-end justify-between">
           <div>
-            <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-              TOP RATED
-            </span>
-            <h2 className="text-3xl font-black tracking-tight mt-0.5 text-foreground">
+            <span className="eyebrow">Top Rated</span>
+            <h2 className="mt-1.5 font-serif text-3xl font-bold tracking-tight text-foreground">
               Featured Lawyers
             </h2>
           </div>
@@ -86,7 +84,7 @@ export default function FeaturedSectionClient({
             <Button
               size="sm"
               variant="outline"
-              className="text-blue-600 dark:text-blue-400 border-0 font-bold text-xs flex items-center gap-1"
+              className="text-brand-500 dark:text-brand-600 border-0 font-bold text-xs flex items-center gap-1"
             >
               View all &rarr;
             </Button>
@@ -116,7 +114,7 @@ export default function FeaturedSectionClient({
               >
                 <Card
                   onClick={() => router.push(`/browse-lawyer/${lawyer._id}`)}
-                  className="bg-[#0D1117]/5 dark:bg-[#0F141C]  rounded-2xl transition-all duration-200 cursor-pointer p-5 flex flex-col justify-between gap-4 shadow-sm hover:shadow-md hover:border-default-400/80 dark:hover:border-[#2E3748]"
+                  className="card-surface card-press rounded-2xl cursor-pointer p-5 flex flex-col justify-between gap-4 shadow-sm"
                 >
                   <div className="flex items-center justify-between gap-3 w-full">
                     <div className="flex items-center gap-3 min-w-0">
@@ -180,7 +178,7 @@ export default function FeaturedSectionClient({
                     </div>
                   </div>
 
-                  <div className="h-[1px] w-full bg-default-200/60 dark:bg-[#1E2530]" />
+                  <div className="h-[1px] w-full bg-border" />
 
                   <div className="flex items-center justify-between w-full">
                     <div className="flex items-baseline">
@@ -205,10 +203,8 @@ export default function FeaturedSectionClient({
       {/* section 2: TOP LEGAL EXPERTS */}
       <div className="space-y-6">
         <div>
-          <span className="text-[11px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-widest">
-            ELITE TIER
-          </span>
-          <h2 className="text-3xl font-black tracking-tight mt-0.5 text-foreground">
+          <span className="eyebrow">Elite Tier</span>
+          <h2 className="mt-1.5 font-serif text-3xl font-bold tracking-tight text-foreground">
             Top Legal Experts
           </h2>
         </div>
@@ -230,7 +226,7 @@ export default function FeaturedSectionClient({
               >
                 <Card
                   onClick={() => router.push(`/browse-lawyer/${expert._id}`)}
-                  className="relative h-[340px] border border-default-200/60 dark:border-[#1E2530] bg-[#0F141C] rounded-2xl overflow-hidden cursor-pointer group shadow-sm flex flex-col justify-end"
+                  className="relative h-[340px] border border-border bg-content1 rounded-2xl overflow-hidden cursor-pointer group shadow-sm flex flex-col justify-end"
                 >
                   <div className="absolute inset-0 w-full h-full bg-[#181F2A]">
                     {expert.image ? (
@@ -243,7 +239,7 @@ export default function FeaturedSectionClient({
                         className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-3xl font-black bg-blue-500/10 text-blue-500">
+                      <div className="w-full h-full flex items-center justify-center text-3xl font-black bg-brand-100/15 text-brand-500">
                         {initials}
                       </div>
                     )}

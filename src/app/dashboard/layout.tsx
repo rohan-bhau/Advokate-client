@@ -4,7 +4,7 @@ import React from "react";
 const DashboardLayout = ({ children }: any) => {
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background text-foreground">
-      <div className="hidden md:flex h-full w-64 flex-shrink-0 border-r border-default-100 bg-content1">
+      <div className="hidden md:flex h-full w-64 flex-shrink-0 border-r border-border bg-surface">
         <DashboardSidebar />
       </div>
 

@@ -65,7 +65,7 @@ export function UpdateRole({
           className={`border-default-200 rounded-xl font-bold text-xs px-3 transition-all ${
             isSelf
               ? "opacity-40 cursor-not-allowed text-default-400 bg-transparent hover:bg-transparent hover:text-default-400"
-              : "text-default-600 hover:text-blue-600 hover:bg-blue-50/50"
+              : "text-default-600 hover:text-brand-500 hover:bg-brand-100/10"
           }`}
         >
           <Pencil className="size-3.5" />

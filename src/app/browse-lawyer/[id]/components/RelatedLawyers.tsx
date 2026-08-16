@@ -43,12 +43,13 @@ export function RelatedLawyers({
     currentSpecialization;
 
   return (
-    <div className="space-y-4 pt-6 border-t border-default-100 mt-4">
+    <div className="space-y-6 pt-10 border-t border-border mt-4">
       <div className="flex flex-col">
-        <h3 className="text-lg font-bold text-[#0B3A75] dark:text-white">
+        <span className="eyebrow">Related</span>
+        <h3 className="mt-1 font-serif text-2xl font-bold text-foreground">
           More Experts in Same Specialty
         </h3>
-        <p className="text-xs text-default-400">
+        <p className="text-xs text-muted">
           Recommended attorneys based on case specialization match.
         </p>
       </div>
@@ -62,7 +63,7 @@ export function RelatedLawyers({
             <Card
               key={relId}
               onClick={() => router.push(`/browse-lawyer/${rel._id || rel.id}`)}
-              className="bg-content1 border border-default-100 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-2 rounded-2xl transition-all duration-300 cursor-pointer group flex flex-col justify-between overflow-hidden"
+              className="card-surface card-press hover:border-brand-100 rounded-2xl cursor-pointer group flex flex-col justify-between overflow-hidden"
             >
               <div className="p-4 sm:p-5 flex flex-col gap-4">
                 {/* Avatar, Name, and Status Badge */}
@@ -95,10 +96,10 @@ export function RelatedLawyers({
 
                     {/* Name and Compact Category placed right next to Avatar */}
                     <div className="min-w-0 flex flex-col gap-0.5">
-                      <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors truncate">
+                      <h3 className="font-bold text-sm sm:text-base text-foreground group-hover:text-brand-500 dark:group-hover:text-brand-600 transition-colors truncate">
                         {rel.professionalName}
                       </h3>
-                      <p className="text-[11px] sm:text-xs font-semibold text-blue-600 dark:text-blue-400 truncate tracking-wide">
+                      <p className="text-[11px] sm:text-xs font-semibold text-brand-500 dark:text-brand-600 truncate tracking-wide">
                         {SPECIALIZATIONS.find(
                           (s) => s.value === rel.specialization,
                         )?.label || rel.specialization}
@@ -126,12 +127,12 @@ export function RelatedLawyers({
                   <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
                     <Star className="size-3.5 fill-amber-500" />
                     <span>{ rel.averageRating}</span>
-                    <span className="text-default-400 text-[11px] font-normal">
+                    <span className="text-muted text-[11px] font-normal">
                       ({rel.totalReviews || 0} reviews)
                     </span>
                   </div>
                   {/* Line 2: Independent Location display line */}
-                  <div className="flex items-center gap-1 text-xs text-default-400 font-medium">
+                  <div className="flex items-center gap-1 text-xs text-muted font-medium">
                     <GrLocation className="size-3.5 text-default-400 flex-shrink-0" />
                     <span className="truncate">
                       {rel.location || "Dhaka Bangladesh"}
@@ -140,16 +141,16 @@ export function RelatedLawyers({
                 </div>
               </div>
 
-              <Card.Footer className="border-t border-default-100 bg-default-50/50 px-4 sm:px-5 py-3 flex items-center justify-between gap-2 mt-auto w-full">
+              <Card.Footer className="border-t border-border bg-content2/50 px-4 sm:px-5 py-3 flex items-center justify-between gap-2 mt-auto w-full">
                 <div className="flex items-baseline gap-0.5">
                   <span className="text-base sm:text-lg font-extrabold text-foreground">
                     ${Number(rel.hourlyFee).toString()}
                   </span>
-                  <span className="text-[10px] text-default-400 font-bold">
+                  <span className="text-[10px] text-muted font-bold">
                     /hr
                   </span>
                 </div>
-                <span className="text-[11px] font-bold text-default-400 group-hover:text-blue-500 transition-colors flex items-center gap-1">
+                <span className="text-[11px] font-bold text-default-400 group-hover:text-brand-500 transition-colors flex items-center gap-1">
                   View Profile &rarr;
                 </span>
               </Card.Footer>

@@ -73,7 +73,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-default-100 bg-background/90 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-xl">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between gap-4">
           {/* Logo Section */}
@@ -102,12 +102,12 @@ export default function Navbar() {
                     href={link.href}
                     className={`relative flex items-center h-full text-[15px] font-semibold tracking-wide transition-colors ${
                       isActive
-                        ? "text-[#0B3A75] dark:text-blue-400"
-                        : "text-[#5C6E85] dark:text-default-400 hover:text-[#0B3A75] dark:hover:text-white"
+                        ? "text-brand-500 dark:text-brand-600"
+                        : "text-muted hover:text-foreground"
                     }`}
                   >
                     <span
-                      className={`${isActive ? "pb-1 border-b-2 border-[#93B6F0]" : ""}`}
+                      className={`${isActive ? "pb-1 border-b-2 border-brand-500" : ""}`}
                     >
                       {link.name}
                     </span>
@@ -129,7 +129,7 @@ export default function Navbar() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search lawyers, case or specialization..."
-              className="w-full h-11 rounded-full border border-blue-100/80 dark:border-default-700 bg-[#F4F7FC] dark:bg-default-100 pl-11 pr-4 text-[13px] text-foreground placeholder-[#7C8EA6] dark:placeholder-default-400 outline-none focus:border-blue-400 dark:focus:border-blue-500 focus:bg-background transition-all"
+              className="w-full h-11 rounded-full border border-border bg-surface-secondary/70 pl-11 pr-4 text-[13px] text-foreground placeholder-muted outline-none focus:border-brand-100 focus:bg-surface transition-all"
             />
           </form>
 
@@ -140,7 +140,7 @@ export default function Navbar() {
               variant="outline"
               aria-label="Toggle theme"
               onClick={toggleTheme}
-              className="text-[#5C6E85] dark:text-default-400 rounded-full hover:text-[#0B3A75] dark:hover:text-white hover:bg-default-100 dark:hover:bg-default-100 h-11 w-11 transition-colors"
+              className="text-muted rounded-full hover:text-foreground hover:bg-surface-secondary h-11 w-11 transition-colors"
             >
               {currentTheme === "dark" ? (
                 <Sun className="h-5 w-5" />
@@ -159,7 +159,7 @@ export default function Navbar() {
               </div>
             ) : user ? (
               <div className="flex items-center gap-3">
-                <p className="text-sm leading-5 font-semibold text-[#0B3A75] dark:text-white truncate">
+                <p className="text-sm leading-5 font-semibold text-foreground truncate">
                   Hi, {user.name ? user.name.split(" ")[0] : "User"}!
                 </p>
                 <Dropdown>
@@ -234,13 +234,13 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Button
                   onClick={() => router.push("/login")}
-                  className="font-semibold bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 rounded-lg dark:hover:bg-blue-700 text-white h-11 px-7 tracking-wide text-sm shadow-sm transition-colors"
+                  className="font-semibold rounded-full bg-brand-500 hover:bg-brand-600 text-white h-11 px-7 tracking-wide text-sm shadow-lg shadow-brand-500/20 transition-all"
                 >
                   Login
                 </Button>
                 <Button
                   onClick={() => router.push("/register")}
-                  className="font-semibold  rounded-lg h-11 px-7 tracking-wide text-sm shadow-sm transition-colors"
+                  className="font-semibold rounded-full h-11 px-7 tracking-wide text-sm shadow-sm transition-all border border-border bg-surface text-foreground hover:bg-surface-secondary"
                 >
                   Register
                 </Button>

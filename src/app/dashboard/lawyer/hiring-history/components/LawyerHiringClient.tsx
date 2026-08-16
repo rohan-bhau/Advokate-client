@@ -173,20 +173,20 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
   return (
     <div className="space-y-6 text-foreground bg-background w-full">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-[#0B3A75] dark:text-white">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground dark:text-white">
           Hiring History
         </h1>
-        <p className="text-xs text-default-400 mt-0.5">
+        <p className="text-xs text-muted mt-0.5">
           Manage and review client contract proposals and case records
         </p>
       </div>
 
       {/* Filter Controllers */}
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-4 bg-content1 border border-default-100 p-4 rounded-2xl shadow-sm">
+      <div className="flex flex-col lg:flex-row items-center justify-between gap-4 card-surface p-4 rounded-2xl">
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
           <div className="relative w-full sm:w-72">
             <div className="absolute inset-y-0 left-3.5 flex items-center pointer-events-none">
-              <Magnifier className="size-4 text-default-400" />
+              <Magnifier className="size-4 text-muted" />
             </div>
             <input
               type="text"
@@ -197,7 +197,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                 setSearch(e.target.value);
                 setPage(1);
               }}
-              className="w-full h-10 rounded-xl border border-default-200 bg-background pl-10 pr-4 text-sm text-foreground outline-none focus:border-blue-500 transition-all"
+              className="w-full h-10 rounded-xl border border-border bg-background pl-10 pr-4 text-sm text-foreground outline-none focus:border-brand-100 transition-all"
             />
           </div>
 
@@ -210,7 +210,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                 setStatusFilter(k as string);
                 setPage(1);
               }}
-              className="w-full bg-background border border-default-200 rounded-xl min-h-10 text-sm"
+              className="w-full bg-background border border-border rounded-xl min-h-10 text-sm"
             >
               <Select.Trigger>
                 <Select.Value />
@@ -230,7 +230,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-default-400 font-semibold w-full lg:w-auto justify-end">
+        <div className="flex items-center gap-2 text-xs text-muted font-semibold w-full lg:w-auto justify-end">
           <span>Show</span>
           <div className="w-20">
             <Select
@@ -240,7 +240,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                 setRowsPerPage(k as string);
                 setPage(1);
               }}
-              className="w-full bg-background border border-default-200 rounded-xl min-h-8 text-xs"
+              className="w-full bg-background border border-border rounded-xl min-h-8 text-xs"
             >
               <Select.Trigger>
                 <Select.Value />
@@ -278,7 +278,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
               {paginatedRequests.length === 0 ? (
                 <Table.Row>
                   <Table.Cell
-                    className="text-center text-default-400 py-10"
+                    className="text-center text-muted py-10"
                     colSpan={7}
                   >
                     No hiring data found.
@@ -297,18 +297,18 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                   return (
                     <Table.Row
                       key={reqId}
-                      className="hover:bg-default-50/50 transition-colors border-b border-default-100/50"
+                      className="hover:bg-content2/50 transition-colors border-b border-border/50"
                     >
                       <Table.Cell className="font-semibold text-sm">
                         {req.clientName}
                       </Table.Cell>
-                      <Table.Cell className="text-default-500 text-sm">
+                      <Table.Cell className="text-muted text-sm">
                         {req.clientEmail}
                       </Table.Cell>
                       <Table.Cell className="text-sm font-medium text-default-700 max-w-xs truncate">
                         {req.caseTitle}
                       </Table.Cell>
-                      <Table.Cell className="text-default-500 text-sm">
+                      <Table.Cell className="text-muted text-sm">
                         {formatRequestDate(req.createdAt)}
                       </Table.Cell>
                       <Table.Cell>
@@ -341,7 +341,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                             size="sm"
                             variant="secondary"
                             onPress={() => openDetailsModal(req)}
-                            className="h-8 text-[11px] font-bold rounded-lg border border-default-200 text-default-600 bg-default-50 hover:bg-default-100"
+                            className="h-8 text-[11px] font-bold rounded-lg border border-border text-muted bg-content2 hover:bg-content2"
                           >
                             <Eye className="size-3.5" /> View
                           </Button>
@@ -366,7 +366,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                                 onPress={() =>
                                   handleStatusUpdate(reqId, "accepted")
                                 }
-                                className="h-8 text-[11px] font-bold rounded-lg bg-[#1D44B7] text-white px-3.5 shadow-sm hover:bg-[#153491]"
+                                className="h-8 text-[11px] font-bold rounded-lg bg-brand-500 text-white px-3.5 shadow-sm hover:bg-brand-600"
                               >
                                 <Check className="size-3.5" /> Accept
                               </Button>
@@ -384,15 +384,15 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
 
         <Table.Footer>
           {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 w-full border-t border-default-100/60 mt-2 overflow-hidden">
-              <Pagination.Summary className="text-default-400 text-xs font-semibold">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 w-full border-t border-border/60 mt-2 overflow-hidden">
+              <Pagination.Summary className="text-muted text-xs font-semibold">
                 Showing {(page - 1) * itemsPerPage + 1}-
                 {Math.min(filteredRequests.length, page * itemsPerPage)} of{" "}
                 {filteredRequests.length} results
               </Pagination.Summary>
 
               <Pagination className="justify-center">
-                <Pagination.Content className="bg-content1 border border-default-200 rounded-xl shadow-sm flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
+                <Pagination.Content className="card-surface rounded-xl flex flex-wrap items-center justify-center gap-0 max-w-max mx-auto overflow-hidden">
                   <Pagination.Item>
                     <Pagination.Previous
                       isDisabled={page === 1}
@@ -400,7 +400,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                       className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                         page === 1
                           ? "opacity-30 pointer-events-none text-default-300"
-                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                          : "text-foreground hover:bg-content2 cursor-pointer"
                       }`}
                     >
                       <Pagination.PreviousIcon className="size-4 shrink-0" />
@@ -420,8 +420,8 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                           onPress={() => setPage(p)}
                           className={`min-w-[32px] h-8 sm:min-w-[36px] sm:h-9 text-xs font-bold flex items-center justify-center cursor-pointer transition-all ${
                             page === p
-                              ? "bg-[#1D44B7] text-white rounded-lg shadow-sm hover:bg-[#153491]"
-                              : "text-default-500 hover:bg-default-100 rounded-lg"
+                              ? "bg-brand-500 text-white rounded-lg shadow-sm hover:bg-brand-600"
+                              : "text-muted hover:bg-content2 rounded-lg"
                           }`}
                         >
                           {p}
@@ -439,7 +439,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                       className={`px-2.5 sm:px-3 py-1.5 text-xs flex items-center gap-1 font-bold transition-all ${
                         page === totalPages
                           ? "opacity-30 pointer-events-none text-default-300"
-                          : "text-foreground hover:bg-default-100 cursor-pointer"
+                          : "text-foreground hover:bg-content2 cursor-pointer"
                       }`}
                     >
                       <span className="hidden sm:block">Next</span>
@@ -457,14 +457,14 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
       <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
         <Modal.Backdrop>
           <Modal.Container placement="auto">
-            <Modal.Dialog className="sm:max-w-lg bg-content1 text-foreground border border-default-100 rounded-2xl">
+            <Modal.Dialog className="sm:max-w-lg bg-surface text-foreground border border-border rounded-3xl">
               <Modal.CloseTrigger />
               <Modal.Header>
-                <Modal.Icon className="bg-blue-500/10 text-[#1D44B7]">
+                <Modal.Icon className="bg-brand-100/15 text-brand-500">
                   <HiOutlineInformationCircle className="size-5" />
                 </Modal.Icon>
                 <Modal.Heading>Case File Docket</Modal.Heading>
-                <p className="mt-1 text-xs text-default-400">
+                <p className="mt-1 text-xs text-muted">
                   Comprehensive breakdown of client's litigation requirements.
                 </p>
               </Modal.Header>
@@ -472,9 +472,9 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
               <Modal.Body className="p-6 space-y-4">
                 <Surface variant="default" className="space-y-4">
                   {/* Client Metadata block */}
-                  <div className="grid grid-cols-2 gap-4 bg-default-50 dark:bg-default-100/5 p-3 rounded-xl border border-default-100/50">
+                  <div className="grid grid-cols-2 gap-4 bg-content2 dark:bg-content2/5 p-3 rounded-xl border border-border/50">
                     <div>
-                      <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                         Client Name
                       </span>
                       <span className="text-xs font-semibold text-foreground">
@@ -482,7 +482,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                         Client Email
                       </span>
                       <span className="text-xs font-semibold text-foreground truncate block">
@@ -490,7 +490,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                         Proposal Status
                       </span>
                       <span className="text-xs font-bold uppercase text-amber-500 block">
@@ -498,7 +498,7 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
                       </span>
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                         Payment Status
                       </span>
                       <span
@@ -511,26 +511,26 @@ export default function LawyerHiringClient({ initialRequests }: Props) {
 
                   {/* Case Content */}
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                       Case Title / Core Issue
                     </span>
-                    <h3 className="text-sm font-bold text-foreground bg-background p-2.5 rounded-lg border border-default-200">
+                    <h3 className="text-sm font-bold text-foreground bg-background p-2.5 rounded-lg border border-border">
                       {selectedRequest?.caseTitle}
                     </h3>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] font-bold text-default-400 uppercase tracking-wider block">
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-wider block">
                       Litigation Description Brief
                     </span>
-                    <p className="text-xs text-default-600 dark:text-default-300 leading-relaxed bg-background p-3 rounded-xl border border-default-200 whitespace-pre-line max-h-44 overflow-y-auto">
+                    <p className="text-xs text-foreground leading-relaxed bg-background p-3 rounded-xl border border-border whitespace-pre-line max-h-44 overflow-y-auto">
                       {selectedRequest?.caseDescription}
                     </p>
                   </div>
 
                   {/* Case Status Display */}
-                  <div className="flex justify-between items-center bg-default-50 dark:bg-default-100/5 p-2.5 rounded-xl border border-default-100">
-                    <span className="text-xs font-bold text-default-500">
+                  <div className="flex justify-between items-center bg-content2 dark:bg-content2/5 p-2.5 rounded-xl border border-border">
+                    <span className="text-xs font-bold text-muted">
                       Current Case Status:
                     </span>
                     <Chip

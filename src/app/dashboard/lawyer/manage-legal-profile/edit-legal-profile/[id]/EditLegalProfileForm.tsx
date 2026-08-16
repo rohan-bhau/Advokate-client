@@ -158,7 +158,7 @@ export default function EditLegalProfileForm({
         <Button
           variant="ghost"
           onPress={() => router.back()}
-          className="border-default-200 text-default-600 hover:text-[#1D44B7] rounded-xl h-10 px-4 text-sm font-semibold flex items-center gap-2 transition-all"
+          className="border-border text-muted hover:text-brand-500 rounded-xl h-10 px-4 text-sm font-semibold flex items-center gap-2 transition-all"
         >
           <ArrowLeft className="size-4" />
           Back to Profiles
@@ -167,9 +167,9 @@ export default function EditLegalProfileForm({
 
       <Form
         onSubmit={handleSubmit}
-        className="w-full flex flex-col gap-6 bg-content1 border border-default-100 rounded-3xl p-6 sm:p-8 shadow-xl"
+        className="w-full flex flex-col gap-6 bg-surface border border-border rounded-3xl p-6 sm:p-8 shadow-xl"
       >
-        <legend className="text-xl font-bold text-[#0B3A75] dark:text-white">
+        <legend className="text-xl font-bold text-foreground dark:text-white">
           Configure Registered Service Profile
         </legend>
 
@@ -180,14 +180,14 @@ export default function EditLegalProfileForm({
               Profile Image *
             </Label>
             <div
-              className="relative group cursor-pointer w-32 h-32 rounded-full border-2 border-default-200 overflow-hidden"
+              className="relative group cursor-pointer w-32 h-32 rounded-full border-2 border-border overflow-hidden"
               onClick={() => fileInputRef.current?.click()}
             >
               <Avatar className="w-full h-full">
                 {logoUrl ? (
                   <Avatar.Image src={logoUrl} />
                 ) : (
-                  <div className="flex bg-default-100 w-full h-full items-center justify-center text-default-400">
+                  <div className="flex bg-content2 w-full h-full items-center justify-center text-muted">
                     <TbCloudUpload className="text-3xl" />
                   </div>
                 )}
@@ -302,7 +302,7 @@ export default function EditLegalProfileForm({
           </div>
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-default-100 pt-5 w-full">
+        <div className="flex justify-end gap-3 border-t border-border pt-5 w-full">
           <Button variant="ghost" onPress={() => router.back()}>
             Cancel
           </Button>
@@ -311,8 +311,8 @@ export default function EditLegalProfileForm({
             isDisabled={isLoading || isUploading || isUnchanged}
             className={`font-semibold rounded-xl px-6 flex items-center gap-2 ${
               isUnchanged
-                ? "bg-default-100 text-default-400 cursor-not-allowed"
-                : "bg-[#1D44B7] text-white"
+                ? "bg-content2 text-muted cursor-not-allowed"
+                : "bg-brand-500 text-white"
             }`}
           >
             {isLoading ? "Saving Changes..." : "Save Changes"}

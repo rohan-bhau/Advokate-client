@@ -28,10 +28,10 @@ export default function NotFound() {
   };
 
   return (
-    <section className="relative w-full min-h-[calc(100vh-5rem)] flex items-center justify-center bg-white dark:bg-black transition-colors duration-300 overflow-hidden px-4">
+    <section className="relative w-full min-h-[calc(100vh-5rem)] flex items-center justify-center bg-background transition-colors duration-300 overflow-hidden px-4">
       {/* Structural Background Glow Grid Lines / Graphic Context Tokens */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-40 dark:opacity-20 flex items-center justify-center">
-        <div className="w-[500px] h-[500px] rounded-full bg-blue-400/20 blur-[120px]" />
+        <div className="w-[500px] h-[500px] rounded-full bg-brand-500/20 blur-[120px]" />
       </div>
 
       <motion.div
@@ -43,7 +43,7 @@ export default function NotFound() {
         {/* 1. Large Conceptual Icon Wrapper */}
         <motion.div
           variants={itemVariants}
-          className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[#F4F7FC] border border-black/5 text-[#1D44B7] dark:bg-[#0D0D0D] dark:border-white/10 dark:text-blue-500 shadow-sm mb-6 animate-pulse"
+          className="flex h-20 w-20 items-center justify-center rounded-2xl bg-content2 border border-border text-brand-500 dark:bg-content1 dark:border-border dark:text-brand-500 shadow-sm mb-6 animate-pulse"
         >
           <LuShield size={36} aria-label="Scales of Justice Icon" role="img" />
         </motion.div>
@@ -51,7 +51,7 @@ export default function NotFound() {
         {/* 2. Giant Elegant Error Code Text */}
         <motion.h1
           variants={itemVariants}
-          className="text-7xl sm:text-8xl font-sans font-black tracking-tight text-[#1D44B7] dark:text-blue-500 drop-shadow-sm select-none"
+          className="text-7xl sm:text-8xl font-sans font-black tracking-tight text-brand-500 dark:text-brand-500 drop-shadow-sm select-none"
         >
           404
         </motion.h1>
@@ -59,7 +59,7 @@ export default function NotFound() {
         {/* 3. Primary Section Heading */}
         <motion.h2
           variants={itemVariants}
-          className="mt-4 text-2xl sm:text-3xl font-serif font-bold text-[#1E3A60] dark:text-white tracking-tight"
+          className="mt-4 text-2xl sm:text-3xl font-serif font-bold text-foreground dark:text-white tracking-tight"
         >
           Case File Not Found
         </motion.h2>
@@ -67,7 +67,7 @@ export default function NotFound() {
         {/* 4. Content Description Context Text */}
         <motion.p
           variants={itemVariants}
-          className="mt-4 text-sm sm:text-base text-gray-500 dark:text-[#71717A] max-w-md leading-relaxed font-medium"
+          className="mt-4 text-sm sm:text-base text-muted max-w-md leading-relaxed font-medium"
         >
           The page or legal document you are searching for might have been
           moved, archived, or temporarily dissolved.
@@ -81,7 +81,7 @@ export default function NotFound() {
           {/* Main Return CTA */}
           <Button
             onClick={() => router.push("/")}
-            className="w-full sm:w-auto font-semibold bg-[#1D44B7] hover:bg-[#153491] dark:bg-blue-600 dark:hover:bg-blue-700 text-white h-11 px-6 tracking-wide text-sm shadow-sm transition-colors flex items-center gap-2"
+            className="w-full sm:w-auto font-semibold bg-brand-500 hover:bg-brand-600 text-white h-11 px-6 tracking-wide text-sm shadow-sm transition-colors flex items-center gap-2"
           >
             <FiHome size={16} />
             Back to Home
@@ -91,7 +91,7 @@ export default function NotFound() {
           <Button
             variant="outline"
             onClick={() => router.back()}
-            className="w-full sm:w-auto font-semibold border-default-200 hover:border-default-300 dark:border-default-100/30 bg-background dark:bg-[#0D0D0D] text-[#1E3A60] dark:text-default-400 h-11 px-6 text-sm flex items-center gap-2 transition-colors"
+            className="w-full sm:w-auto font-semibold border-border hover:border-brand-100 bg-background text-foreground h-11 px-6 text-sm flex items-center gap-2 transition-colors"
           >
             <FiArrowLeft size={16} />
             Go Back

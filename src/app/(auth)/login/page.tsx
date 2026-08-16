@@ -97,11 +97,13 @@ const handleGoogleSignIn = async () => {
         className="w-full max-w-md"
       >
         {/* Core Auth Card Panel Wrapper */}
-        <div className="bg-content1 border border-default-100 dark:border-default-50/50 rounded-3xl p-8 shadow-xl dark:shadow-none transition-all duration-300">
+        <div className="card-surface rounded-[1.75rem] p-8 shadow-xl transition-all duration-300">
           {/* Header Typography */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
-            <p className="text-sm text-default-400 dark:text-gray-500 mt-2">
+            <h1 className="font-serif text-3xl font-bold tracking-tight">
+              Welcome back
+            </h1>
+            <p className="text-sm text-muted mt-2">
               Sign in to continue to your dashboard
             </p>
           </div>
@@ -121,7 +123,7 @@ const handleGoogleSignIn = async () => {
                 return null;
               }}
             >
-              <Label className="text-sm font-medium mb-1.5 block text-default-700 dark:text-default-300">
+              <Label className="text-sm font-medium mb-1.5 block text-foreground">
                 Email Address
               </Label>
               <InputGroup className="transition-all duration-200">
@@ -161,12 +163,12 @@ const handleGoogleSignIn = async () => {
               }}
             >
               <div className="flex justify-between items-center mb-1.5">
-                <Label className="text-sm font-medium text-default-700 dark:text-default-300">
+                <Label className="text-sm font-medium text-foreground">
                   Password
                 </Label>
                 <Link
                   href="/forgot-password"
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-brand-500 dark:text-brand-600 hover:underline"
                 >
                   Forgot password?
                 </Link>
@@ -203,7 +205,7 @@ const handleGoogleSignIn = async () => {
             <Button
               type="submit"
               isDisabled={isLoading}
-              className="w-full h-12 font-semibold rounded-xl mt-2 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
+              className="w-full h-12 font-semibold rounded-xl mt-2 bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/20 transition-transform active:scale-[0.98] flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <svg
@@ -236,11 +238,11 @@ const handleGoogleSignIn = async () => {
 
           {/* Context Footer Switch Options */}
           <div className="text-center mt-6 space-y-5">
-            <p className="text-sm text-default-500">
+            <p className="text-sm text-muted">
               Don't have an account?{" "}
               <Link
                 href="/register"
-                className="text-primary font-medium hover:underline"
+                className="text-brand-500 dark:text-brand-600 font-medium hover:underline"
               >
                 Sign up
               </Link>

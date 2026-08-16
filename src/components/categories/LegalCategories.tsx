@@ -140,11 +140,14 @@ export default function LegalCategories() {
   return (
     <section className="w-full max-w-7xl mx-auto px-4 py-12 bg-background text-foreground transition-colors duration-200">
       {/* Header section */}
-      <div className="mb-8">
-        <span className="text-xs font-semibold tracking-wider text-primary uppercase block mb-1">
-          Practice Areas
-        </span>
-        <h2 className="text-3xl font-bold tracking-tight">Legal Categories</h2>
+      <div className="mb-10 flex flex-col items-start gap-2">
+        <span className="eyebrow">Practice Areas</span>
+        <h2 className="font-serif text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+          Legal Categories
+        </h2>
+        <p className="text-sm font-medium text-muted">
+          Browse specialist attorneys across every major practice area.
+        </p>
       </div>
 
       {/* Grid container */}
@@ -170,15 +173,10 @@ export default function LegalCategories() {
                 onClick={() => handleCategoryClick(category.value)} 
               >
                 <Card
-                  className={`
-                    p-6 border bg-content1 cursor-pointer rounded-2xl select-none w-full h-full
-                    border-default-200 hover:border-default-400 hover:shadow-lg hover:shadow-default-100
-                    transition-colors duration-200
-                    ${category.darkBg} ${category.darkBorder} dark:hover:shadow-none
-                  `}
+                  className={`card-surface card-press p-6 cursor-pointer select-none w-full h-full overflow-hidden ${category.darkBg} ${category.darkBorder}`}
                 >
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center bg-default-100 mb-5 transition-colors duration-200 ${category.iconBg} ${category.iconColor}`}
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center bg-content2 mb-5 transition-colors duration-200 ${category.iconBg} ${category.iconColor}`}
                   >
                     <IconComponent className="w-5 h-5" />
                   </div>
@@ -187,7 +185,7 @@ export default function LegalCategories() {
                     <Card.Title className="text-base font-semibold tracking-wide text-foreground">
                       {category.title}
                     </Card.Title>
-                    <Card.Description className="text-sm font-medium text-default-400 dark:text-gray-500">
+                    <Card.Description className="text-sm font-medium text-muted">
                       {category.count} lawyers
                     </Card.Description>
                   </Card.Header>
